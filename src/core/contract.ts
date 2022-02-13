@@ -5,3 +5,5 @@ export interface Type<T> extends Function { // the type describes the constructo
 export interface IStoppable {
   stop(): void;
 }
+
+export type TRunMode = 'development' | 'production' | 'test';
