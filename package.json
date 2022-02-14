@@ -27,7 +27,9 @@
     "deploy": "npm version patch && npm publish"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "@do-while-for-each/tsconfig": "^1.0.3"
+  },
   "publishConfig": {
     "access": "public"
   }
