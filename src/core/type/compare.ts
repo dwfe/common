@@ -5,8 +5,8 @@ export function compare(a: any, b: any): boolean {
     return a === b;
   if (a === b)
     return true;
-  // if (a[equalsFnName] && b[equalsFnName])
-  //   return a[equalsFnName](b);
+  if (a.equals && b.equals)
+    return a.equals(b);
 
   const aIsArr = Array.isArray(a);
   const bIsArr = Array.isArray(b);
