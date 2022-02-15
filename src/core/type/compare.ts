@@ -29,10 +29,7 @@ export function compare(a: any, b: any): boolean {
   else if (aIsMap || bIsMap)
     return false;
 
-  if (typeof a === 'object' && typeof b === 'object') {
-    return compareObjects(a, b);
-  }
-  return false;
+  return compareObjects(a, b);
 }
 
 function compareArrays(a: any[], b: any[]): boolean {
