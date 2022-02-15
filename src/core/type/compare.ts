@@ -49,11 +49,8 @@ function compareArraysOfPrimitives(a: any[], b: any[]): boolean {
 }
 
 function compareSets(a: Set<any>, b: Set<any>): boolean {
-  if (a.size !== b.size)
-    return false;
-  const aValues = Array.from(a).sort();
-  const bValues = Array.from(b).sort();
-  return compareArrays(aValues, bValues);
+  return a.size === b.size
+    && compareArrays(Array.from(a).sort(), Array.from(b).sort());
 }
 
 function compareMaps(a: Map<any, any>, b: Map<any, any>): boolean {
