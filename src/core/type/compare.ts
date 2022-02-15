@@ -63,14 +63,14 @@ function compareMaps(a: Map<any, any>, b: Map<any, any>): boolean {
 }
 
 function compareObjects(a: any, b: any): boolean {
-  const aEntries = Object.entries(a);
+  const aKeys = Object.keys(a);
   const bKeys = Object.keys(b);
-  if (aEntries.length !== bKeys.length)
+  if (aKeys.length !== bKeys.length)
     return false;
-  for (const [aKey, aValue] of aEntries) {
+  for (const aKey of aKeys) {
     if (!bKeys.includes(aKey))
       return false;
-    if (!compare(aValue, b[aKey]))
+    if (!compare(a[aKey], b[aKey]))
       return false;
   }
   return true;
