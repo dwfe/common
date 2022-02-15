@@ -12,7 +12,7 @@ export const isJustObject = (value: any): boolean =>
  *   - null
  *   - boolean
  *   - number
- *   - bigInt
+ *   - bigint
  *   - string
  *   - symbol
  *   - object implements [[Call]] - function
