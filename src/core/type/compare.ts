@@ -13,11 +13,26 @@ interface IOptions {
 
 export function compare(a: any, b: any, opt: IOptions = {}): boolean {
   if (opt.nullEqualsUndefined) {
-
+    switch (typeof a) {
+      case 'object':    // compare a{object | null | undefined} with b{any}
+      case 'undefined':
+        if (a == null && b == null) // ЕСЛИ и a и b равны null/undefined
+          return true;
+        if (a == null || b == null) // ЕСЛИ либо только a либо только b равен null/undefined
+          return false;
+        if (typeof b !== 'object') // compare a{object} with b{object | boolean | number | bigint | string | symbol | function}
+          return false;
+        break;
+      default: // compare a{boolean | number | bigint | string | symbol | function} with b{any}
+        return a === b;
+    }
   } else {
-    if (isNotJustObject(a) || isNotJustObject(b))
+    if (isNotJustObject(a) && isNotJustObject(b))
+      // compare a{undefined | null | boolean | number | bigint | string | symbol | function}
+      //    with b{undefined | null | boolean | number | bigint | string | symbol | function}
       return a === b;
   }
+  // начиная с этого уровня и а и b являются объектами
   if (a === b)
     return true;
   if (a.equals && b.equals)
