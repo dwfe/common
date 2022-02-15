@@ -1,12 +1,12 @@
 import {isNotJustObject} from './is-just-object';
 
-export function compare(a: any, b: any, equalsFnName = 'isEquals'): boolean {
+export function compare(a: any, b: any): boolean {
   if (isNotJustObject(a) || isNotJustObject(b))
     return a === b;
   if (a === b)
     return true;
-  if (a[equalsFnName] && b[equalsFnName])
-    return a[equalsFnName](b);
+  // if (a[equalsFnName] && b[equalsFnName])
+  //   return a[equalsFnName](b);
 
   const aIsArr = Array.isArray(a);
   const bIsArr = Array.isArray(b);
@@ -30,36 +30,51 @@ export function compare(a: any, b: any, equalsFnName = 'isEquals'): boolean {
     return false;
 
   if (typeof a === 'object' && typeof b === 'object') {
-    const aKeys = Object.getOwnPropertyNames(a);
-    const bKeys = Object.getOwnPropertyNames(b);
-    return compareArraysOfPrimitives(aKeys, bKeys)
-      && aKeys.every(key => compare(a[key], b[key], equalsFnName))
+    return compareObjects(a, b);
   }
   return false;
 }
 
 function compareArrays(a: any[], b: any[]): boolean {
-  return a.length === b.length
-    && a.every((ai, i) => compare(ai, b[i]));
-}
-
-function compareArraysOfPrimitives(a: any[], b: any[]): boolean {
-  return a.length === b.length
-    && a.every((ai, i) => ai === b[i]);
+  if (a.length !== b.length)
+    return false;
+  a = [...a].sort();
+  b = [...b].sort()
+  return a.every((ai, i) => compare(ai, b[i]));
 }
 
 function compareSets(a: Set<any>, b: Set<any>): boolean {
-  return a.size === b.size
-    && compareArrays(Array.from(a).sort(), Array.from(b).sort());
+  if (a.size !== b.size)
+    return false;
+  for (const value of a) {
+    if (!b.has(value))
+      return false;
+  }
+  return true;
 }
 
 function compareMaps(a: Map<any, any>, b: Map<any, any>): boolean {
   if (a.size !== b.size)
     return false;
-  const aKeys = Array.from(a.keys()).sort();
-  const bKeys = Array.from(b.keys()).sort();
-  return compareArrays(aKeys, bKeys)
-    && aKeys.every((aKey, i) =>
-      compare(a.get(aKey), b.get(bKeys[i]))
-    );
+  for (const [aKey, aValue] of a.entries()) {
+    if (!b.has(aKey))
+      return false;
+    if (!compare(aValue, b.get(aKey)))
+      return false;
+  }
+  return true;
+}
+
+function compareObjects(a: any, b: any): boolean {
+  const aEntries = Object.entries(a);
+  const bKeys = Object.keys(b);
+  if (aEntries.length !== bKeys.length)
+    return false;
+  for (const [aKey, aValue] of aEntries) {
+    if (!bKeys.includes(aKey))
+      return false;
+    if (!compare(aValue, b[aKey]))
+      return false;
+  }
+  return true;
 }
