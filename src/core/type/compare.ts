@@ -1,6 +1,10 @@
 import {isNotJustObject} from './is-just-object';
 
-export function compare(a: any, b: any): boolean {
+interface IOptions {
+  sortArrays?: boolean; // should arrays be sorted before comparison?
+}
+
+export function compare(a: any, b: any, opt: IOptions = {}): boolean {
   if (isNotJustObject(a) || isNotJustObject(b))
     return a === b;
   if (a === b)
@@ -11,7 +15,7 @@ export function compare(a: any, b: any): boolean {
   const aIsArr = Array.isArray(a);
   const bIsArr = Array.isArray(b);
   if (aIsArr && bIsArr)
-    return compareArrays(a, b);
+    return compareArrays(a, b, opt);
   else if (aIsArr || bIsArr)
     return false;
 
@@ -32,11 +36,13 @@ export function compare(a: any, b: any): boolean {
   return compareObjects(a, b);
 }
 
-function compareArrays(a: any[], b: any[]): boolean {
+function compareArrays(a: any[], b: any[], opt: IOptions): boolean {
   if (a.length !== b.length)
     return false;
-  a = [...a].sort();
-  b = [...b].sort()
+  if (opt.sortArrays) {
+    a = [...a].sort();
+    b = [...b].sort();
+  }
   return a.every((ai, i) => compare(ai, b[i]));
 }
 
