@@ -1,7 +1,12 @@
 import {describe, expect} from '@jest/globals'
+import * as console2 from 'console';
 import {IOptions} from '../../core/type/compare';
 import {compare} from '../../core';
 import {tasks} from './task/tasks';
+
+beforeEach(() => {
+  global.console = console2;
+});
 
 describe(`compare`, () => {
 
@@ -27,8 +32,6 @@ describe(`compare`, () => {
       expect(compare(a, b, opt)).toBe(check);
     }
   });
-
-
 
 });
 

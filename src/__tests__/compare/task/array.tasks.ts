@@ -1,5 +1,5 @@
-import {TTask} from './tasks';
 import {IOptions} from '../../../core/type/compare';
+import {TTask} from './tasks';
 
 
 export function arrayTasks({sortArrays}: IOptions): TTask {
