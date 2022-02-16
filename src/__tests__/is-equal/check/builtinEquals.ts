@@ -1,7 +1,7 @@
 import {DateTime, Duration} from 'luxon';
 import {TChecks} from '../checks';
 
-export function luxon(): TChecks {
+export function builtinEquals(): TChecks {
   const date1 = DateTime.now();
   const duration1 = Duration.fromObject({minutes: 360, milliseconds: 10, year: 2022});
 

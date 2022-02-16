@@ -3,7 +3,7 @@ import {IEqualityCheckOpt} from './contract';
 
 /**
  * Checks two values for equality.
- * Object check supported: built-in object validation (methods 'equals', 'isEqual'), array, Set, Map, any object.
+ * Object check supported: built-in objects check for equality (methods 'equals', 'isEqual'), array, Set, Map, any object.
  *
  * Restrictions for: Set, Map.
  * A correct comparison can be expected:
@@ -43,31 +43,31 @@ export function isEqual(a: any, b: any, opt: IEqualityCheckOpt = {}): boolean {
   const aIsArr = Array.isArray(a);
   const bIsArr = Array.isArray(b);
   if (aIsArr && bIsArr)
-    return areArraysEqual(a, b, opt);
+    return arraysEqual(a, b, opt);
   else if (aIsArr || bIsArr)
     return false;
 
   const aIsSet = a instanceof Set;
   const bIsSet = b instanceof Set;
   if (aIsSet && bIsSet)
-    return areSetsEqual(a, b);
+    return setsEqual(a, b);
   else if (aIsSet || bIsSet)
     return false;
 
   const aIsMap = a instanceof Map;
   const bIsMap = b instanceof Map;
   if (aIsMap && bIsMap)
-    return areMapsEqual(a, b, opt);
+    return mapsEqual(a, b, opt);
   else if (aIsMap || bIsMap)
     return false;
 
-  return areObjectsEqual(a, b, opt);
+  return objectsEqual(a, b, opt);
 }
 
 
 //region Equality checks
 
-function areArraysEqual(a: any[], b: any[], opt: IEqualityCheckOpt): boolean {
+function arraysEqual(a: any[], b: any[], opt: IEqualityCheckOpt): boolean {
   if (a.length !== b.length)
     return false;
   if (opt.sortArrays) {
@@ -77,7 +77,7 @@ function areArraysEqual(a: any[], b: any[], opt: IEqualityCheckOpt): boolean {
   return a.every((ai, i) => isEqual(ai, b[i], opt));
 }
 
-function areSetsEqual(a: Set<any>, b: Set<any>): boolean {
+function setsEqual(a: Set<any>, b: Set<any>): boolean {
   if (a.size !== b.size)
     return false;
   for (const value of a) {
@@ -87,7 +87,7 @@ function areSetsEqual(a: Set<any>, b: Set<any>): boolean {
   return true;
 }
 
-function areMapsEqual(a: Map<any, any>, b: Map<any, any>, opt: IEqualityCheckOpt): boolean {
+function mapsEqual(a: Map<any, any>, b: Map<any, any>, opt: IEqualityCheckOpt): boolean {
   if (a.size !== b.size)
     return false;
   for (const [aKey, aValue] of a.entries()) {
@@ -99,7 +99,7 @@ function areMapsEqual(a: Map<any, any>, b: Map<any, any>, opt: IEqualityCheckOpt
   return true;
 }
 
-function areObjectsEqual(a: any, b: any, opt: IEqualityCheckOpt): boolean {
+function objectsEqual(a: any, b: any, opt: IEqualityCheckOpt): boolean {
   const aKeys = Object.keys(a);
   const bKeys = Object.keys(b);
   if (aKeys.length !== bKeys.length)
