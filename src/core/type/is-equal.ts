@@ -3,7 +3,7 @@ import {IEqualityCheckOpt} from './contract';
 
 /**
  * Checks two values for equality.
- * Object check supported: built-in object validation (methods 'equals', 'isEqual'), array, Set, Map.
+ * Object check supported: built-in object validation (methods 'equals', 'isEqual'), array, Set, Map, any object.
  *
  * Restrictions for: Set, Map.
  * A correct comparison can be expected:
