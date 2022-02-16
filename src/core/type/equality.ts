@@ -7,23 +7,23 @@ import {IEqualityOpt} from './contract';
 export function equality(a: any, b: any, opt: IEqualityOpt = {}): boolean {
   if (opt.nullEqualsUndefined) {
     switch (typeof a) {
-      case 'object':    // equality a{object | null | undefined} with b{any}
+      case 'object':    // equality a{object | null | undefined} and b{any}
       case 'undefined':
         if (a == null && b == null) // IF both a and b are null/undefined
           return true;
         if (a == null || b == null) // IF either only a or only b is null/undefined
           return false;
         if (typeof b !== 'object')
-          return false; // equality a{object} with b{boolean | number | bigint | string | symbol | function}
+          return false; // equality a{object} and b{boolean | number | bigint | string | symbol | function}
         break;
       default:
-        return a === b; // equality a{boolean | number | bigint | string | symbol | function} with b{any}
+        return a === b; // equality a{boolean | number | bigint | string | symbol | function} and b{any}
     }
   } else {
     if (isNotJustObject(a))
-      return a === b; // equality a{undefined | null | boolean | number | bigint | string | symbol | function} with b{any}
+      return a === b; // equality a{undefined | null | boolean | number | bigint | string | symbol | function} and b{any}
     else if (isNotJustObject(b))
-      return false;  // equality a{object} with b{undefined | null | boolean | number | bigint | string | symbol | function}
+      return false;  // equality a{object} and b{undefined | null | boolean | number | bigint | string | symbol | function}
   }
   /**
    * from here and below both a and b are objects
