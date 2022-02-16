@@ -21,7 +21,7 @@ export function compare(a: any, b: any, opt: IOptions = {}): boolean {
         if (a == null || b == null) // ЕСЛИ либо только a либо только b равен null/undefined
           return false;
         if (typeof b !== 'object')
-          return false; // compare a{object} with b{object | boolean | number | bigint | string | symbol | function}
+          return false; // compare a{object} with b{boolean | number | bigint | string | symbol | function}
         break;
       default:
         return a === b; // compare a{boolean | number | bigint | string | symbol | function} with b{any}
