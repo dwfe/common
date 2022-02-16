@@ -2,7 +2,13 @@ import {isNotJustObject} from './is-just-object';
 import {IEqualityCheckOpt} from './contract';
 
 /**
+ * Checks two values for equality.
+ * Object check supported: built-in object validation (methods 'equals', 'isEqual'), array, Set, Map.
  *
+ * Restrictions for: Set, Map.
+ * A correct comparison can be expected:
+ *   - if Set contains only primitives;
+ *   - if Map keys consist only of primitives.
  */
 export function isEqual(a: any, b: any, opt: IEqualityCheckOpt = {}): boolean {
   if (opt.nullEqualsUndefined) {
