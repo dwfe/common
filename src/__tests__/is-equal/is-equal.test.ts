@@ -3,27 +3,17 @@ import * as console2 from 'console';
 import {IEqualityCheckOpt, isEqual} from '../..';
 import {checks} from './checks';
 
-beforeEach(() => {
-  global.console = console2;
-});
+global.console = console2;
 
 describe(`isEqual`, () => {
 
-  test(`sortArrays`, () => {
-    runTasks({sortArrays: true});
-  });
-
-  test(`all strict`, () => {
-    runTasks();
-  });
-
-  test(`nullEqualsUndefined`, () => {
-    runTasks({nullEqualsUndefined: true});
-  });
+  test(`sortArrays`, () => runChecks({sortArrays: true}));
+  test(`all strict`, () => runChecks());
+  test(`nullEqualsUndefined`, () => runChecks({nullEqualsUndefined: true}));
 
 });
 
-function runTasks(opt?: IEqualityCheckOpt): void {
+function runChecks(opt?: IEqualityCheckOpt): void {
   for (const [a, b, expectedResult] of checks(opt)) {
     log(a, b, expectedResult);
     expect(isEqual(a, b, opt)).toBe(expectedResult);
