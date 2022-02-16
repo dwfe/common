@@ -1,6 +1,6 @@
 import {isNotJustObject} from './is-just-object';
 
-interface IOptions {
+export interface IOptions {
   sortArrays?: boolean; // should arrays be sorted before comparison?
 
   /**
@@ -20,17 +20,17 @@ export function compare(a: any, b: any, opt: IOptions = {}): boolean {
           return true;
         if (a == null || b == null) // ЕСЛИ либо только a либо только b равен null/undefined
           return false;
-        if (typeof b !== 'object') // compare a{object} with b{object | boolean | number | bigint | string | symbol | function}
-          return false;
+        if (typeof b !== 'object')
+          return false; // compare a{object} with b{object | boolean | number | bigint | string | symbol | function}
         break;
-      default: // compare a{boolean | number | bigint | string | symbol | function} with b{any}
-        return a === b;
+      default:
+        return a === b; // compare a{boolean | number | bigint | string | symbol | function} with b{any}
     }
   } else {
-    if (isNotJustObject(a) && isNotJustObject(b))
-      // compare a{undefined | null | boolean | number | bigint | string | symbol | function}
-      //    with b{undefined | null | boolean | number | bigint | string | symbol | function}
-      return a === b;
+    if (isNotJustObject(a))
+      return a === b; // compare a{undefined | null | boolean | number | bigint | string | symbol | function} with b{any}
+    else if (isNotJustObject(b))
+      return false;  // compare a{object} with b{undefined | null | boolean | number | bigint | string | symbol | function}
   }
   // начиная с этого уровня и а и b являются объектами
   if (a === b)
