@@ -43,7 +43,7 @@ export function isEqual(a: any, b: any, opt: IEqualityCheckOpt = {}): boolean {
   const aIsArr = Array.isArray(a);
   const bIsArr = Array.isArray(b);
   if (aIsArr && bIsArr)
-    return areArrayEqual(a, b, opt);
+    return areArraysEqual(a, b, opt);
   else if (aIsArr || bIsArr)
     return false;
 
@@ -67,7 +67,7 @@ export function isEqual(a: any, b: any, opt: IEqualityCheckOpt = {}): boolean {
 
 //region Equality checks
 
-function areArrayEqual(a: any[], b: any[], opt: IEqualityCheckOpt): boolean {
+function areArraysEqual(a: any[], b: any[], opt: IEqualityCheckOpt): boolean {
   if (a.length !== b.length)
     return false;
   if (opt.sortArrays) {
@@ -114,6 +114,7 @@ function areObjectsEqual(a: any, b: any, opt: IEqualityCheckOpt): boolean {
 }
 
 //endregion
+
 
 function getEqualsMethodName(a: any, b: any): 'equals' | 'isEqual' | undefined {
   if (a.equals && b.equals)
