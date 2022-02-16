@@ -2,7 +2,7 @@ import {TTask} from './tasks';
 import {IOptions} from '../../../core/type/compare';
 
 
-export function getArrayTasks({sortArrays}: IOptions): TTask {
+export function arrayTasks({sortArrays}: IOptions): TTask {
   return [
     [
       [undefined, null, true, false, -9.35, -7, -0, 0, 1, 7, 9.35, -15n, 0n, 7n, 'hello', '-1', '0', '', '1'],

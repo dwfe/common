@@ -17,7 +17,7 @@ const data = [
  * Каждое значение из data сравнивается с каждым значением из data
  * либо по === либо по ==.
  */
-export function getSimpleTasks(opt: IOptions): TTask {
+export function simpleTasks(opt: IOptions): TTask {
   const result: TTask = [];
   for (const values of data) {
     values.forEach(value => {
