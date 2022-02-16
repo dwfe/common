@@ -1,5 +1,5 @@
-import {IOptions} from '../../../core/type/compare';
 import {TTask} from './tasks';
+import {IEqualityOpt} from '../../../core/type/contract'
 
 const data = [
   [undefined] as undefined[],
@@ -17,7 +17,7 @@ const data = [
  * Каждое значение из data сравнивается с каждым значением из data
  * либо по === либо по ==.
  */
-export function simpleTasks(opt: IOptions): TTask {
+export function simpleTasks(opt: IEqualityOpt): TTask {
   const result: TTask = [];
   for (const values of data) {
     values.forEach(value => {
@@ -27,7 +27,7 @@ export function simpleTasks(opt: IOptions): TTask {
   return result;
 }
 
-function fillSimpleTask(targetValue: any, {nullEqualsUndefined}: IOptions): TTask {
+function fillSimpleTask(targetValue: any, {nullEqualsUndefined}: IEqualityOpt): TTask {
   const result: TTask = [];
   for (const values of data) {
     values.forEach(value => {
