@@ -1,8 +1,8 @@
 import {DateTime, Duration} from 'luxon';
-import {TTask} from './tasks';
-import {IEqualityOpt} from '../../../core/type/contract'
+import {IEqualityCheckOpt} from '../../..';
+import {TChecks} from '../checks';
 
-export function objectTasks({sortArrays}: IEqualityOpt): TTask {
+export function object({sortArrays}: IEqualityCheckOpt): TChecks {
   const obj1 = {hello: '123', arr: [1, 'world', null]};
   const obj2 = {hello: '123', arr: [1, 'world', null]};
   const obj3 = {hello: '123', arr: ['world', null, 1]};

@@ -1,8 +1,8 @@
-import {TTask} from './tasks';
-import {IEqualityOpt} from '../../../core/type/contract'
+import {IEqualityCheckOpt} from '../../..';
+import {TChecks} from '../checks';
 
 
-export function arrayTasks({sortArrays}: IEqualityOpt): TTask {
+export function array({sortArrays}: IEqualityCheckOpt): TChecks {
   return [
     [
       [undefined, null, true, false, -9.35, -7, -0, 0, 1, 7, 9.35, -15n, 0n, 7n, 'hello', '-1', '0', '', '1'],

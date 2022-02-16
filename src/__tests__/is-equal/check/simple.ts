@@ -1,5 +1,5 @@
-import {TTask} from './tasks';
-import {IEqualityOpt} from '../../../core/type/contract'
+import {IEqualityCheckOpt} from '../../..';
+import {TChecks} from '../checks';
 
 const data = [
   [undefined] as undefined[],
@@ -17,24 +17,24 @@ const data = [
  * Каждое значение из data сравнивается с каждым значением из data
  * либо по === либо по ==.
  */
-export function simpleTasks(opt: IEqualityOpt): TTask {
-  const result: TTask = [];
+export function simple(opt: IEqualityCheckOpt): TChecks {
+  const result: TChecks = [];
   for (const values of data) {
     values.forEach(value => {
-      result.push(...fillSimpleTask(value, opt));
+      result.push(...fillSimpleCheck(value, opt));
     });
   }
   return result;
 }
 
-function fillSimpleTask(targetValue: any, {nullEqualsUndefined}: IEqualityOpt): TTask {
-  const result: TTask = [];
+function fillSimpleCheck(targetValue: any, {nullEqualsUndefined}: IEqualityCheckOpt): TChecks {
+  const result: TChecks = [];
   for (const values of data) {
     values.forEach(value => {
-      const check = isBothNullOrUndefined(targetValue, value) && nullEqualsUndefined
+      const expectedResult = isBothNullOrUndefined(targetValue, value) && nullEqualsUndefined
         ? true
         : targetValue === value;
-      result.push([targetValue, value, check]);
+      result.push([targetValue, value, expectedResult]);
     });
   }
   return result;
