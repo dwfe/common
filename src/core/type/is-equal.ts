@@ -28,7 +28,7 @@ export function isEqual(a: any, b: any, opt: IEqualityCheckOpt = {}): boolean {
   } else {
     if (isNotJustObject(a))
       return a === b; // a{undefined | null | boolean | number | bigint | string | symbol | function} and b{any}
-    else if (isNotJustObject(b))
+    if (isNotJustObject(b))
       return false;  // a{object} and b{undefined | null | boolean | number | bigint | string | symbol | function}
   }
   /**
