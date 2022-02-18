@@ -3,7 +3,7 @@ import {IEqualityCheckOpt} from './contract';
 
 /**
  * Checks two values for equality.
- * Object check supported: built-in objects check for equality (methods 'equals', 'isEqual'), array, Set, Map, any object.
+ * Object check supported: built-in objects check for equality (method 'equals'), array, Set, Map, any object.
  *
  * Restrictions for: Set, Map.
  * A correct comparison can be expected:
@@ -36,9 +36,8 @@ export function isEqual(a: any, b: any, opt: IEqualityCheckOpt = {}): boolean {
    */
   if (a === b)
     return true;
-  const equalsMethodName = getEqualsMethodName(a, b);
-  if (equalsMethodName)
-    return a[equalsMethodName](b);
+  if (a.equals && b.equals)
+    return a.equals(b);
 
   const aIsArr = Array.isArray(a);
   const bIsArr = Array.isArray(b);
@@ -114,11 +113,3 @@ function objectsEqual(a: any, b: any, opt: IEqualityCheckOpt): boolean {
 }
 
 //endregion
-
-
-function getEqualsMethodName(a: any, b: any): 'equals' | 'isEqual' | undefined {
-  if (a.equals && b.equals)
-    return 'equals';
-  if (a.isEqual && b.isEqual)
-    return 'isEqual';
-}
