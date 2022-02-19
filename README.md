@@ -23,6 +23,7 @@
 `IUrlParams`  
 `hasProtocol`  
 `isPathEqual`  
+`normalizePath`  
 `normalizePathname`  
 `normalizeHash`  
 `normalizeSearch`  
