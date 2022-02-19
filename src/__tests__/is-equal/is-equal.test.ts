@@ -1,9 +1,11 @@
-import {describe, expect} from '@jest/globals'
+import {describe, expect} from '@jest/globals';
 import * as console2 from 'console';
 import {IEqualityCheckOpt, isEqual} from '../..';
 import {checks} from './checks';
 
 global.console = console2;
+
+const isDebug = false;
 
 describe(`isEqual`, () => {
 
@@ -22,5 +24,6 @@ function runChecks(opt?: IEqualityCheckOpt): void {
 }
 
 function log(a: any, b: any, expectedResult: boolean): void {
-  console.log('isEqual(', a, ',', b, `) expect ${expectedResult}`);
+  if (isDebug)
+    console.log('isEqual(', a, ',', b, `) expect ${expectedResult}`);
 }
