@@ -6,4 +6,4 @@ export interface IStoppable {
   stop(): void;
 }
 
-export type TRunMode = 'development' | 'production' | 'test';
+export type TRunMode = 'development' | 'test' | 'production';
