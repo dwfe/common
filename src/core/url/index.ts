@@ -1,7 +1,6 @@
 export {complementPath} from './complement-path';
 export {IPath, IUrlParams} from './contract';
 export {hasProtocol} from './has-protocol';
-export {isLocationEqual} from './is-location-equal';
 export {isPathEqual} from './is-path-equal';
 export {normalizeHash} from './normalize-hash';
 export {normalizePathname} from './normalize-pathname';
