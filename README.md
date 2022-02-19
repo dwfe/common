@@ -1,9 +1,41 @@
-# Utils
+## async
 
-- `delayAsync`, `timeout`
-- `isNumber`, `divideWithoutRemainder`
-- `isEqual`, `isJustObject`, `isNotJustObject`, `isPrimitive`, `isNotPrimitive`
-- `complementPath`, `IPath`, `IUrlParams`, `hasProtocol`, `isLocationEqual`, `isPathEqual`, `normalizeHash`, `normalizePathname`, `normalizeSearch`, `pathStrFromUrlStr`, `pathToString`
-- `cloneSimple`
-- `Type`, `IStoppable`, `TRunMode`
-- `rAFQueueLast`
+`delayAsync`  
+`timeout`
+
+## math
+
+`isNumber`  
+`divideWithoutRemainder`
+
+## type
+
+`isEqual`  
+`isJustObject`  
+`isNotJustObject`  
+`isPrimitive`  
+`isNotPrimitive`
+
+## url
+
+`complementPath`  
+`IPath`  
+`IUrlParams`  
+`hasProtocol`  
+`isPathEqual`  
+`normalizePathname`  
+`normalizeHash`  
+`normalizeSearch`  
+`pathStrFromUrlStr`  
+`pathToString`
+
+## contracts
+
+`Type`  
+`IStoppable`  
+`TRunMode`
+
+## other
+
+`cloneSimple`  
+`rAFQueueLast`
