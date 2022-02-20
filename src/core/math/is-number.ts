@@ -3,7 +3,7 @@
  */
 export const isNumber = (data: any): boolean =>
   !Number.isNaN(data) &&
-  !Number.isNaN(parseFloat(data))
-  && isFinite(data)
+  !Number.isNaN(parseFloat(data)) &&
+  isFinite(data)
 ;
 
