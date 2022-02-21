@@ -5,7 +5,7 @@ const data = [
   [undefined] as undefined[],
   [null] as null[],
   [true, false] as boolean[],
-  [-9.35, -7, -0, 0, NaN, 1, 7, 9.35] as number[],
+  [-Infinity, -9.35, -7, -0, 0, 1, 7, 9.35, Infinity, NaN] as number[],
   [-15n, 0n, 7n] as bigint[],
   ['hello', '-1', '0', '', '1'] as string[],
   [Symbol(), Symbol('id')] as symbol[],
