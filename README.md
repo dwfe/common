@@ -39,4 +39,5 @@
 ## other
 
 `cloneSimple`  
+`NodeEventEmitter`  
 `rAFQueueLast`

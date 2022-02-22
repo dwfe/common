@@ -4,4 +4,5 @@ export {isEqual, IEqualityCheckOpt, isJustObject, isNotJustObject, isPrimitive, 
 export * from './core/url';
 export {cloneSimple} from './core/clone-simple';
 export {Type, IStoppable, TRunMode} from './core/contract';
+export {NodeEventEmitter} from './core/node.event-emitter';
 export {rAFQueueLast} from './core/raf-queue-last';
