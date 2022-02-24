@@ -3,7 +3,7 @@ import {normalizeSearch} from './normalize-search'
 import {normalizeHash} from './normalize-hash'
 import {IPath} from './contract'
 
-export const normalizePath = (path: IPath): IPath => (
+export const normalizePath = (path: IPath): Required<IPath> => (
   {
     pathname: normalizePathname(path.pathname),
     search: normalizeSearch(path.search),
