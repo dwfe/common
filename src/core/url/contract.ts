@@ -4,6 +4,12 @@ export interface IPath {
   hash?: string;
 }
 
-export interface IPathnameParams { // `/second/:page/world` -> `/second/hello/world` = {page: 'hello'}
+/**
+ * For example:
+ *   template: "/second/:page/world"
+ *   pathname: "/second/hello/world"
+ *   params: {page: 'hello'}
+ */
+export interface IPathnameParams {
   [key: string]: string;
 }
