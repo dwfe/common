@@ -4,6 +4,6 @@ export interface IPath {
   hash?: string;
 }
 
-export interface IUrlParams {
+export interface IPathnameParams { // `/second/:page/world` -> `/second/hello/world` = {page: 'hello'}
   [key: string]: string;
 }

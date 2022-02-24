@@ -20,7 +20,7 @@
 
 `complementPath`  
 `IPath`  
-`IUrlParams`  
+`IPathnameParams`  
 `hasProtocol`  
 `isPathEqual`  
 `normalizePath`  

@@ -1,5 +1,5 @@
 export {complementPath} from './complement-path';
-export {IPath, IUrlParams} from './contract';
+export {IPath, IPathnameParams} from './contract';
 export {hasProtocol} from './has-protocol';
 export {isPathEqual} from './is-path-equal';
 export {normalizePath} from './normalize-path';
