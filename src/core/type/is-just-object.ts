@@ -1,5 +1,5 @@
 /**
- * It's just an object - object doesn't implement [[Call]] - when it's of type "object" and it's not null.
+ * It's just an object? Object doesn't implement [[Call]] when it's of type "object" and it's not null.
  * See description of bug “typeof null”: https://2ality.com/2013/10/typeof-null.html
  */
 export const isJustObject = (value: any): boolean =>
