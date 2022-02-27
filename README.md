@@ -34,7 +34,8 @@
 
 `Type`  
 `IStoppable`  
-`TRunMode`
+`TRunMode`  
+`TAnyObject`
 
 ## other
 

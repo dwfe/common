@@ -7,3 +7,5 @@ export interface IStoppable {
 }
 
 export type TRunMode = 'development' | 'test' | 'production';
+
+export type TAnyObject = { [key: string]: any };
