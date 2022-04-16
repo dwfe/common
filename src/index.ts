@@ -1,6 +1,6 @@
 export {delayAsync, timeout} from './core/async';
 export {divideWithoutRemainder, isNumber} from './core/math';
-export {isEqual, IEqualityCheckOpt, isJustObject, isNotJustObject, isPrimitive, isNotPrimitive} from './core/type';
+export {isEqual, IEqualityCheckOpt, isJustObject, isNotJustObject, isPrimitive, isNotPrimitive, isPrimitiveTypeWrapper} from './core/type';
 export * from './core/url';
 export {cloneSimple} from './core/clone-simple';
 export {Type, IStoppable, TRunMode, TAnyObject} from './core/contract';
