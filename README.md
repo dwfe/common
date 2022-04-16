@@ -14,6 +14,7 @@
 `isJustObject`  
 `isNotJustObject`  
 `isPrimitive`  
+`isPrimitiveTypeWrapper`  
 `isNotPrimitive`
 
 ## url
@@ -40,5 +41,6 @@
 ## other
 
 `cloneSimple`  
+`guid`  
 `NodeEventEmitter`  
 `rAFQueueLast`
