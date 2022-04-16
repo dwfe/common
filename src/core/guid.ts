@@ -1,0 +1,18 @@
+/**
+ * Случайная строка из 32 символов из диапазона [0-9] и [a-f], разделенных четырмя символами '-':
+ *    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+ * Total length: 36.
+ * Не является реализацией UUID(он же GUID): https://www.ietf.org/rfc/rfc4122.txt
+ * Для точной реализации лучше использовать пакет: https://github.com/uuidjs/uuid
+ */
+const chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+
+export function guid(): string {
+  let result = '';
+  for (let i = 0; i < 36; i++) {
+    result += (i === 8 || i === 13 || i === 18 || i === 23)
+      ? '-'
+      : chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
