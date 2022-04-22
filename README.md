@@ -16,6 +16,7 @@
 `isPrimitive`  
 `isPrimitiveTypeWrapper`  
 `isNotPrimitive`
+`isFunction`
 
 ## url
 
