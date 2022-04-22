@@ -4,8 +4,7 @@
 `timeout`
 
 ## math
-
-`isNumber`  
+ 
 `divideWithoutRemainder`
 
 ## type
@@ -16,7 +15,10 @@
 `isPrimitive`  
 `isPrimitiveTypeWrapper`  
 `isNotPrimitive`
+
 `isFunction`
+`isNumber`
+`isString`
 
 ## url
 
