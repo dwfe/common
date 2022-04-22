@@ -1,3 +1,3 @@
-export const isString = (val: any) =>
+export const isString = (val: any): boolean =>
   typeof val === 'string'
 ;

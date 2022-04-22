@@ -1,3 +1,3 @@
-export const isFunction = (val: any) =>
+export const isFunction = (val: any): boolean =>
   typeof val === 'function'
 ;
