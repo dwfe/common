@@ -4,7 +4,7 @@
 `timeout`
 
 ## math
- 
+
 `divideWithoutRemainder`
 
 ## type
@@ -45,5 +45,6 @@
 
 `cloneSimple`  
 `guid`  
+`millisecToMinWithSec`, `strMillisecToMinWithSec`  
 `NodeEventEmitter`  
 `rAFQueueLast`
