@@ -27,11 +27,11 @@ export function simple(opt: IEqualityCheckOpt): TChecks {
   return result;
 }
 
-function fillSimpleCheck(targetValue: any, {nullEqualsUndefined}: IEqualityCheckOpt): TChecks {
+function fillSimpleCheck(targetValue: any, {isNullEqualsUndefined}: IEqualityCheckOpt): TChecks {
   const result: TChecks = [];
   for (const values of data) {
     values.forEach(value => {
-      const expectedResult = isBothNullOrUndefined(targetValue, value) && nullEqualsUndefined
+      const expectedResult = isBothNullOrUndefined(targetValue, value) && isNullEqualsUndefined
         ? true
         : targetValue === value;
       result.push([targetValue, value, expectedResult]);

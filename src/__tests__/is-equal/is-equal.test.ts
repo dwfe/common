@@ -11,8 +11,8 @@ describe(`isEqual`, () => {
 
   test(`all strict`, () => runChecks());
   test(`all strict, sortArrays`, () => runChecks({sortArrays: true}));
-  test(`nullEqualsUndefined`, () => runChecks({nullEqualsUndefined: true}));
-  test(`nullEqualsUndefined, sortArrays`, () => runChecks({nullEqualsUndefined: true, sortArrays: true}));
+  test(`isNullEqualsUndefined`, () => runChecks({isNullEqualsUndefined: true}));
+  test(`isNullEqualsUndefined, sortArrays`, () => runChecks({isNullEqualsUndefined: true, sortArrays: true}));
 
 });
 

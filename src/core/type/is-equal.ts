@@ -11,7 +11,7 @@ import {IEqualityCheckOpt} from './contract';
  *   - if Map keys consist only of primitives.
  */
 export function isEqual(a: any, b: any, opt: IEqualityCheckOpt = {}): boolean {
-  if (opt.nullEqualsUndefined) {
+  if (opt.isNullEqualsUndefined) {
     switch (typeof a) {
       case 'object':    // a{object | null | undefined} and b{any}
       case 'undefined':

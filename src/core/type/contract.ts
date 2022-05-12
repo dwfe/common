@@ -5,7 +5,7 @@ export interface IEqualityCheckOpt {
    *   isEqual(null, undefined) -> true
    *   isEqual(undefined, null) -> true
    */
-  nullEqualsUndefined?: boolean;
+  isNullEqualsUndefined?: boolean;
 
   sortArrays?: boolean; // should arrays be sorted before comparison?
 
