@@ -1,6 +1,13 @@
 /**
- * It's just an object? Object doesn't implement [[Call]] or/and [[Construct]] when it's of type "object" and it's not null.
- * See description of bug “typeof null”: https://2ality.com/2013/10/typeof-null.html
+ * It's just an object?
+ * Object doesn't implement [[Call]] or/and [[Construct]] when it's of type "object" and it's not null.
+ *   See description of bug “typeof null”: https://2ality.com/2013/10/typeof-null.html
+ *
+ * Also keep in mind that:
+ *   class Some {}
+ *   const instance = new Some();
+ *     typeof Some;     // "function"
+ *     typeof instance; // "object"
  */
 export const isJustObject = (value: any): boolean =>
   typeof value === 'object' && value !== null

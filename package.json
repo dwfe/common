@@ -27,20 +27,15 @@
   "scripts": {
     "clean": "dwfeFs cleanDir . --fileNames=\"dist;node_modules;package-lock.json\"",
     "build": "dwfeFs rmForce dist --noConfirm && tsc -b src/tsconfig.json",
-    "types": "tsc -b config/tsconfig.types.json",
     "test": "jest --config=src/__tests__/jest.config.js",
-    "version": "npm run build && npm run types && npm run test",
+    "version": "npm run build && npm run test",
     "postversion": "git push",
     "deploy": "npm version patch && npm publish"
   },
   "dependencies": {},
   "devDependencies": {
     "@do-while-for-each/tsconfig": "^1.0.3",
-    "@types/jest": "27.x.x",
-    "jest": "27.x.x",
-    "ts-jest": "27.x.x",
-    "@types/luxon": "2.0.9",
-    "luxon": "2.3.0"
+    "@do-while-for-each/test": "^1.0.1"
   },
   "publishConfig": {
     "access": "public"

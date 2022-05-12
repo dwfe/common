@@ -1,3 +1,4 @@
+import {SomeHasEquals} from './builtinEquals'
 import {TChecks} from '../checks';
 
 export function set(): TChecks {
@@ -6,7 +7,11 @@ export function set(): TChecks {
   const s3 = new Set([1, 2, 3, 4, 5]);
   const s4 = new Set([1, 2, 7, 4, 5]);
 
-  [undefined, null, true, false, -9.35, -7, -0, 0, 1, 7, 9.35, -15n, 0n, 7n, 'hello', '-1', '0', '', '1'].forEach(value => {
+  [undefined, null,
+    true, false,
+    -9.35, -7, -0, 0, 1, 7, 9.35, -15n, 0n, 7n, Infinity, -Infinity, NaN,
+    'hello', '-1', '0', '', '1',
+    new SomeHasEquals('Name')].forEach(value => {
     s1.add(value);
     s2.add(value);
   })

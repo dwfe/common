@@ -31,9 +31,9 @@ function fillSimpleCheck(targetValue: any, {isNullEqualsUndefined}: IEqualityChe
   const result: TChecks = [];
   for (const values of data) {
     values.forEach(value => {
-      const expectedResult = isBothNullOrUndefined(targetValue, value) && isNullEqualsUndefined
-        ? true
-        : targetValue === value;
+      let expectedResult = Object.is(targetValue, value);
+      if (isNullEqualsUndefined && isBothNullOrUndefined(targetValue, value))
+        expectedResult = targetValue == value;
       result.push([targetValue, value, expectedResult]);
     });
   }
