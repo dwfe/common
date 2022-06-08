@@ -46,5 +46,5 @@
 `cloneSimple`  
 `guid`  
 `millisecToMinWithSec`, `strMillisecToMinWithSec`  
-`NodeEventEmitter`  
+`EventEmitter`  
 `rAFQueueLast`
