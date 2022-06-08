@@ -3,47 +3,49 @@ type Listener<TData = any> = (data: TData) => void;
 /**
  * Node compatible EventEmitter
  */
-export class NodeEventEmitter<TEvents extends { [eventName: string]: any; }, TEventName extends keyof TEvents> {
-  private map = new Map<TEventName, Listener[]>();
+export class NodeEventEmitter<TEvents extends { [id: string]: any; }> {
 
-  addListener(event: TEventName, listener: Listener<TEvents[TEventName]>): () => void {
-    if (!this.hasListeners(event)) {
-      this.map.set(event, []);
+  private map = new Map<keyof TEvents, Listener[]>();
+
+  addListener<TId extends keyof TEvents>(id: TId, listener: (data: TEvents[TId]) => void): () => void {
+    if (!this.hasId(id)) {
+      this.map.set(id, []);
     }
-    this.getListeners(event).push(listener);
-    return () => this.removeListener(event, listener);
+    this.getListeners(id).push(listener);
+    return () => this.removeListener(id, listener);
   }
 
-  removeListener(event: TEventName, listener: Listener<TEvents[TEventName]>) {
-    if (!this.hasListeners(event)) {
+  removeListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>) {
+    if (!this.hasId(id)) {
       return;
     }
-    const listeners = this.getListeners(event).filter(x => x !== listener);
+    const listeners = this.getListeners(id).filter(x => x !== listener);
     if (listeners.length)
-      this.map.set(event, listeners);
+      this.map.set(id, listeners);
     else
-      this.map.delete(event);
+      this.map.delete(id);
   }
 
-  emit(event: TEventName, data: TEvents[TEventName]) {
-    if (!this.hasListeners(event)) {
-      return;
-    }
-    this.getListeners(event).forEach(listener => {
+  emit<TId extends keyof TEvents>(id: TId, data: TEvents[TId]) {
+    this.getListeners(id).forEach(listener => {
       listener(data);
     });
   }
 
+
 //region Support
 
-  hasListeners(event: TEventName): boolean {
-    return this.map.has(event);
+  hasId<TId extends keyof TEvents>(name: TId): boolean {
+    return this.map.has(name);
   }
 
-  getListeners(event: TEventName): Listener[] {
-    return this.map.get(event) || [];
+  private getListeners<TId extends keyof TEvents>(name: TId): Listener<TEvents[TId]>[] {
+    return this.map.get(name) || [];
   }
 
 //endregion
 
 }
+
+const emitter = new NodeEventEmitter<{ change: string }>()
+emitter.addListener('change', () => console.log(`dd`,))
