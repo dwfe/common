@@ -1,43 +1,46 @@
-type Handler = (...args: any[]) => void;
+type Listener<TData = any> = (data: TData) => void;
 
 /**
  * Node compatible EventEmitter
  */
-export class NodeEventEmitter<TEvent = string> {
-  private map = new Map<TEvent, Handler[]>();
+export class NodeEventEmitter<TEvents extends { [eventName: string]: any; }, TEventName extends keyof TEvents> {
+  private map = new Map<TEventName, Listener[]>();
 
-  addListener(event: TEvent, handler: Handler): () => void {
-    if (!this.hasHandlers(event))
+  addListener(event: TEventName, listener: Listener<TEvents[TEventName]>): () => void {
+    if (!this.hasListeners(event)) {
       this.map.set(event, []);
-    this.getHandlers(event).push(handler);
-    return () => this.removeListener(event, handler);
+    }
+    this.getListeners(event).push(listener);
+    return () => this.removeListener(event, listener);
   }
 
-  removeListener(event: TEvent, handler: Handler) {
-    if (!this.hasHandlers(event))
+  removeListener(event: TEventName, listener: Listener<TEvents[TEventName]>) {
+    if (!this.hasListeners(event)) {
       return;
-    const handlers = this.getHandlers(event).filter(x => x !== handler);
-    if (handlers.length)
-      this.map.set(event, handlers);
+    }
+    const listeners = this.getListeners(event).filter(x => x !== listener);
+    if (listeners.length)
+      this.map.set(event, listeners);
     else
       this.map.delete(event);
   }
 
-  emit(event: TEvent, ...args: any[]) {
-    if (!this.hasHandlers(event))
+  emit(event: TEventName, data: TEvents[TEventName]) {
+    if (!this.hasListeners(event)) {
       return;
-    this.getHandlers(event).forEach(handler => {
-      handler(...args);
+    }
+    this.getListeners(event).forEach(listener => {
+      listener(data);
     });
   }
 
 //region Support
 
-  hasHandlers(event: TEvent): boolean {
+  hasListeners(event: TEventName): boolean {
     return this.map.has(event);
   }
 
-  getHandlers(event: TEvent): Handler[] {
+  getListeners(event: TEventName): Listener[] {
     return this.map.get(event) || [];
   }
 
