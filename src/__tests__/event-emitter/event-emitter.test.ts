@@ -33,6 +33,20 @@ describe(`event-emitter`, () => {
     expect(emitter.size).toBe(0);
   });
 
+  test(`return unsubscriber on subscribe`, () => {
+    const emitter = new EventEmitter<{ change: void, load: void }>();
+    expect(emitter.size).toBe(0);
+    let unsubscriber = emitter.on('change', noop);
+    expect(emitter.size).toBe(1);
+    unsubscriber();
+    expect(emitter.size).toBe(0);
+
+    unsubscriber = emitter.addListener('change', noop2);
+    expect(emitter.size).toBe(1);
+    unsubscriber();
+    expect(emitter.size).toBe(0);
+  });
+
   test(`dispose`, () => {
     const emitter = new EventEmitter<{ move: void, drag: void; up: number; }>();
     expect(emitter.size).toBe(0);
@@ -78,10 +92,10 @@ describe(`event-emitter`, () => {
     expect(count.load).toBe(0);
   });
 
+
   // test(``, () => {
   //
   //
   // });
-
 
 });
