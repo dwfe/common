@@ -7,6 +7,7 @@ export class NodeEventEmitter<TEvents extends { [id: string]: any; }> {
 
   private map = new Map<keyof TEvents, Listener[]>();
 
+
   addListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
     if (!this.hasId(id)) {
       this.map.set(id, []);
@@ -15,7 +16,12 @@ export class NodeEventEmitter<TEvents extends { [id: string]: any; }> {
     return () => this.removeListener(id, listener);
   }
 
-  removeListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>) {
+  on<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
+    return this.addListener(id, listener);
+  }
+
+
+  removeListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
     if (!this.hasId(id)) {
       return;
     }
@@ -25,6 +31,11 @@ export class NodeEventEmitter<TEvents extends { [id: string]: any; }> {
     else
       this.map.delete(id);
   }
+
+  off<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
+    this.removeListener(id, listener);
+  }
+
 
   emit<TId extends keyof TEvents>(id: TId, data: TEvents[TId]) {
     (this.getListeners(id) || []).forEach(listener => {
