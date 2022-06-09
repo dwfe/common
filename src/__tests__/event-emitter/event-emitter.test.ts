@@ -18,15 +18,18 @@ describe(`event-emitter`, () => {
     emitter.addListener('change', noop);
     expect(emitter.size).toBe(1);
     emitter.on('load', noop2);
+    emitter.on('load', noop);
     expect(emitter.size).toBe(2);
     expect(emitter.hasId('change')).toBe(true);
     expect(emitter.hasId('load')).toBe(true);
 
-    emitter.off('change', noop2);
+    emitter.removeListener('change', noop2);
     expect(emitter.size).toBe(2);
     emitter.off('change', noop);
     expect(emitter.size).toBe(1);
-    emitter.removeListener('load', noop2);
+    emitter.off('load', noop2);
+    expect(emitter.size).toBe(1);
+    emitter.removeListener('load', noop);
     expect(emitter.size).toBe(0);
     expect(emitter.hasId('change')).toBe(false);
     expect(emitter.hasId('load')).toBe(false);
@@ -53,6 +56,7 @@ describe(`event-emitter`, () => {
 
     emitter.addListener('move', () => console.log(`move`,));
     emitter.on('drag', () => console.log(`drag`,));
+    emitter.on('drag', noop);
     emitter.on('drag', noop);
     emitter.on('drag', noop2);
     emitter.on('up', noop2);

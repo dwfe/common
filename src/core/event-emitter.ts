@@ -29,26 +29,25 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     if (!this.hasId(id)) {
       return;
     }
-    const remainingListeners = Array.from(this.getListeners(id)!).filter(x => x !== listener);
-    if (remainingListeners.length)
-      this.map.set(id, new Set(remainingListeners));
-    else
+    const listeners = this.getListeners(id)!;
+    listeners.delete(listener);
+    if (listeners.size === 0) {
       this.map.delete(id);
+    }
   }
 
 
   emit<TId extends keyof TEvents>(id: TId, data?: TEvents[TId]) {
-    (this.getListeners(id) || []).forEach(listener => {
+    for (const listener of (this.getListeners(id) || [])) {
       listener(data);
-    });
+    }
   }
 
   dispose(): void {
-    for (const [id, listeners] of this.map) {
-      for (const listener of listeners) {
-        this.removeListener(id, listener);
-      }
+    for (const listeners of this.map.values()) {
+      listeners.clear();
     }
+    this.map.clear();
   }
 
 
