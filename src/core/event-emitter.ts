@@ -5,10 +5,8 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
   private map = new Map<keyof TEvents, Set<Listener>>();
 
   emit<TId extends keyof TEvents>(id: TId, data?: TEvents[TId]) {
-    const listeners = this.map.get(id);
-    if (listeners) {
-      for (const listener of listeners)
-        listener(data);
+    for (const listener of this.map.get(id)!) {
+      listener(data);
     }
   }
 
@@ -33,10 +31,7 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
   }
 
   removeListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
-    const listeners = this.map.get(id);
-    if (!listeners) {
-      return;
-    }
+    const listeners = this.map.get(id)!;
     listeners.delete(listener);
     if (listeners.size === 0) {
       this.map.delete(id);
@@ -45,6 +40,9 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
 
   dispose(): void {
+    if (this.map.size === 0) {
+      return;
+    }
     for (const listeners of this.map.values()) {
       listeners.clear();
     }
