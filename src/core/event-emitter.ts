@@ -1,8 +1,5 @@
 type Listener<TData = any> = (data?: TData) => void;
 
-/**
- * Node compatible EventEmitter
- */
 export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
   private map = new Map<keyof TEvents, Set<Listener>>();
