@@ -1,11 +1,14 @@
 type Listener<TData = any> = (data?: TData) => void;
 
-/**
- * Node compatible EventEmitter
- */
 export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
   private map = new Map<keyof TEvents, Set<Listener>>();
+
+  emit<TId extends keyof TEvents>(id: TId, data?: TEvents[TId]) {
+    for (const listener of this.map.get(id)!) {
+      listener(data);
+    }
+  }
 
 
   on<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
@@ -13,11 +16,12 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
   }
 
   addEventListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
-    if (!this.hasId(id)) {
-      this.map.set(id, new Set());
+    let listeners = this.map.get(id);
+    if (!listeners) {
+      listeners = new Set();
+      this.map.set(id, listeners);
     }
-    const listeners = this.getListeners(id)!;
-    listeners.add(listener)
+    listeners.add(listener);
     if (this.map.size === 1 && listeners.size === 1) {
       this.onFirstSubscribe(id);
     }
@@ -30,10 +34,7 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
   }
 
   removeEventListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
-    if (!this.hasId(id)) {
-      return;
-    }
-    const listeners = this.getListeners(id)!;
+    const listeners = this.map.get(id)!;
     listeners.delete(listener);
     if (listeners.size === 0) {
       this.map.delete(id);
@@ -42,13 +43,10 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
   }
 
 
-  emit<TId extends keyof TEvents>(id: TId, data?: TEvents[TId]) {
-    for (const listener of (this.getListeners(id) || [])) {
-      listener(data);
-    }
-  }
-
   dispose(): void {
+    if (this.map.size === 0) {
+      return;
+    }
     for (const listeners of this.map.values()) {
       listeners.clear();
     }
@@ -77,10 +75,6 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
   hasId<TId extends keyof TEvents>(id: TId): boolean {
     return this.map.has(id);
-  }
-
-  private getListeners<TId extends keyof TEvents>(id: TId): Set<Listener<TEvents[TId]>> | undefined {
-    return this.map.get(id);
   }
 
   get size(): number {
