@@ -9,23 +9,27 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
 
   on<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
-    return this.addListener(id, listener);
+    return this.addEventListener(id, listener);
   }
 
-  addListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
+  addEventListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
     if (!this.hasId(id)) {
       this.map.set(id, new Set());
     }
-    this.getListeners(id)!.add(listener);
-    return () => this.removeListener(id, listener);
+    const listeners = this.getListeners(id)!;
+    listeners.add(listener)
+    if (this.map.size === 1 && listeners.size === 1) {
+      this.onFirstSubscribe(id);
+    }
+    return () => this.removeEventListener(id, listener);
   }
 
 
   off<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
-    this.removeListener(id, listener);
+    this.removeEventListener(id, listener);
   }
 
-  removeListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
+  removeEventListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
     if (!this.hasId(id)) {
       return;
     }
@@ -34,6 +38,7 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     if (listeners.size === 0) {
       this.map.delete(id);
     }
+    this.handleUnobserved();
   }
 
 
@@ -48,6 +53,23 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
       listeners.clear();
     }
     this.map.clear();
+    this.handleUnobserved();
+  }
+
+
+  // @ts-ignore
+  onFirstSubscribe<TId extends keyof TEvents>(id: TId): void {
+
+  }
+
+  onUnobserved(): void {
+
+  }
+
+  handleUnobserved(): void {
+    if (this.map.size === 0) {
+      this.onUnobserved();
+    }
   }
 
 
