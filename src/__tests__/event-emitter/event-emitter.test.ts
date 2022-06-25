@@ -130,7 +130,7 @@ describe(`event-emitter`, () => {
     expect(countUnobserved).toBe(1);
   });
 
-  test(`onFirstSubscribe, onUnobserved: add one event -> dispose`, () => {
+  test(`onFirstSubscribe, onUnobserved: add one event -> dispose + resubscribe`, () => {
     let firstSubscribeArr: any[] = [];
     let countUnobserved = 0;
     const emitter = new EventEmitter<{ change: void, load: void }>();
@@ -146,6 +146,17 @@ describe(`event-emitter`, () => {
     expect(firstSubscribeArr.length).toBe(1);
     expect(firstSubscribeArr[0]).toBe('load');
     expect(countUnobserved).toBe(1);
+
+    emitter.on('change', noop2);
+    expect(firstSubscribeArr.length).toBe(2);
+    expect(firstSubscribeArr[0]).toBe('load');
+    expect(firstSubscribeArr[1]).toBe('change');
+    expect(countUnobserved).toBe(1);
+    emitter.dispose();
+    expect(firstSubscribeArr.length).toBe(2);
+    expect(firstSubscribeArr[0]).toBe('load');
+    expect(firstSubscribeArr[1]).toBe('change');
+    expect(countUnobserved).toBe(2);
   });
 
   test(`onFirstSubscribe, onUnobserved: add multi event -> dispose`, () => {
