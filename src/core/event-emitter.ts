@@ -56,11 +56,11 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
 
   // @ts-ignore
-  protected onFirstSubscribe<TId extends keyof TEvents>(id: TId): void {
+  onFirstSubscribe<TId extends keyof TEvents>(id: TId): void {
 
   }
 
-  protected onUnobserved(): void {
+  onUnobserved(): void {
 
   }
 
