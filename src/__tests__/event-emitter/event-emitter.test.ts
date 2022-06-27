@@ -101,7 +101,7 @@ describe(`event-emitter`, () => {
     let countUnobserved = 0;
     const emitter = new EventEmitter<{ change: void, load: void }>();
     emitter.onFirstSubscribe = (id) => firstSubscribeArr.push(id);
-    emitter.onUnobserved = () => countUnobserved++;
+    emitter.onLastUnsubscribe = () => countUnobserved++;
     expect(firstSubscribeArr.length).toBe(0);
     expect(countUnobserved).toBe(0);
     emitter.on('change', noop);
@@ -135,7 +135,7 @@ describe(`event-emitter`, () => {
     let countUnobserved = 0;
     const emitter = new EventEmitter<{ change: void, load: void }>();
     emitter.onFirstSubscribe = (id) => firstSubscribeArr.push(id);
-    emitter.onUnobserved = () => countUnobserved++;
+    emitter.onLastUnsubscribe = () => countUnobserved++;
     expect(firstSubscribeArr.length).toBe(0);
     expect(countUnobserved).toBe(0);
     emitter.on('load', noop);
@@ -164,7 +164,7 @@ describe(`event-emitter`, () => {
     let countUnobserved = 0;
     const emitter = new EventEmitter<{ change: void, load: void }>();
     emitter.onFirstSubscribe = (id) => firstSubscribeArr.push(id);
-    emitter.onUnobserved = () => countUnobserved++;
+    emitter.onLastUnsubscribe = () => countUnobserved++;
     expect(firstSubscribeArr.length).toBe(0);
     expect(countUnobserved).toBe(0);
     emitter.on('load', noop);
