@@ -9,9 +9,29 @@ function noop2() {
 
 describe(`event-emitter`, () => {
 
-  test(`subscribe/unsubscribe`, () => {
+  test(`hasSubscribers`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
     expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
+
+    emitter.on('load', noop);
+    expect(emitter.size).toBe(1);
+    expect(emitter.hasSubscribers).toBe(true);
+    emitter.on('load', noop2);
+    expect(emitter.size).toBe(2);
+    expect(emitter.hasSubscribers).toBe(true);
+
+    emitter.off('load', noop);
+    expect(emitter.size).toBe(1);
+    expect(emitter.hasSubscribers).toBe(true);
+    emitter.off('load', noop2);
+    expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
+  });
+
+  test(`subscribe/unsubscribe`, () => {
+    const emitter = new EventEmitter<{ change: void, load: void }>();
+    expect(emitter.hasSubscribers).toBe(false);
     expect(emitter.hasId('change')).toBe(false);
     expect(emitter.hasId('load')).toBe(false);
 
@@ -30,29 +50,28 @@ describe(`event-emitter`, () => {
     emitter.off('load', noop2);
     expect(emitter.size).toBe(1);
     emitter.removeEventListener('load', noop);
-    expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
     expect(emitter.hasId('change')).toBe(false);
     expect(emitter.hasId('load')).toBe(false);
-    expect(emitter.size).toBe(0);
   });
 
   test(`return unsubscriber on subscribe`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
-    expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
     let unsubscriber = emitter.on('change', noop);
     expect(emitter.size).toBe(1);
     unsubscriber();
-    expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
 
     unsubscriber = emitter.addEventListener('change', noop2);
     expect(emitter.size).toBe(1);
     unsubscriber();
-    expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
   });
 
   test(`dispose`, () => {
     const emitter = new EventEmitter<{ move: void, drag: void; up: number; }>();
-    expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
 
     emitter.addEventListener('move', () => console.log(`move`,));
     emitter.on('drag', () => console.log(`drag`,));
@@ -63,7 +82,7 @@ describe(`event-emitter`, () => {
     expect(emitter.size).toBe(3);
 
     emitter.dispose();
-    expect(emitter.size).toBe(0);
+    expect(emitter.hasSubscribers).toBe(false);
   });
 
   test(`emit`, () => {

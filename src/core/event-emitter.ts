@@ -81,6 +81,10 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     return this.map.size;
   }
 
+  get hasSubscribers(): boolean {
+    return this.size > 0;
+  }
+
 //endregion Support
 
 }
