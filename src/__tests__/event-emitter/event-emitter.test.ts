@@ -17,14 +17,14 @@ describe(`event-emitter`, () => {
     emitter.on('load', noop);
     expect(emitter.size).toBe(1);
     expect(emitter.hasSubscribers).toBe(true);
-    emitter.on('load', noop2);
+    emitter.on('change', noop2);
     expect(emitter.size).toBe(2);
     expect(emitter.hasSubscribers).toBe(true);
 
     emitter.off('load', noop);
     expect(emitter.size).toBe(1);
     expect(emitter.hasSubscribers).toBe(true);
-    emitter.off('load', noop2);
+    emitter.off('change', noop2);
     expect(emitter.size).toBe(0);
     expect(emitter.hasSubscribers).toBe(false);
   });
