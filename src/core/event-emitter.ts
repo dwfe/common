@@ -5,7 +5,11 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
   private map = new Map<keyof TEvents, Set<Listener>>();
 
   emit<TId extends keyof TEvents>(id: TId, data?: TEvents[TId]) {
-    for (const listener of this.map.get(id)!) {
+    const listeners = this.map.get(id);
+    if (!listeners){
+      return;
+    }
+    for (const listener of listeners) {
       listener(data);
     }
   }
