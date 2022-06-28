@@ -23,7 +23,7 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     }
     listeners.add(listener);
     if (this.map.size === 1 && listeners.size === 1) {
-      this.onFirstSubscribe(id);
+      this.onFirstSubscribed(id);
     }
     return () => this.removeEventListener(id, listener);
   }
@@ -56,17 +56,17 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
 
   // @ts-ignore
-  onFirstSubscribe<TId extends keyof TEvents>(id: TId): void {
+  onFirstSubscribed<TId extends keyof TEvents>(id: TId): void {
 
   }
 
-  onLastUnsubscribe(): void {
+  onLastUnsubscribed(): void {
 
   }
 
   handleUnobserved(): void {
     if (this.map.size === 0) {
-      this.onLastUnsubscribe();
+      this.onLastUnsubscribed();
     }
   }
 
