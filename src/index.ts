@@ -10,5 +10,5 @@ export {cloneSimple} from './core/clone-simple';
 export {Type, IStoppable, TRunMode, TAnyObject} from './core/contract';
 export {guid} from './core/guid';
 export {millisecToMinWithSec, strMillisecToMinWithSec} from './core/millisec-to-min-with-sec';
-export {EventEmitter} from './core/event-emitter';
+export {EventEmitter, Listener} from './core/event-emitter';
 export {rAFQueueLast} from './core/raf-queue-last';
