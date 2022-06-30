@@ -1,4 +1,4 @@
-export type Listener<TData = any> = (data?: TData) => void;
+export type Listener<TData = any> = (data: TData) => void;
 
 export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
