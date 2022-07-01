@@ -46,5 +46,6 @@
 `cloneSimple`  
 `guid`  
 `millisecToMinWithSec`, `strMillisecToMinWithSec`  
+`nextTick`  
 `EventEmitter`, `Listener`  
 `rAFQueueLast`
