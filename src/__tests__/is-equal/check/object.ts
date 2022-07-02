@@ -1,5 +1,5 @@
 import {SomeHasEquals} from './builtinEquals'
-import {IEqualityCheckOpt} from '../../..';
+import {IEqualityCheckOpt} from '../../../index';
 import {TChecks} from '../checks';
 
 export function object({sortArrays}: IEqualityCheckOpt): TChecks {

@@ -1,9 +1,6 @@
 import {describe, expect} from '@jest/globals';
-import * as console2 from 'console';
-import {IEqualityCheckOpt, isEqual} from '../..';
+import {IEqualityCheckOpt, isEqual} from '../../index';
 import {checks} from './checks';
-
-global.console = console2;
 
 const isDebug = false;
 

@@ -1,4 +1,4 @@
-import {IEqualityCheckOpt} from '../../..';
+import {IEqualityCheckOpt} from '../../../index';
 import {TChecks} from '../checks';
 
 const data = [

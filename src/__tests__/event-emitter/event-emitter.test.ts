@@ -1,5 +1,4 @@
-import {describe, expect} from '@jest/globals';
-import {EventEmitter} from '../../core/event-emitter';
+import {EventEmitter} from '../../index';
 
 function noop() {
 }

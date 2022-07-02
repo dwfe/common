@@ -1,5 +1,5 @@
 import {builtinEquals} from './check/builtinEquals';
-import {IEqualityCheckOpt} from '../..';
+import {IEqualityCheckOpt} from '../../index';
 import {object} from './check/object';
 import {array} from './check/array';
 import {simple} from './check/util';
