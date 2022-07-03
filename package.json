@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/common",
   "description": "Common functionality",
-  "version": "1.2.26",
+  "version": "1.2.27",
   "exports": "./dist/cjs/index.js",
   "typesVersions": {
     "*": {
