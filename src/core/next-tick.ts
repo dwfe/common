@@ -1,5 +1,5 @@
 export const nextTick = (function () {
-  const {process} = Function('return this;')();
+  const {process} = globalThis as any;
   if (process &&
     process.toString() == '[object process]' &&
     process.nextTick) {
