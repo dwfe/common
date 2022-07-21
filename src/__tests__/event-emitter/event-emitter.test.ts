@@ -6,67 +6,67 @@ describe(`event-emitter`, () => {
 
   test(`hasSubscribers`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
-    expect(emitter.numberOfSubscribers).eq(0);
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.numberOfListeners).eq(0);
+    expect(emitter.hasListeners).toBe(false);
 
     emitter.on('load', noop);
-    expect(emitter.numberOfSubscribers).toBe(1);
-    expect(emitter.hasSubscribers).toBe(true);
+    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.hasListeners).toBe(true);
     emitter.on('change', noop2);
-    expect(emitter.numberOfSubscribers).toBe(2);
-    expect(emitter.hasSubscribers).toBe(true);
+    expect(emitter.numberOfListeners).toBe(2);
+    expect(emitter.hasListeners).toBe(true);
 
     emitter.off('load', noop);
-    expect(emitter.numberOfSubscribers).toBe(1);
-    expect(emitter.hasSubscribers).toBe(true);
+    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.hasListeners).toBe(true);
     emitter.off('change', noop2);
-    expect(emitter.numberOfSubscribers).toBe(0);
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.numberOfListeners).toBe(0);
+    expect(emitter.hasListeners).toBe(false);
   });
 
   test(`subscribe/unsubscribe`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.hasListeners).toBe(false);
     expect(emitter.hasId('change')).toBe(false);
     expect(emitter.hasId('load')).toBe(false);
 
     emitter.addEventListener('change', noop);
-    expect(emitter.numberOfSubscribers).toBe(1);
+    expect(emitter.numberOfListeners).toBe(1);
     emitter.on('load', noop2);
     emitter.on('load', noop);
-    expect(emitter.numberOfSubscribers).toBe(2);
+    expect(emitter.numberOfListeners).toBe(2);
     expect(emitter.hasId('change')).toBe(true);
     expect(emitter.hasId('load')).toBe(true);
 
     emitter.removeEventListener('change', noop2);
-    expect(emitter.numberOfSubscribers).toBe(2);
+    expect(emitter.numberOfListeners).toBe(2);
     emitter.off('change', noop);
-    expect(emitter.numberOfSubscribers).toBe(1);
+    expect(emitter.numberOfListeners).toBe(1);
     emitter.off('load', noop2);
-    expect(emitter.numberOfSubscribers).toBe(1);
+    expect(emitter.numberOfListeners).toBe(1);
     emitter.removeEventListener('load', noop);
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.hasListeners).toBe(false);
     expect(emitter.hasId('change')).toBe(false);
     expect(emitter.hasId('load')).toBe(false);
   });
 
   test(`return unsubscriber on subscribe`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.hasListeners).toBe(false);
     let unsubscriber = emitter.on('change', noop);
-    expect(emitter.numberOfSubscribers).toBe(1);
+    expect(emitter.numberOfListeners).toBe(1);
     unsubscriber();
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.hasListeners).toBe(false);
 
     unsubscriber = emitter.addEventListener('change', noop2);
-    expect(emitter.numberOfSubscribers).toBe(1);
+    expect(emitter.numberOfListeners).toBe(1);
     unsubscriber();
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.hasListeners).toBe(false);
   });
 
   test(`dispose`, () => {
     const emitter = new EventEmitter<{ move: void, drag: void; up: number; }>();
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.hasListeners).toBe(false);
 
     emitter.addEventListener('move', () => console.log(`move`,));
     emitter.on('drag', () => console.log(`drag`,));
@@ -74,10 +74,10 @@ describe(`event-emitter`, () => {
     emitter.on('drag', noop);
     emitter.on('drag', noop2);
     emitter.on('up', noop2);
-    expect(emitter.numberOfSubscribers).toBe(3);
+    expect(emitter.numberOfListeners).toBe(3);
 
     emitter.dispose();
-    expect(emitter.hasSubscribers).toBe(false);
+    expect(emitter.hasListeners).toBe(false);
   });
 
   test(`emit`, () => {

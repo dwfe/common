@@ -81,11 +81,11 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     return this.map.has(id);
   }
 
-  get numberOfSubscribers(): number {
+  get numberOfListeners(): number {
     return this.map.size;
   }
 
-  get hasSubscribers(): boolean {
+  get hasListeners(): boolean {
     return this.map.size > 0;
   }
 
