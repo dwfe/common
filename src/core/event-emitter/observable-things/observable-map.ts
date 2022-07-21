@@ -13,9 +13,9 @@ export class ObservableMap<K, V>
 
   readonly [Symbol.toStringTag] = 'ObservableMap';
 
-  constructor(entries?: readonly (readonly [K, V])[] | null) {
+  constructor(data?: readonly (readonly [K, V])[] | null) {
     super();
-    this._map = new Map(entries);
+    this._map = new Map(data);
   }
 
   set(key: K, value: V): this {
