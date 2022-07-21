@@ -3,6 +3,14 @@
 `delayAsync`  
 `timeout`
 
+## event-emitter
+
+`EventEmitter`, `Listener`
+
+observable things:
+
+- `ObservableMap`
+
 ## math
 
 `divideWithoutRemainder`

@@ -6,7 +6,7 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
   emit<TId extends keyof TEvents>(id: TId, data?: TEvents[TId]) {
     const listeners = this.map.get(id);
-    if (!listeners){
+    if (!listeners) {
       return;
     }
     for (const listener of listeners) {
@@ -81,12 +81,12 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     return this.map.has(id);
   }
 
-  get size(): number {
+  get numberOfSubscribers(): number {
     return this.map.size;
   }
 
   get hasSubscribers(): boolean {
-    return this.size > 0;
+    return this.map.size > 0;
   }
 
 //endregion Support
