@@ -13,9 +13,9 @@ export class ObservableMap<K, V>
 
   readonly [Symbol.toStringTag] = 'ObservableMap';
 
-  constructor(data?: readonly (readonly [K, V])[] | null) {
+  constructor(init?: readonly (readonly [K, V])[] | null) {
     super();
-    this._map = new Map(data);
+    this._map = new Map(init);
   }
 
   set(key: K, value: V): this {
@@ -79,7 +79,7 @@ export class ObservableMap<K, V>
   }
 
 
-  emitChange(data: MapChangeEventListenerParam<K, V>) {
+  private emitChange(data: MapChangeEventListenerParam<K, V>) {
     this.emit('change', data)
   }
 
