@@ -17,8 +17,8 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, key, oldValue
 describe('observable-map. #1', () => {
 
   test('toStringTag', () => {
-    expect(mapEmpty.toString()).eq('[object ObservableMap]');
-    expect(map2Keys.toString()).eq('[object ObservableMap]');
+    expect(mapEmpty.toString()).eq('[object ObsMap]');
+    expect(map2Keys.toString()).eq('[object ObsMap]');
   });
 
   test('size', () => {
