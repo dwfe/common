@@ -1,2 +1,2 @@
 export {EventEmitter, Listener} from './event-emitter';
-export {ObservableMap, MapChangeEventListenerParam} from './observable-things/observable-map';
+export {ObsMap, ObsMapChangeEventListenerParam} from './observable-things/obs.map';

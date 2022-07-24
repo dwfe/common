@@ -1,10 +1,10 @@
 import '@do-while-for-each/test';
-import {ObservableMap} from '../../core/event-emitter'
+import {ObsMap} from '../../core/event-emitter'
 
 const initData = [['hello', 2], ['world', null]] as any;
 
-const mapEmpty = new ObservableMap();
-const map2Keys = new ObservableMap(initData);
+const mapEmpty = new ObsMap();
+const map2Keys = new ObsMap(initData);
 
 export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, key, oldValue, value) {
   const last = fn.mock.lastCall[0];
@@ -87,7 +87,7 @@ describe('observable-map. #1', () => {
 describe('observable-map. #2', () => {
 
   test('set', () => {
-    const map = new ObservableMap();
+    const map = new ObsMap();
     const onChange = jest.fn();
 
     map.on('change', onChange);
@@ -116,7 +116,7 @@ describe('observable-map. #2', () => {
   });
 
   test('delete', () => {
-    const map = new ObservableMap(initData);
+    const map = new ObsMap(initData);
     const onChange = jest.fn();
 
     map.on('change', onChange);
@@ -135,7 +135,7 @@ describe('observable-map. #2', () => {
 
   test('clear', () => {
     {
-      const map = new ObservableMap();
+      const map = new ObsMap();
       const onChange = jest.fn();
 
       map.on('change', onChange);
@@ -148,7 +148,7 @@ describe('observable-map. #2', () => {
       expect(map.size).eq(0);
     }
     {
-      const map = new ObservableMap(initData);
+      const map = new ObsMap(initData);
       const onChange = jest.fn();
 
       map.on('change', onChange);

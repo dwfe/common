@@ -9,7 +9,7 @@
 
 observable things:
 
-- `ObservableMap`
+- `ObsMap`
 
 ## math
 

@@ -1,17 +1,17 @@
 import {EventEmitter} from '../event-emitter';
 
-export type MapChangeEventListenerParam<K, V> = {
+export type ObsMapChangeEventListenerParam<K, V> = {
   key?: K, oldValue?: V, value?: V,
   type: 'add' | 'update' | 'delete' | 'clear'
 };
 
-export class ObservableMap<K, V>
-  extends EventEmitter<{ change: MapChangeEventListenerParam<K, V> }>
+export class ObsMap<K, V>
+  extends EventEmitter<{ change: ObsMapChangeEventListenerParam<K, V> }>
   implements Map<K, V> {
 
   private readonly _map: Map<K, V>;
 
-  readonly [Symbol.toStringTag] = 'ObservableMap';
+  readonly [Symbol.toStringTag] = 'ObsMap';
 
   constructor(init?: readonly (readonly [K, V])[] | null) {
     super();
@@ -79,7 +79,7 @@ export class ObservableMap<K, V>
   }
 
 
-  private emitChange(data: MapChangeEventListenerParam<K, V>) {
+  private emitChange(data: ObsMapChangeEventListenerParam<K, V>) {
     this.emit('change', data)
   }
 
