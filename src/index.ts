@@ -8,6 +8,7 @@ export {
 export * from './core/url';
 export {cloneSimple} from './core/clone-simple';
 export {Type, IStoppable, TRunMode, TAnyObject} from './core/contract';
+export {getOwnPropDescriptor} from './core/getOwnPropDescriptor';
 export {guid} from './core/guid';
 export {millisecToMinWithSec, strMillisecToMinWithSec} from './core/millisec-to-min-with-sec';
 export {nextTick} from './core/next-tick';
