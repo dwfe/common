@@ -52,7 +52,7 @@ observable things:
 ## other
 
 `cloneSimple`  
-`getOwnPropDescriptor`  
+`getPropDescriptor`  
 `guid`  
 `millisecToMinWithSec`, `strMillisecToMinWithSec`  
 `nextTick`  
