@@ -15,6 +15,12 @@ observable things:
 
 `divideWithoutRemainder`
 
+## object
+
+`PropType`  
+`getPropDescriptor`  
+`recognizePropType`
+
 ## type
 
 `isEqual`  
@@ -51,8 +57,7 @@ observable things:
 
 ## other
 
-`cloneSimple`  
-`getPropDescriptor`  
+`cloneSimple`
 `guid`  
 `millisecToMinWithSec`, `strMillisecToMinWithSec`  
 `nextTick`  
