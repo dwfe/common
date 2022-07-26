@@ -8,6 +8,7 @@ export {
 export * from './core/url';
 export {cloneSimple} from './core/clone-simple';
 export {Type, IStoppable, TRunMode, TAnyObject} from './core/contract';
+export {getExecFunctionName} from './core/getExecFunctionName';
 export {getPropDescriptor} from './core/getPropDescriptor';
 export {guid} from './core/guid';
 export {millisecToMinWithSec, strMillisecToMinWithSec} from './core/millisec-to-min-with-sec';
