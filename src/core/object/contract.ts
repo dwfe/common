@@ -1,1 +1,7 @@
-export type PropType = 'method' | 'accessor' | 'value';
+export type PropType =
+  'method' |
+  'value' |
+  'getter' |
+  'setter' |
+  'accessor'; // getter + setter
+
