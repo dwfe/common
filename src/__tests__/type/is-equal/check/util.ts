@@ -1,5 +1,5 @@
 import {traversEachWithEachAllJSDataTypes} from '@do-while-for-each/test';
-import {IEqualityCheckOpt} from '../../../index';
+import {IEqualityCheckOpt} from '../../../..';
 import {TChecks} from '../checks';
 
 export function simple({isNullEqualsUndefined}: IEqualityCheckOpt): TChecks {

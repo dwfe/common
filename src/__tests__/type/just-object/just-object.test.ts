@@ -1,5 +1,5 @@
 import {describe} from '@jest/globals'
-import {isJustObject, isNotJustObject} from '../../core/type'
+import {isJustObject, isNotJustObject} from '../../..';
 
 //region Support
 

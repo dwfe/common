@@ -1,4 +1,4 @@
-import {IEqualityCheckOpt} from '../../../index';
+import {IEqualityCheckOpt} from '../../../..';
 import {TChecks} from '../checks';
 
 

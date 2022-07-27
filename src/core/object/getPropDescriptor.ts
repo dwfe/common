@@ -3,8 +3,9 @@ export function getPropDescriptor(obj: any, prop: string | symbol): PropertyDesc
   if (descriptor) {
     return descriptor;
   }
-  const proto = Object.getPrototypeOf(obj);
-  descriptor = Object.getOwnPropertyDescriptor(proto, prop);
+  descriptor = Object.getOwnPropertyDescriptor(
+    Object.getPrototypeOf(obj), prop
+  );
   if (!descriptor) {
     const message = `cannot get property descriptor "${String(prop)}"`;
     console.error(message, obj);

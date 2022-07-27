@@ -1,5 +1,5 @@
 import {describe, expect} from '@jest/globals';
-import {IEqualityCheckOpt, isEqual} from '../../index';
+import {IEqualityCheckOpt, isEqual} from '../../..';
 import {checks} from './checks';
 
 const isDebug = false;
