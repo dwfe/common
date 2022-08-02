@@ -9,6 +9,7 @@
 
 observable things:
 
+- `createObsArray`
 - `ObsMap`
 
 ## math
@@ -30,8 +31,8 @@ observable things:
 `isPrimitiveTypeWrapper`  
 `isNotPrimitive`
 
-`isFunction`
-`isNumber`
+`isFunction`  
+`isNumber`, `isNumberStrict`  
 `isString`
 
 ## url

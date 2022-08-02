@@ -4,7 +4,7 @@ export {PropType, getPropDescriptor, recognizePropType} from './core/object';
 export {
   isEqual, IEqualityCheckOpt, isJustObject, isNotJustObject,
   isPrimitive, isNotPrimitive, isPrimitiveTypeWrapper,
-  isFunction, isNumber, isString
+  isFunction, isNumber, isNumberStrict, isString
 } from './core/type';
 export * from './core/url';
 export {cloneSimple} from './core/clone-simple';
@@ -14,5 +14,6 @@ export {guid} from './core/guid';
 export {millisecToMinWithSec, strMillisecToMinWithSec} from './core/millisec-to-min-with-sec';
 export {nextTick} from './core/next-tick';
 export {EventEmitter, Listener} from './core/event-emitter';
+export {ObsArray, createObsArray, ObsArrayChangeEventListenerParam} from './core/event-emitter';
 export {ObsMap, ObsMapChangeEventListenerParam} from './core/event-emitter';
 export {rAFQueueLast} from './core/raf-queue-last';

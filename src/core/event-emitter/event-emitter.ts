@@ -68,10 +68,9 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
 
   }
 
-  handleUnobserved(): void {
-    if (this.map.size === 0) {
+  private handleUnobserved(): void {
+    if (this.map.size === 0)
       this.onLastUnsubscribed();
-    }
   }
 
 
