@@ -1,18 +1,5 @@
-import {EventEmitter, Listener} from '../event-emitter';
-
-export type IObsArray<T = any> = Array<T> & {
-  on(id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>): void;
-  off(id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>): void;
-  dispose(): void;
-  hasListeners(): boolean;
-  numberOfIds(): number;
-  numberOfListeners(): number;
-};
-
-export type ObsArrayChangeEventListenerParam<T> = {
-  type: 'add' | 'update' | 'delete' | 'clear';
-  items: T[];
-};
+import {IObsArray, Listener, ObsArrayChangeEventListenerParam} from '../contract';
+import {EventEmitter} from '../event-emitter';
 
 export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
 

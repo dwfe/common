@@ -1,3 +1,8 @@
-export {IObsArray, createObsArray, ObsArrayChangeEventListenerParam} from './observable-things/obs.array';
-export {IObsMap, createObsMap, ObsMapChangeEventListenerParam} from './observable-things/obs.map';
-export {EventEmitter, Listener} from './event-emitter';
+export {createObsArray} from './observable-things/obs.array';
+export {createObsMap} from './observable-things/obs.map';
+export {Listener} from './contract';
+export {EventEmitter} from './event-emitter';
+export {IObsMap, ObsMapChangeEventListenerParam} from './contract';
+export {IObsArray, ObsArrayChangeEventListenerParam} from './contract';
+export {IObsValueLike} from './contract';
+export {isObsValueLike} from './observable-things/isObsValueLike';

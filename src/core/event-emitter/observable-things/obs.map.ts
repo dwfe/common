@@ -1,18 +1,5 @@
-import {EventEmitter, Listener} from '../event-emitter';
-
-export type IObsMap<K, V> = Map<K, V> & {
-  on(id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>): void;
-  off(id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>): void;
-  dispose(): void;
-  hasListeners(): boolean;
-  numberOfIds(): number;
-  numberOfListeners(): number;
-};
-
-export type ObsMapChangeEventListenerParam<K, V> = {
-  key?: K, oldValue?: V, value?: V,
-  type: 'add' | 'update' | 'delete' | 'clear'
-};
+import {IObsMap, Listener, ObsMapChangeEventListenerParam} from '../contract';
+import {EventEmitter} from '../event-emitter';
 
 export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
 
