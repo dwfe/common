@@ -1,6 +1,6 @@
 import {EventEmitter, Listener} from '../event-emitter';
 
-export type ObsMap<K, V> = Map<K, V> & {
+export type IObsMap<K, V> = Map<K, V> & {
   on(id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>): void;
   off(id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>): void;
   dispose(): void;
@@ -14,7 +14,7 @@ export type ObsMapChangeEventListenerParam<K, V> = {
   type: 'add' | 'update' | 'delete' | 'clear'
 };
 
-export function createObsMap<K, V>(init: [K, V][] = []): ObsMap<K, V> {
+export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
 
   const eventEmitter = new EventEmitter<{ change: ObsMapChangeEventListenerParam<K, V> }>();
   const emitChange = (data: ObsMapChangeEventListenerParam<K, V>) => {
@@ -77,5 +77,5 @@ export function createObsMap<K, V>(init: [K, V][] = []): ObsMap<K, V> {
       const value = Reflect.get(map, prop, receiver);
       return typeof value === 'function' ? value.bind(map) : value;
     },
-  }) as ObsMap<K, V>;
+  }) as IObsMap<K, V>;
 }

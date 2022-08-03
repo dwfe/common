@@ -1,6 +1,6 @@
 import {EventEmitter, Listener} from '../event-emitter';
 
-export type ObsArray<T = any> = Array<T> & {
+export type IObsArray<T = any> = Array<T> & {
   on(id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>): void;
   off(id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>): void;
   dispose(): void;
@@ -14,7 +14,7 @@ export type ObsArrayChangeEventListenerParam<T> = {
   items: T[];
 };
 
-export function createObsArray<T = any>(init: T[] = []): ObsArray<T> {
+export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
 
   const eventEmitter = new EventEmitter<{ change: ObsArrayChangeEventListenerParam<T> }>();
   const emitChange = (data: ObsArrayChangeEventListenerParam<T>) => {
@@ -53,7 +53,7 @@ export function createObsArray<T = any>(init: T[] = []): ObsArray<T> {
       const value = Reflect.get(array, prop, receiver);
       return typeof value === 'function' ? value.bind(array) : value;
     },
-  }) as ObsArray<T>;
+  }) as IObsArray<T>;
 }
 
 

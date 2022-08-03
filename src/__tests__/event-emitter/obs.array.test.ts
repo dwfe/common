@@ -1,5 +1,5 @@
 import {Throw} from '@do-while-for-each/test';
-import {createObsArray, ObsArray, ObsArrayChangeEventListenerParam} from '../..';
+import {createObsArray, IObsArray, ObsArrayChangeEventListenerParam} from '../..';
 
 describe('observable-array', () => {
 
@@ -141,7 +141,7 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChang
   }
 }
 
-function accessByIndex(arr: ObsArray, arrTest: any[]) {
+function accessByIndex(arr: IObsArray, arrTest: any[]) {
   expect(arr.length).eq(arrTest.length);
   for (let i = 0; i < arr.length; i++) {
     expect(arr[i]).eq(arrTest[i]);

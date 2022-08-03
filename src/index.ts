@@ -14,6 +14,6 @@ export {guid} from './core/guid';
 export {millisecToMinWithSec, strMillisecToMinWithSec} from './core/millisec-to-min-with-sec';
 export {nextTick} from './core/next-tick';
 export {EventEmitter, Listener} from './core/event-emitter';
-export {ObsArray, createObsArray, ObsArrayChangeEventListenerParam} from './core/event-emitter';
-export {ObsMap,createObsMap, ObsMapChangeEventListenerParam} from './core/event-emitter';
+export {IObsArray, createObsArray, ObsArrayChangeEventListenerParam} from './core/event-emitter';
+export {IObsMap,createObsMap, ObsMapChangeEventListenerParam} from './core/event-emitter';
 export {rAFQueueLast} from './core/raf-queue-last';
