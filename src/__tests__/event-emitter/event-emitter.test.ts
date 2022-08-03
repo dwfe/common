@@ -1,26 +1,25 @@
-import {noop, noop2} from '@do-while-for-each/test';
+import {noop, noop2, Throw} from '@do-while-for-each/test';
 import {EventEmitter} from '../..';
-
 
 describe(`event-emitter`, () => {
 
   test(`hasSubscribers`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
-    expect(emitter.numberOfListeners).eq(0);
+    expect(emitter.numberOfIds).eq(0);
     expect(emitter.hasListeners).toBe(false);
 
     emitter.on('load', noop);
-    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.numberOfIds).toBe(1);
     expect(emitter.hasListeners).toBe(true);
     emitter.on('change', noop2);
-    expect(emitter.numberOfListeners).toBe(2);
+    expect(emitter.numberOfIds).toBe(2);
     expect(emitter.hasListeners).toBe(true);
 
     emitter.off('load', noop);
-    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.numberOfIds).toBe(1);
     expect(emitter.hasListeners).toBe(true);
     emitter.off('change', noop2);
-    expect(emitter.numberOfListeners).toBe(0);
+    expect(emitter.numberOfIds).toBe(0);
     expect(emitter.hasListeners).toBe(false);
   });
 
@@ -31,20 +30,32 @@ describe(`event-emitter`, () => {
     expect(emitter.hasId('load')).toBe(false);
 
     emitter.addEventListener('change', noop);
-    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.numberOfIds).toBe(1);
+    expect(emitter.numberOfListeners('change')).eq(1);
+
     emitter.on('load', noop2);
+    expect(emitter.numberOfListeners('load')).eq(1);
+
     emitter.on('load', noop);
-    expect(emitter.numberOfListeners).toBe(2);
+    expect(emitter.numberOfListeners('load')).eq(2);
+    expect(emitter.numberOfIds).toBe(2);
     expect(emitter.hasId('change')).toBe(true);
     expect(emitter.hasId('load')).toBe(true);
 
     emitter.removeEventListener('change', noop2);
-    expect(emitter.numberOfListeners).toBe(2);
+    expect(emitter.numberOfListeners('change')).eq(1);
+    expect(emitter.numberOfIds).toBe(2);
+
     emitter.off('change', noop);
-    expect(emitter.numberOfListeners).toBe(1);
+    Throw(() => emitter.numberOfListeners('change'), `Cannot read properties of undefined (reading 'size')`);
+    expect(emitter.numberOfIds).toBe(1);
+
     emitter.off('load', noop2);
-    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.numberOfListeners('load')).eq(1);
+    expect(emitter.numberOfIds).toBe(1);
+
     emitter.removeEventListener('load', noop);
+    Throw(() => emitter.numberOfListeners('load'), `Cannot read properties of undefined (reading 'size')`);
     expect(emitter.hasListeners).toBe(false);
     expect(emitter.hasId('change')).toBe(false);
     expect(emitter.hasId('load')).toBe(false);
@@ -54,12 +65,12 @@ describe(`event-emitter`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
     expect(emitter.hasListeners).toBe(false);
     let unsubscriber = emitter.on('change', noop);
-    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.numberOfIds).toBe(1);
     unsubscriber();
     expect(emitter.hasListeners).toBe(false);
 
     unsubscriber = emitter.addEventListener('change', noop2);
-    expect(emitter.numberOfListeners).toBe(1);
+    expect(emitter.numberOfIds).toBe(1);
     unsubscriber();
     expect(emitter.hasListeners).toBe(false);
   });
@@ -74,7 +85,7 @@ describe(`event-emitter`, () => {
     emitter.on('drag', noop);
     emitter.on('drag', noop2);
     emitter.on('up', noop2);
-    expect(emitter.numberOfListeners).toBe(3);
+    expect(emitter.numberOfIds).toBe(3);
 
     emitter.dispose();
     expect(emitter.hasListeners).toBe(false);

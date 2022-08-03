@@ -5,6 +5,8 @@ export type ObsArray<T = any> = Array<T> & {
   off(id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>): void;
   dispose(): void;
   hasListeners(): boolean;
+  numberOfIds(): number;
+  numberOfListeners(): number;
 };
 
 export type ObsArrayChangeEventListenerParam<T> = {
@@ -21,10 +23,7 @@ export function createObsArray<T = any>(init: T[] = []): ObsArray<T> {
 
   return new Proxy<T[]>(init, {
     get(array, prop, receiver) {
-      if (
-        typeof prop === 'string' &&
-        !isNaN(prop as any)
-      ) {
+      if (typeof prop === 'string' && !isNaN(prop as any)) {
         return array[prop as any];
       }
       switch (prop) {
@@ -46,6 +45,10 @@ export function createObsArray<T = any>(init: T[] = []): ObsArray<T> {
           return () => eventEmitter.dispose();
         case 'hasListeners':
           return () => eventEmitter.hasListeners;
+        case 'numberOfIds':
+          return () => eventEmitter.numberOfIds;
+        case 'numberOfListeners':
+          return () => eventEmitter.numberOfListeners('change');
       }
       return Reflect.get(array, prop, receiver);
     },

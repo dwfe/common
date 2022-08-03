@@ -80,8 +80,13 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     return this.map.has(id);
   }
 
-  get numberOfListeners(): number {
+  get numberOfIds(): number {
     return this.map.size;
+  }
+
+  numberOfListeners<TId extends keyof TEvents>(id: TId): number {
+    const listeners = this.map.get(id)!;
+    return listeners.size;
   }
 
   get hasListeners(): boolean {

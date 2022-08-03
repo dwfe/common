@@ -1,4 +1,4 @@
-import '@do-while-for-each/test';
+import {Throw} from '@do-while-for-each/test';
 import {createObsArray, ObsArray, ObsArrayChangeEventListenerParam} from '../..';
 
 describe('observable-array', () => {
@@ -60,16 +60,70 @@ describe('observable-array', () => {
     accessByIndex(arr, [1, 5, 7, 6]);
   });
 
-  test('on "change"', () => {
+  test('on/off "change"', () => {
+    const arr = createObsArray([1, 2, 3]);
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
 
-  });
+    expect(arr.hasListeners()).False();
 
-  test('off "change"', () => {
+    arr.on('change', onChange1);
+    expect(arr.hasListeners()).True();
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
 
+    arr.on('change', onChange1);
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
+
+    arr.off('change', onChange1);
+    expect(arr.hasListeners()).False();
+    expect(arr.numberOfIds()).eq(0);
+
+    arr.on('change', onChange2);
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
+
+    arr.on('change', onChange1);
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(2);
+
+    arr.off('change', onChange1);
+    expect(arr.hasListeners()).True();
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
+
+    arr.off('change', onChange2);
+    expect(arr.hasListeners()).False();
+    expect(arr.numberOfIds()).eq(0);
+    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
   });
 
   test('dispose', () => {
+    const arr = createObsArray([]);
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
 
+    arr.on('change', onChange2);
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
+
+    arr.dispose();
+    expect(arr.numberOfIds()).eq(0);
+    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+
+    arr.on('change', onChange1);
+    expect(arr.hasListeners()).True();
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
+
+    arr.on('change', onChange2);
+    expect(arr.numberOfIds()).eq(1);
+    expect(arr.numberOfListeners()).eq(2);
+
+    arr.dispose();
+    expect(arr.numberOfIds()).eq(0);
+    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
   });
 
 });
