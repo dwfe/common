@@ -9,8 +9,8 @@
 
 observable things:
 
-- `createObsArray`, `IObsArray`
-- `createObsMap`, `IObsMap`
+- `createObsArray() => IObsArray`
+- `createObsMap() => IObsMap`
 
 ## math
 
