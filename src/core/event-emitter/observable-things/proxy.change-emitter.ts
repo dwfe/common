@@ -1,6 +1,9 @@
 import {ObsValueLike, Listener} from '../contract';
 import {EventEmitter} from '../event-emitter';
 
+/**
+ * A wrapper over the EventEmitter that limits the functionality of the EventEmitter to event "change" only.
+ */
 export class ProxyChangeEmitter<ListenerData> implements ObsValueLike {
 
   constructor(private eventEmitter: EventEmitter<any>) {

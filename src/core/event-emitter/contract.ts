@@ -2,6 +2,9 @@
 
 export type Listener<TData = any> = (data: TData) => void;
 
+/**
+ * Value that can be observable.
+ */
 export interface ObsValueLike<EventIds = any, ListenerData = any> {
   canBeObservable: boolean;
   on(id: EventIds, listener: Listener<ListenerData>): void;
