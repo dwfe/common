@@ -18,7 +18,6 @@ observable things:
 
 ## object
 
-`callGetter`  
 `PropType`  
 `getPropDescriptor`  
 `recognizePropType`
