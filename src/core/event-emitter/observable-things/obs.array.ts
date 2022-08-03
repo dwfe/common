@@ -19,11 +19,12 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             return newLength;
           };
       }
-      let result = emitter[prop];
-      if (result === undefined) {
-        result = Reflect.get(array, prop, receiver);
+      let propValue = emitter[prop];
+      if (propValue !== undefined) {
+        return typeof propValue === 'function' ? propValue.bind(emitter) : propValue;
       }
-      return typeof result === 'function' ? result.bind(array) : result;
+      propValue = Reflect.get(array, prop, receiver);
+      return typeof propValue === 'function' ? propValue.bind(array) : propValue;
     },
   }) as IObsArray<T>;
 }

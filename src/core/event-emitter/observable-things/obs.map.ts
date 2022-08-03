@@ -38,11 +38,12 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
         case 'toString':
           return () => '[object ObsMap]';
       }
-      let result = emitter[prop];
-      if (result === undefined) {
-        result = Reflect.get(map, prop, receiver);
+      let propValue = emitter[prop];
+      if (propValue !== undefined) {
+        return typeof propValue === 'function' ? propValue.bind(emitter) : propValue;
       }
-      return typeof result === 'function' ? result.bind(map) : result;
+      propValue = Reflect.get(map, prop, receiver);
+      return typeof propValue === 'function' ? propValue.bind(map) : propValue;
     },
   }) as IObsMap<K, V>;
 }
