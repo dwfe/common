@@ -1,6 +1,6 @@
 export {delayAsync, timeout} from './core/async';
 export {divideWithoutRemainder} from './core/math';
-export {PropType, getPropDescriptor, recognizePropType} from './core/object';
+export {callGetter, PropType, getPropDescriptor, recognizePropType} from './core/object';
 export {
   isEqual, IEqualityCheckOpt, isJustObject, isNotJustObject,
   isPrimitive, isNotPrimitive, isPrimitiveTypeWrapper,

@@ -1,11 +1,12 @@
 import {IObsMap, Listener, ObsMapChangeEventListenerParam} from '../contract';
 import {EventEmitter} from '../event-emitter';
+import {callGetter} from '../../object';
 
 export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
 
   const eventEmitter = new EventEmitter<{ change: ObsMapChangeEventListenerParam<K, V> }>();
   const emitChange = (data: ObsMapChangeEventListenerParam<K, V>) => {
-    eventEmitter.emit('change', data);
+    eventEmitter.emit.call(eventEmitter, 'change', data);
   };
 
   return new Proxy<Map<K, V>>(new Map(init), {
@@ -45,20 +46,20 @@ export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
 
         case 'on':
           return (id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>) => {
-            eventEmitter.on(id, listener);
+            eventEmitter.on.call(eventEmitter, id, listener);
           };
         case 'off':
           return (id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>) => {
-            eventEmitter.off(id, listener);
+            eventEmitter.off.call(eventEmitter, id, listener);
           };
         case 'dispose':
-          return () => eventEmitter.dispose();
+          return () => eventEmitter.dispose.call(eventEmitter);
         case 'hasListeners':
-          return () => eventEmitter.hasListeners;
+          return () => callGetter(eventEmitter, 'hasListeners');
         case 'numberOfIds':
-          return () => eventEmitter.numberOfIds;
+          return () => callGetter(eventEmitter, 'numberOfIds');
         case 'numberOfListeners':
-          return () => eventEmitter.numberOfListeners('change');
+          return () => eventEmitter.numberOfListeners.call(eventEmitter, 'change');
       }
       const value = Reflect.get(map, prop, receiver);
       return typeof value === 'function' ? value.bind(map) : value;

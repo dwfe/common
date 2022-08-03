@@ -1,11 +1,12 @@
 import {IObsArray, Listener, ObsArrayChangeEventListenerParam} from '../contract';
 import {EventEmitter} from '../event-emitter';
+import {callGetter} from '../../object';
 
 export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
 
   const eventEmitter = new EventEmitter<{ change: ObsArrayChangeEventListenerParam<T> }>();
   const emitChange = (data: ObsArrayChangeEventListenerParam<T>) => {
-    eventEmitter.emit('change', data);
+    eventEmitter.emit.call(eventEmitter, 'change', data);
   };
 
   return new Proxy<T[]>(init, {
@@ -26,20 +27,20 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
 
         case 'on':
           return (id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>) => {
-            eventEmitter.on(id, listener);
+            eventEmitter.on.call(eventEmitter, id, listener);
           };
         case 'off':
           return (id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>) => {
-            eventEmitter.off(id, listener);
+            eventEmitter.off.call(eventEmitter, id, listener);
           };
         case 'dispose':
-          return () => eventEmitter.dispose();
+          return () => eventEmitter.dispose.call(eventEmitter);
         case 'hasListeners':
-          return () => eventEmitter.hasListeners;
+          return () => callGetter(eventEmitter, 'hasListeners');
         case 'numberOfIds':
-          return () => eventEmitter.numberOfIds;
+          return () => callGetter(eventEmitter, 'numberOfIds');
         case 'numberOfListeners':
-          return () => eventEmitter.numberOfListeners('change');
+          return () => eventEmitter.numberOfListeners.call(eventEmitter, 'change');
       }
       const value = Reflect.get(array, prop, receiver);
       return typeof value === 'function' ? value.bind(array) : value;
