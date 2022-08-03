@@ -27,12 +27,16 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
         return array[prop as any];
       }
       switch (prop) {
+        case 'length':
+          return array.length;
+
         case 'push':
           return (...items: T[]): number => {
             const newLength = array.push.apply(array, items);
             emitChange({type: 'add', items});
             return newLength;
           };
+
         case 'on':
           return (id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>) => {
             eventEmitter.on(id, listener);

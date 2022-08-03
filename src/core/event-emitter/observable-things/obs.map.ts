@@ -24,8 +24,9 @@ export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
   return new Proxy<Map<K, V>>(new Map(init), {
     get(map, prop, receiver) {
       switch (prop) {
-        case Symbol.toStringTag:
-          return 'ObsMap';
+        case 'size':
+          return map.size;
+
         case 'set':
           return (key: K, value: V) => {
             const oldValue = map.get(key);
@@ -52,8 +53,6 @@ export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
             emitChange({type: 'clear'});
           };
 
-        case 'size':
-          return map.size;
         case 'toString':
           return () => '[object ObsMap]';
 
