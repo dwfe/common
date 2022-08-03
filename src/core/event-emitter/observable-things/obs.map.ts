@@ -40,7 +40,7 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
       }
       let propValue = emitter[prop];
       if (propValue !== undefined) {
-        return typeof propValue === 'function' ? propValue.bind(emitter) : propValue;
+        return propValue;
       }
       propValue = Reflect.get(map, prop, receiver);
       return typeof propValue === 'function' ? propValue.bind(map) : propValue;
