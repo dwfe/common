@@ -1,7 +1,11 @@
 import {noop, noop2, Throw} from '@do-while-for-each/test';
-import {EventEmitter} from '../..';
+import {createObsArray, EventEmitter} from '../..';
 
 describe(`event-emitter`, () => {
+
+  test('canBeObservable', () => {
+    expect(new EventEmitter<{ change: void, load: void }>()).toHaveProperty('canBeObservable', true);
+  });
 
   test(`hasSubscribers`, () => {
     const emitter = new EventEmitter<{ change: void, load: void }>();
@@ -209,10 +213,5 @@ describe(`event-emitter`, () => {
     expect(firstSubscribeArr[0]).toBe('load');
     expect(countUnobserved).toBe(1);
   });
-
-  // test(``, () => {
-  //
-  //
-  // });
 
 });

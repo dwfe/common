@@ -75,11 +75,11 @@ describe('observable-array', () => {
     arr.on('change', onChange1);
     expect(arr.hasListeners).True();
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
 
     arr.on('change', onChange1);
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
 
     arr.off('change', onChange1);
     expect(arr.hasListeners).False();
@@ -87,21 +87,21 @@ describe('observable-array', () => {
 
     arr.on('change', onChange2);
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
 
     arr.on('change', onChange1);
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(2);
+    expect(arr.numberOfListeners()).eq(2);
 
     arr.off('change', onChange1);
     expect(arr.hasListeners).True();
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
 
     arr.off('change', onChange2);
     expect(arr.hasListeners).False();
     expect(arr.numberOfIds).eq(0);
-    Throw(() => arr.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
+    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
   });
 
   test('dispose', () => {
@@ -111,24 +111,24 @@ describe('observable-array', () => {
 
     arr.on('change', onChange2);
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
 
     arr.dispose();
     expect(arr.numberOfIds).eq(0);
-    Throw(() => arr.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
+    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
 
     arr.on('change', onChange1);
     expect(arr.hasListeners).True();
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(1);
+    expect(arr.numberOfListeners()).eq(1);
 
     arr.on('change', onChange2);
     expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners).eq(2);
+    expect(arr.numberOfListeners()).eq(2);
 
     arr.dispose();
     expect(arr.numberOfIds).eq(0);
-    Throw(() => arr.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
+    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
   });
 
 });

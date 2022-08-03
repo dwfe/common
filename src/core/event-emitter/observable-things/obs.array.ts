@@ -1,13 +1,14 @@
-import {IObsArray, Listener, ObsArrayChangeEventListenerParam} from '../contract';
+import {IObsArray, ObsArrayChangeEventListenerParam} from '../contract';
+import {ProxyChangeEmitter} from './proxy.change-emitter';
 import {EventEmitter} from '../event-emitter';
-import {callGetter} from '../../object';
 
 export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
 
-  const eventEmitter = new EventEmitter<{ change: ObsArrayChangeEventListenerParam<T> }>();
-  const emitChange = (data: ObsArrayChangeEventListenerParam<T>) => {
-    eventEmitter.emit.call(eventEmitter, 'change', data);
-  };
+  const emitter = new ProxyChangeEmitter<ObsArrayChangeEventListenerParam<T>>(
+    new EventEmitter<{ change: any }>()
+  );
+  const emitChange = emitter.emitChange.bind(emitter);
+  const emitterHasProp = emitter.hasProp.bind(emitter);
 
   return new Proxy<T[]>(init, {
     get(array, prop, receiver) {
@@ -24,25 +25,10 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             emitChange({type: 'add', items});
             return newLength;
           };
-
-        case 'canBeObservable':
-          return true;
-        case 'on':
-          return (id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>) => {
-            eventEmitter.on.call(eventEmitter, id, listener);
-          };
-        case 'off':
-          return (id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>) => {
-            eventEmitter.off.call(eventEmitter, id, listener);
-          };
-        case 'dispose':
-          return () => eventEmitter.dispose.call(eventEmitter);
-        case 'numberOfIds':
-          return callGetter(eventEmitter, 'numberOfIds');
-        case 'hasListeners':
-          return callGetter(eventEmitter, 'hasListeners');
-        case 'numberOfListeners':
-          return eventEmitter.numberOfListeners.call(eventEmitter, 'change');
+      }
+      if (emitterHasProp(prop)) {
+        const value = (emitter as any)[prop];
+        return typeof value === 'function' ? value.bind(emitter) : value
       }
       const value = Reflect.get(array, prop, receiver);
       return typeof value === 'function' ? value.bind(array) : value;

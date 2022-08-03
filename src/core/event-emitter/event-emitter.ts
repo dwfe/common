@@ -1,6 +1,6 @@
-import {Listener} from './contract';
+import {ObsValueLike, Listener} from './contract';
 
-export class EventEmitter<TEvents extends { [id: string]: any; }> {
+export class EventEmitter<TEvents extends { [id: string]: any; }> implements ObsValueLike {
 
   private map = new Map<keyof TEvents, Set<Listener>>();
 
@@ -80,8 +80,8 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     return this.map.has(id);
   }
 
-  get numberOfIds(): number {
-    return this.map.size;
+  get hasListeners(): boolean {
+    return this.map.size > 0;
   }
 
   numberOfListeners<TId extends keyof TEvents>(id: TId): number {
@@ -89,9 +89,11 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> {
     return listeners.size;
   }
 
-  get hasListeners(): boolean {
-    return this.map.size > 0;
+  get numberOfIds(): number {
+    return this.map.size;
   }
+
+  canBeObservable = true;
 
 //endregion Support
 

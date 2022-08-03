@@ -1,13 +1,14 @@
-import {IObsMap, Listener, ObsMapChangeEventListenerParam} from '../contract';
+import {IObsMap, ObsMapChangeEventListenerParam} from '../contract';
+import {ProxyChangeEmitter} from './proxy.change-emitter';
 import {EventEmitter} from '../event-emitter';
-import {callGetter} from '../../object';
 
 export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
 
-  const eventEmitter = new EventEmitter<{ change: ObsMapChangeEventListenerParam<K, V> }>();
-  const emitChange = (data: ObsMapChangeEventListenerParam<K, V>) => {
-    eventEmitter.emit.call(eventEmitter, 'change', data);
-  };
+  const emitter = new ProxyChangeEmitter<ObsMapChangeEventListenerParam<K, V>>(
+    new EventEmitter<{ change: any }>()
+  );
+  const emitChange = emitter.emitChange.bind(emitter);
+  const emitterHasProp = emitter.hasProp.bind(emitter);
 
   return new Proxy<Map<K, V>>(new Map(init), {
     get(map, prop, receiver) {
@@ -43,25 +44,10 @@ export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
 
         case 'toString':
           return () => '[object ObsMap]';
-
-        case 'canBeObservable':
-          return true;
-        case 'on':
-          return (id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>) => {
-            eventEmitter.on.call(eventEmitter, id, listener);
-          };
-        case 'off':
-          return (id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>) => {
-            eventEmitter.off.call(eventEmitter, id, listener);
-          };
-        case 'dispose':
-          return () => eventEmitter.dispose.call(eventEmitter);
-        case 'numberOfIds':
-          return callGetter(eventEmitter, 'numberOfIds');
-        case 'hasListeners':
-          return callGetter(eventEmitter, 'hasListeners');
-        case 'numberOfListeners':
-          return eventEmitter.numberOfListeners.call(eventEmitter, 'change');
+      }
+      if (emitterHasProp(prop)) {
+        const value = (emitter as any)[prop];
+        return typeof value === 'function' ? value.bind(emitter) : value
       }
       const value = Reflect.get(map, prop, receiver);
       return typeof value === 'function' ? value.bind(map) : value;

@@ -4,4 +4,4 @@ export {Listener} from './contract';
 export {EventEmitter} from './event-emitter';
 export {IObsMap, ObsMapChangeEventListenerParam} from './contract';
 export {IObsArray, ObsArrayChangeEventListenerParam} from './contract';
-export {IObsValueLike} from './contract';
+export {ObsValueLike} from './contract';
