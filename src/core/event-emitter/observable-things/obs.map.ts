@@ -17,7 +17,7 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
               key, oldValue, value,
               type: oldValue === undefined ? 'add' : 'update'
             });
-            return this;
+            return receiver;
           };
         case 'delete':
           return (key: K): boolean => {

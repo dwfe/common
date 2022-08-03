@@ -52,13 +52,15 @@ describe('observable-array', () => {
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(0);
 
-    arr.push(1);
+    let result = arr.push(1);
+    expect(result).eq(1);
     expect(arr.length).eq(1);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'add', [1]);
     accessByIndex(arr, [1]);
 
-    arr.push(5, 7, 6);
+    result = arr.push(5, 7, 6);
+    expect(result).eq(4);
     expect(arr.length).eq(4);
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'add', [5, 7, 6]);

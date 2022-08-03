@@ -150,22 +150,26 @@ describe('observable-map. #2', () => {
     expect(onChange).toBeCalledTimes(0);
     expect(map.size).eq(0);
 
-    map.set('hello', 'Alex');
+    let result = map.set('hello', 'Alex');
+    expect(result).eq(map);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'add', 'hello', undefined, 'Alex');
     expect(map.size).eq(1);
 
-    map.set('hello', 'Alex');
+    result = map.set('hello', 'Alex');
+    expect(result).eq(map);
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'update', 'hello', 'Alex', 'Alex');
     expect(map.size).eq(1);
 
-    map.set('hello', 17);
+    result = map.set('hello', 17);
+    expect(result).eq(map);
     expect(onChange).toBeCalledTimes(3);
     lastFnResult(onChange, 'update', 'hello', 'Alex', 17);
     expect(map.size).eq(1);
 
-    map.set('world', true);
+    result = map.set('world', true);
+    expect(result).eq(map);
     expect(onChange).toBeCalledTimes(4);
     lastFnResult(onChange, 'add', 'world', undefined, true);
     expect(map.size).eq(2);
@@ -179,11 +183,13 @@ describe('observable-map. #2', () => {
     expect(onChange).toBeCalledTimes(0);
     expect(map.size).eq(2);
 
-    map.delete('say');
+    let result = map.delete('say');
+    expect(result).False();
     expect(onChange).toBeCalledTimes(0);
     expect(map.size).eq(2);
 
-    map.delete('world');
+    result = map.delete('world');
+    expect(result).True();
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'delete', 'world', null, undefined);
     expect(map.size).eq(1);
