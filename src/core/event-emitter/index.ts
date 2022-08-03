@@ -5,4 +5,3 @@ export {EventEmitter} from './event-emitter';
 export {IObsMap, ObsMapChangeEventListenerParam} from './contract';
 export {IObsArray, ObsArrayChangeEventListenerParam} from './contract';
 export {IObsValueLike} from './contract';
-export {isObsValueLike} from './observable-things/isObsValueLike';

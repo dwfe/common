@@ -44,6 +44,8 @@ export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
         case 'toString':
           return () => '[object ObsMap]';
 
+        case 'canBeObservable':
+          return true;
         case 'on':
           return (id: 'change', listener: Listener<ObsMapChangeEventListenerParam<K, V>>) => {
             eventEmitter.on.call(eventEmitter, id, listener);
@@ -54,12 +56,12 @@ export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
           };
         case 'dispose':
           return () => eventEmitter.dispose.call(eventEmitter);
-        case 'hasListeners':
-          return () => callGetter(eventEmitter, 'hasListeners');
         case 'numberOfIds':
-          return () => callGetter(eventEmitter, 'numberOfIds');
+          return callGetter(eventEmitter, 'numberOfIds');
+        case 'hasListeners':
+          return callGetter(eventEmitter, 'hasListeners');
         case 'numberOfListeners':
-          return () => eventEmitter.numberOfListeners.call(eventEmitter, 'change');
+          return eventEmitter.numberOfListeners.call(eventEmitter, 'change');
       }
       const value = Reflect.get(map, prop, receiver);
       return typeof value === 'function' ? value.bind(map) : value;

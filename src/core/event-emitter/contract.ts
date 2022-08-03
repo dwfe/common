@@ -3,12 +3,13 @@
 export type Listener<TData = any> = (data: TData) => void;
 
 export interface IObsValueLike<EventIds,ListenerData> {
+  canBeObservable: boolean;
   on(id: EventIds, listener: Listener<ListenerData>): void;
   off(id: EventIds, listener: Listener<ListenerData>): void;
   dispose(): void;
-  hasListeners(): boolean;
-  numberOfIds(): number;
-  numberOfListeners(): number;
+  numberOfIds: number;
+  hasListeners: boolean;
+  numberOfListeners: number;
 }
 
 export type ObsMapChangeEventListenerParam<K, V> = {

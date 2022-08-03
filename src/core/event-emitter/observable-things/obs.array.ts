@@ -25,6 +25,8 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             return newLength;
           };
 
+        case 'canBeObservable':
+          return true;
         case 'on':
           return (id: 'change', listener: Listener<ObsArrayChangeEventListenerParam<T>>) => {
             eventEmitter.on.call(eventEmitter, id, listener);
@@ -35,12 +37,12 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
           };
         case 'dispose':
           return () => eventEmitter.dispose.call(eventEmitter);
-        case 'hasListeners':
-          return () => callGetter(eventEmitter, 'hasListeners');
         case 'numberOfIds':
-          return () => callGetter(eventEmitter, 'numberOfIds');
+          return callGetter(eventEmitter, 'numberOfIds');
+        case 'hasListeners':
+          return callGetter(eventEmitter, 'hasListeners');
         case 'numberOfListeners':
-          return () => eventEmitter.numberOfListeners.call(eventEmitter, 'change');
+          return eventEmitter.numberOfListeners.call(eventEmitter, 'change');
       }
       const value = Reflect.get(array, prop, receiver);
       return typeof value === 'function' ? value.bind(array) : value;

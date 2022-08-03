@@ -87,38 +87,38 @@ describe('observable-map. #1', () => {
     const onChange1 = jest.fn();
     const onChange2 = jest.fn();
 
-    expect(map.hasListeners()).False();
+    expect(map.hasListeners).False();
 
     map.on('change', onChange1);
-    expect(map.hasListeners()).True();
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(1);
+    expect(map.hasListeners).True();
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(1);
 
     map.on('change', onChange1);
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(1);
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(1);
 
     map.off('change', onChange1);
-    expect(map.hasListeners()).False();
-    expect(map.numberOfIds()).eq(0);
+    expect(map.hasListeners).False();
+    expect(map.numberOfIds).eq(0);
 
     map.on('change', onChange2);
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(1);
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(1);
 
     map.on('change', onChange1);
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(2);
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(2);
 
     map.off('change', onChange1);
-    expect(map.hasListeners()).True();
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(1);
+    expect(map.hasListeners).True();
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(1);
 
     map.off('change', onChange2);
-    expect(map.hasListeners()).False();
-    expect(map.numberOfIds()).eq(0);
-    Throw(() => map.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    expect(map.hasListeners).False();
+    expect(map.numberOfIds).eq(0);
+    Throw(() => map.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
   });
 
   test('dispose', () => {
@@ -127,30 +127,35 @@ describe('observable-map. #1', () => {
     const onChange2 = jest.fn();
 
     map.on('change', onChange2);
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(1);
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(1);
 
     map.dispose();
-    expect(map.numberOfIds()).eq(0);
-    Throw(() => map.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    expect(map.numberOfIds).eq(0);
+    Throw(() => map.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
 
     map.on('change', onChange1);
-    expect(map.hasListeners()).True();
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(1);
+    expect(map.hasListeners).True();
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(1);
 
     map.on('change', onChange2);
-    expect(map.numberOfIds()).eq(1);
-    expect(map.numberOfListeners()).eq(2);
+    expect(map.numberOfIds).eq(1);
+    expect(map.numberOfListeners).eq(2);
 
     map.dispose();
-    expect(map.numberOfIds()).eq(0);
-    Throw(() => map.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    expect(map.numberOfIds).eq(0);
+    Throw(() => map.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
   });
 
 });
 
 describe('observable-map. #2', () => {
+
+  test('canBeObservable', () => {
+    expect(createObsMap()).toHaveProperty('canBeObservable', true);
+    expect(map2Keys).toHaveProperty('canBeObservable', true);
+  });
 
   test('set', () => {
     const map = createObsMap();

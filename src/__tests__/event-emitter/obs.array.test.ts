@@ -3,6 +3,11 @@ import {createObsArray, IObsArray, ObsArrayChangeEventListenerParam} from '../..
 
 describe('observable-array', () => {
 
+  test('canBeObservable', () => {
+    expect(createObsArray()).toHaveProperty('canBeObservable', true);
+    expect(createObsArray([1, 2, 3])).toHaveProperty('canBeObservable', true);
+  });
+
   test('access by index', () => {
     const arr = createObsArray([7, 2, 5, 1, 8, 9]);
     expect(arr[undefined as any]).eq(undefined);
@@ -65,38 +70,38 @@ describe('observable-array', () => {
     const onChange1 = jest.fn();
     const onChange2 = jest.fn();
 
-    expect(arr.hasListeners()).False();
+    expect(arr.hasListeners).False();
 
     arr.on('change', onChange1);
-    expect(arr.hasListeners()).True();
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    expect(arr.hasListeners).True();
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(1);
 
     arr.on('change', onChange1);
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(1);
 
     arr.off('change', onChange1);
-    expect(arr.hasListeners()).False();
-    expect(arr.numberOfIds()).eq(0);
+    expect(arr.hasListeners).False();
+    expect(arr.numberOfIds).eq(0);
 
     arr.on('change', onChange2);
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(1);
 
     arr.on('change', onChange1);
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(2);
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(2);
 
     arr.off('change', onChange1);
-    expect(arr.hasListeners()).True();
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    expect(arr.hasListeners).True();
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(1);
 
     arr.off('change', onChange2);
-    expect(arr.hasListeners()).False();
-    expect(arr.numberOfIds()).eq(0);
-    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    expect(arr.hasListeners).False();
+    expect(arr.numberOfIds).eq(0);
+    Throw(() => arr.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
   });
 
   test('dispose', () => {
@@ -105,25 +110,25 @@ describe('observable-array', () => {
     const onChange2 = jest.fn();
 
     arr.on('change', onChange2);
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(1);
 
     arr.dispose();
-    expect(arr.numberOfIds()).eq(0);
-    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    expect(arr.numberOfIds).eq(0);
+    Throw(() => arr.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
 
     arr.on('change', onChange1);
-    expect(arr.hasListeners()).True();
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    expect(arr.hasListeners).True();
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(1);
 
     arr.on('change', onChange2);
-    expect(arr.numberOfIds()).eq(1);
-    expect(arr.numberOfListeners()).eq(2);
+    expect(arr.numberOfIds).eq(1);
+    expect(arr.numberOfListeners).eq(2);
 
     arr.dispose();
-    expect(arr.numberOfIds()).eq(0);
-    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    expect(arr.numberOfIds).eq(0);
+    Throw(() => arr.numberOfListeners, `Cannot read properties of undefined (reading 'size')`);
   });
 
 });
