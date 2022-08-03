@@ -11,8 +11,8 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
 
         case 'set':
           return (key: K, value: V) => {
-            const oldValue = map.get(key);
-            map.set(key, value);
+            const oldValue = map.get.call(map, key);
+            map.set.call(map, key, value);
             emitChange({
               key, oldValue, value,
               type: oldValue === undefined ? 'add' : 'update'
@@ -21,17 +21,17 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
           };
         case 'delete':
           return (key: K): boolean => {
-            const oldValue = map.get(key);
+            const oldValue = map.get.call(map, key);
             if (oldValue === undefined) {
               return false;
             }
-            map.delete(key);
+            map.delete.call(map, key);
             emitChange({key, oldValue, type: 'delete'});
             return true;
           };
         case 'clear':
           return (): void => {
-            map.clear();
+            map.clear.call(map);
             emitChange({type: 'clear'});
           };
 

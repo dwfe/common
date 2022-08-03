@@ -5,7 +5,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
   const {emitChange, emitter} = getProxyChangeEmitterHandlers();
   return new Proxy<T[]>(init, {
     get(array, prop, receiver) {
-      if (typeof prop === 'string' && !isNaN(prop as any)) {
+      if (typeof prop === 'string' && !isNaN(prop as any)) { // access by index
         return array[prop as any];
       }
       switch (prop) {
