@@ -1,5 +1,5 @@
 import {Throw} from '@do-while-for-each/test';
-import {createObsArray, IObsArray, ObsArrayChangeEventListenerParam} from '../..';
+import {createObsArray, IObsArray, ObsArrayChangeEventListenerParam, ObsValueLike} from '../..';
 
 describe('observable-array', () => {
 
@@ -69,66 +69,50 @@ describe('observable-array', () => {
     const arr = createObsArray([1, 2, 3]);
     const onChange1 = jest.fn();
     const onChange2 = jest.fn();
-
-    expect(arr.hasListeners).False();
-
-    arr.on('change', onChange1);
-    expect(arr.hasListeners).True();
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    checkSupport(arr, 0, false);
 
     arr.on('change', onChange1);
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    checkSupport(arr, 1, true, 1);
+
+    arr.on('change', onChange1);
+    checkSupport(arr, 1, true, 1);
 
     arr.off('change', onChange1);
-    expect(arr.hasListeners).False();
-    expect(arr.numberOfIds).eq(0);
+    checkSupport(arr, 0, false);
 
     arr.on('change', onChange2);
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    checkSupport(arr, 1, true, 1);
 
     arr.on('change', onChange1);
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(2);
+    checkSupport(arr, 1, true, 2);
 
     arr.off('change', onChange1);
-    expect(arr.hasListeners).True();
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    checkSupport(arr, 1, true, 1);
 
     arr.off('change', onChange2);
-    expect(arr.hasListeners).False();
-    expect(arr.numberOfIds).eq(0);
-    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    checkSupport(arr, 0, false);
   });
 
   test('dispose', () => {
     const arr = createObsArray([]);
     const onChange1 = jest.fn();
     const onChange2 = jest.fn();
+    checkSupport(arr, 0, false);
 
     arr.on('change', onChange2);
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    checkSupport(arr, 1, true, 1);
 
     arr.dispose();
-    expect(arr.numberOfIds).eq(0);
-    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    checkSupport(arr, 0, false);
 
     arr.on('change', onChange1);
-    expect(arr.hasListeners).True();
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(1);
+    checkSupport(arr, 1, true, 1);
 
     arr.on('change', onChange2);
-    expect(arr.numberOfIds).eq(1);
-    expect(arr.numberOfListeners()).eq(2);
+    checkSupport(arr, 1, true, 2);
 
     arr.dispose();
-    expect(arr.numberOfIds).eq(0);
-    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+    checkSupport(arr, 0, false);
   });
 
 });
@@ -153,4 +137,13 @@ function accessByIndex(arr: IObsArray, arrTest: any[]) {
   }
   expect(arr[arr.length]).eq(undefined);
   expect(arr[-1]).eq(undefined);
+}
+
+export function checkSupport(arr: ObsValueLike, numberOfIds: number, hasListeners: boolean, numberOfListeners?: number) {
+  expect(arr.numberOfIds).eq(numberOfIds);
+  expect(arr.hasListeners).eq(hasListeners);
+  if (numberOfListeners === undefined)
+    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+  else
+    expect(arr.numberOfListeners()).eq(numberOfListeners);
 }

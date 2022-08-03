@@ -1,15 +1,8 @@
-import {IObsArray, ObsArrayChangeEventListenerParam} from '../contract';
-import {ProxyChangeEmitter} from './proxy.change-emitter';
-import {EventEmitter} from '../event-emitter';
+import {getProxyChangeEmitterHandlers} from './proxy.change-emitter';
+import {IObsArray} from '../contract';
 
 export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
-
-  const emitter = new ProxyChangeEmitter<ObsArrayChangeEventListenerParam<T>>(
-    new EventEmitter<{ change: any }>()
-  );
-  const emitChange = emitter.emitChange.bind(emitter);
-  const emitterHasProp = emitter.hasProp.bind(emitter);
-
+  const {emitChange, emitter} = getProxyChangeEmitterHandlers();
   return new Proxy<T[]>(init, {
     get(array, prop, receiver) {
       if (typeof prop === 'string' && !isNaN(prop as any)) {
@@ -26,12 +19,11 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             return newLength;
           };
       }
-      if (emitterHasProp(prop)) {
-        const value = (emitter as any)[prop];
-        return typeof value === 'function' ? value.bind(emitter) : value
+      let result = emitter[prop];
+      if (result === undefined) {
+        result = Reflect.get(array, prop, receiver);
       }
-      const value = Reflect.get(array, prop, receiver);
-      return typeof value === 'function' ? value.bind(array) : value;
+      return typeof result === 'function' ? result.bind(array) : result;
     },
   }) as IObsArray<T>;
 }

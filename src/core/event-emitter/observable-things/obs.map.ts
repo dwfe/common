@@ -1,15 +1,8 @@
-import {IObsMap, ObsMapChangeEventListenerParam} from '../contract';
-import {ProxyChangeEmitter} from './proxy.change-emitter';
-import {EventEmitter} from '../event-emitter';
+import {getProxyChangeEmitterHandlers} from './proxy.change-emitter';
+import {IObsMap} from '../contract';
 
-export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
-
-  const emitter = new ProxyChangeEmitter<ObsMapChangeEventListenerParam<K, V>>(
-    new EventEmitter<{ change: any }>()
-  );
-  const emitChange = emitter.emitChange.bind(emitter);
-  const emitterHasProp = emitter.hasProp.bind(emitter);
-
+export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, V> {
+  const {emitChange, emitter} = getProxyChangeEmitterHandlers();
   return new Proxy<Map<K, V>>(new Map(init), {
     get(map, prop, receiver) {
       switch (prop) {
@@ -45,12 +38,11 @@ export function createObsMap<K, V>(init: [K, V][] = []): IObsMap<K, V> {
         case 'toString':
           return () => '[object ObsMap]';
       }
-      if (emitterHasProp(prop)) {
-        const value = (emitter as any)[prop];
-        return typeof value === 'function' ? value.bind(emitter) : value
+      let result = emitter[prop];
+      if (result === undefined) {
+        result = Reflect.get(map, prop, receiver);
       }
-      const value = Reflect.get(map, prop, receiver);
-      return typeof value === 'function' ? value.bind(map) : value;
+      return typeof result === 'function' ? result.bind(map) : result;
     },
   }) as IObsMap<K, V>;
 }

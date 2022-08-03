@@ -1,61 +1,32 @@
-import {ObsValueLike, Listener} from '../contract';
+import {Listener, ObsValueLike} from '../contract';
 import {EventEmitter} from '../event-emitter';
 
 /**
  * A wrapper over the EventEmitter that limits the functionality of the EventEmitter to event "change" only.
  */
-export class ProxyChangeEmitter<ListenerData> implements ObsValueLike {
+interface ProxyChangeEmitter extends ObsValueLike {
+  emitChange(data: any): void;
+}
 
-  constructor(private eventEmitter: EventEmitter<any>) {
-  }
+export function getProxyChangeEmitterHandlers() {
+  const eventEmitter = new EventEmitter<{ change: any }>();
+  const emitter = Object.create(null) as ProxyChangeEmitter;
 
-  hasProp(prop: string | symbol): boolean {
-    switch (prop) {
-      case 'canBeObservable':
-      case 'on':
-      case 'off':
-      case 'dispose':
-      case 'hasListeners':
-      case 'numberOfListeners':
-      case 'numberOfIds':
-        return true;
-    }
-    return false;
-  }
+  emitter.on = (id: any, listener: Listener) => eventEmitter.on(id, listener);
+  emitter.off = (id, listener: Listener) => eventEmitter.off(id, listener);
+  emitter.dispose = () => eventEmitter.dispose();
+  emitter.emitChange = (data: any) => eventEmitter.emit('change', data);
+  Object.defineProperty(emitter, 'hasListeners', {
+    get: () => eventEmitter.hasListeners,
+  });
+  emitter.numberOfListeners = () => eventEmitter.numberOfListeners('change');
+  Object.defineProperty(emitter, 'numberOfIds', {
+    get: () => eventEmitter.numberOfIds,
+  });
+  emitter.canBeObservable = true;
 
-  on(id: 'change', listener: Listener<ListenerData>): void {
-    this.eventEmitter.on(id as any, listener);
-  }
-
-  off(id: 'change', listener: Listener<ListenerData>): void {
-    this.eventEmitter.off(id as any, listener);
-  }
-
-  dispose(): void {
-    this.eventEmitter.dispose();
-  }
-
-  emitChange(data: ListenerData): void {
-    this.eventEmitter.emit('change', data);
-  }
-
-
-//region Support
-
-  get hasListeners(): boolean {
-    return this.eventEmitter.hasListeners;
-  }
-
-  numberOfListeners(): number {
-    return this.eventEmitter.numberOfListeners('change');
-  }
-
-  get numberOfIds(): number {
-    return this.eventEmitter.numberOfIds;
-  }
-
-  canBeObservable = true;
-
-//endregion Support
-
+  return {
+    emitChange: emitter.emitChange,
+    emitter: emitter as any,
+  };
 }

@@ -10,9 +10,11 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
   on(id: EventIds, listener: Listener<ListenerData>): void;
   off(id: EventIds, listener: Listener<ListenerData>): void;
   dispose(): void;
+//region Support
   hasListeners: boolean;
   numberOfListeners(id?: any): number;
   numberOfIds: number;
+//endregion Support
 }
 
 export type ObsMapChangeEventListenerParam<K, V> = {
