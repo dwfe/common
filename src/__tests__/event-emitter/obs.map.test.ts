@@ -1,10 +1,10 @@
-import '@do-while-for-each/test';
-import {ObsMap} from '../../core/event-emitter'
+import {Throw} from '@do-while-for-each/test';
+import {createObsMap} from '../..';
 
 const initData = [['hello', 2], ['world', null]] as any;
 
-const mapEmpty = new ObsMap();
-const map2Keys = new ObsMap(initData);
+const mapEmpty = createObsMap();
+const map2Keys = createObsMap(initData);
 
 export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, key, oldValue, value) {
   const last = fn.mock.lastCall[0];
@@ -82,12 +82,78 @@ describe('observable-map. #1', () => {
     }
   });
 
+  test('on/off "change"', () => {
+    const map = createObsMap();
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
+
+    expect(map.hasListeners()).False();
+
+    map.on('change', onChange1);
+    expect(map.hasListeners()).True();
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(1);
+
+    map.on('change', onChange1);
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(1);
+
+    map.off('change', onChange1);
+    expect(map.hasListeners()).False();
+    expect(map.numberOfIds()).eq(0);
+
+    map.on('change', onChange2);
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(1);
+
+    map.on('change', onChange1);
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(2);
+
+    map.off('change', onChange1);
+    expect(map.hasListeners()).True();
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(1);
+
+    map.off('change', onChange2);
+    expect(map.hasListeners()).False();
+    expect(map.numberOfIds()).eq(0);
+    Throw(() => map.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+  });
+
+  test('dispose', () => {
+    const map = createObsMap();
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
+
+    map.on('change', onChange2);
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(1);
+
+    map.dispose();
+    expect(map.numberOfIds()).eq(0);
+    Throw(() => map.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+
+    map.on('change', onChange1);
+    expect(map.hasListeners()).True();
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(1);
+
+    map.on('change', onChange2);
+    expect(map.numberOfIds()).eq(1);
+    expect(map.numberOfListeners()).eq(2);
+
+    map.dispose();
+    expect(map.numberOfIds()).eq(0);
+    Throw(() => map.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
+  });
+
 });
 
 describe('observable-map. #2', () => {
 
   test('set', () => {
-    const map = new ObsMap();
+    const map = createObsMap();
     const onChange = jest.fn();
 
     map.on('change', onChange);
@@ -116,7 +182,7 @@ describe('observable-map. #2', () => {
   });
 
   test('delete', () => {
-    const map = new ObsMap(initData);
+    const map = createObsMap(initData);
     const onChange = jest.fn();
 
     map.on('change', onChange);
@@ -135,7 +201,7 @@ describe('observable-map. #2', () => {
 
   test('clear', () => {
     {
-      const map = new ObsMap();
+      const map = createObsMap();
       const onChange = jest.fn();
 
       map.on('change', onChange);
@@ -148,7 +214,7 @@ describe('observable-map. #2', () => {
       expect(map.size).eq(0);
     }
     {
-      const map = new ObsMap(initData);
+      const map = createObsMap(initData);
       const onChange = jest.fn();
 
       map.on('change', onChange);

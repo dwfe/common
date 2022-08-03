@@ -15,5 +15,5 @@ export {millisecToMinWithSec, strMillisecToMinWithSec} from './core/millisec-to-
 export {nextTick} from './core/next-tick';
 export {EventEmitter, Listener} from './core/event-emitter';
 export {ObsArray, createObsArray, ObsArrayChangeEventListenerParam} from './core/event-emitter';
-export {ObsMap, ObsMapChangeEventListenerParam} from './core/event-emitter';
+export {ObsMap,createObsMap, ObsMapChangeEventListenerParam} from './core/event-emitter';
 export {rAFQueueLast} from './core/raf-queue-last';

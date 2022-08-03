@@ -50,7 +50,8 @@ export function createObsArray<T = any>(init: T[] = []): ObsArray<T> {
         case 'numberOfListeners':
           return () => eventEmitter.numberOfListeners('change');
       }
-      return Reflect.get(array, prop, receiver);
+      const value = Reflect.get(array, prop, receiver);
+      return typeof value === 'function' ? value.bind(array) : value;
     },
   }) as ObsArray<T>;
 }
