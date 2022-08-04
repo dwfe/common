@@ -1,8 +1,8 @@
+import {IObsArray, ObsArrayChangeEventListenerParam} from '../contract';
 import {getProxyChangeEmitterHandlers} from './proxy.change-emitter';
-import {IObsArray} from '../contract';
 
 export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
-  const {emitChange, emitter} = getProxyChangeEmitterHandlers();
+  const {emitChange, emitter} = getProxyChangeEmitterHandlers<ObsArrayChangeEventListenerParam<T>>();
   return new Proxy<T[]>(init, {
     get(array, prop, receiver) {
       if (typeof prop === 'string' && !isNaN(prop as any)) { // access by index
@@ -12,6 +12,14 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
         case 'length':
           return array.length;
 
+        case 'pop':
+          return (): T | undefined => {
+            const value = array.pop.call(array);
+            if (value !== undefined) {
+              emitChange({type: 'pop', items: [value]})
+            }
+            return value;
+          };
         case 'push':
           return (...items: T[]): number => {
             const newLength = array.push.apply(array, items);

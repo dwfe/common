@@ -4,18 +4,18 @@ import {EventEmitter} from '../event-emitter';
 /**
  * A wrapper over the EventEmitter that limits the functionality of the EventEmitter to event "change" only.
  */
-interface ProxyChangeEmitter extends ObsValueLike {
-  emitChange(data: any): void;
+interface ProxyChangeEmitter<ListenerParam = any> extends ObsValueLike<any, ListenerParam> {
+  emitChange(data: ListenerParam): void;
 }
 
-export function getProxyChangeEmitterHandlers() {
+export function getProxyChangeEmitterHandlers<ListenerParam = any>() {
   const eventEmitter = new EventEmitter<{ change: any }>();
-  const emitter = Object.create(null) as ProxyChangeEmitter;
+  const emitter = Object.create(null) as ProxyChangeEmitter<ListenerParam>;
 
-  emitter.on = (id: any, listener: Listener) => eventEmitter.on(id, listener);
-  emitter.off = (id, listener: Listener) => eventEmitter.off(id, listener);
+  emitter.on = (id: any, listener: Listener<ListenerParam>) => eventEmitter.on(id, listener);
+  emitter.off = (id, listener: Listener<ListenerParam>) => eventEmitter.off(id, listener);
   emitter.dispose = () => eventEmitter.dispose();
-  emitter.emitChange = (data: any) => eventEmitter.emit('change', data);
+  emitter.emitChange = (data: ListenerParam) => eventEmitter.emit('change', data);
   Object.defineProperty(emitter, 'hasListeners', {
     get: () => eventEmitter.hasListeners,
   });

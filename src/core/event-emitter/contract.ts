@@ -25,7 +25,7 @@ export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEvent
 
 
 export type ObsArrayChangeEventListenerParam<T> = {
-  type: 'add' | 'update' | 'delete' | 'clear';
+  type: 'add' | 'pop' | 'delete' | 'clear';
   items: T[];
 };
 export type IObsArray<T = any> = Array<T> & ObsValueLike<'change', ObsArrayChangeEventListenerParam<T>>;
