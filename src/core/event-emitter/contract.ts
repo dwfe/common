@@ -24,8 +24,23 @@ export type ObsMapChangeEventListenerParam<K, V> = {
 export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEventListenerParam<K, V>>;
 
 
-export type ObsArrayChangeEventListenerParam<T> = {
-  type: 'add' | 'pop' | 'delete' | 'clear';
-  items: T[];
-};
+export type ObsArrayChangeEventListenerParam<T> =
+  // Proxy.get
+  { type: 'pop'; value: T; }    |
+  { type: 'push'; items: T[]; } |
+
+  // Proxy.set
+  { type: 'set-by-index'; index: number; value: T;} |
+  { type: 'set-length'; value: number; }
+;
+
+/*
+
+  type:
+    'copyWithin' | 'fill' | 'pop' | 'push' | 'reverse' | 'shift' | 'sort' | 'splice' | 'unshift' | // Proxy.get
+    'set-by-index' | 'clear-by-length-0'                                                           // Proxy.set
+  ;
+
+ */
+
 export type IObsArray<T = any> = Array<T> & ObsValueLike<'change', ObsArrayChangeEventListenerParam<T>>;
