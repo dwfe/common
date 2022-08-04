@@ -15,7 +15,6 @@ export function getProxyChangeEmitterHandlers<ListenerParam = any>() {
   emitter.on = (id: any, listener: Listener<ListenerParam>) => eventEmitter.on(id, listener);
   emitter.off = (id, listener: Listener<ListenerParam>) => eventEmitter.off(id, listener);
   emitter.dispose = () => eventEmitter.dispose();
-  emitter.emitChange = (data: ListenerParam) => eventEmitter.emit('change', data);
   Object.defineProperty(emitter, 'hasListeners', {
     get: () => eventEmitter.hasListeners,
   });
@@ -26,7 +25,7 @@ export function getProxyChangeEmitterHandlers<ListenerParam = any>() {
   emitter.canBeObservable = true;
 
   return {
-    emitChange: emitter.emitChange,
+    emitChange: (data: ListenerParam) => eventEmitter.emit('change', data),
     emitter: emitter as any,
   };
 }

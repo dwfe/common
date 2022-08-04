@@ -6,7 +6,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
   return new Proxy<T[]>(init, {
 
     /**
-     * Reading the property of target
+     * Reading the Property value of the Target
      */
     get(array: T[], prop: string | symbol, receiver) {
       if (typeof prop === 'string' && !isNaN(prop as any)) { // get by index
@@ -24,7 +24,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
 
         case 'pop':
           return (): T | undefined => {
-            const value = array.pop.call(array);
+            const value = array.pop();
             if (value !== undefined) {
               emitChange({type: 'pop', value})
             }
@@ -32,7 +32,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
           };
         case 'push':
           return (...items: T[]): number => {
-            const newLength = array.push.apply(array, items);
+            const newLength = array.push(...items);
             emitChange({type: 'push', items});
             return newLength;
           };
@@ -60,18 +60,18 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
     },
 
     /**
-     * Writing a value to the property of target
+     * Writing the Value to the Property of the Target
      */
     set(array: T[], prop: string | symbol, value, receiver): boolean {
-      const result = Reflect.set(array, prop, value, receiver);
-
-      if (typeof prop === 'string' && !isNaN(prop as any)) {
-        emitChange({type: 'set-by-index', index: +prop, value});
+      const wasPropertyBeenSet = Reflect.set(array, prop, value, receiver);
+      if (wasPropertyBeenSet) {
+        if (typeof prop === 'string' && !isNaN(prop as any)) {
+          emitChange({type: 'set-by-index', index: +prop, value});
+        }
+        if (prop === 'length')
+          emitChange({type: 'set-length', value});
       }
-      if (prop === 'length') {
-        emitChange({type: 'set-length', value});
-      }
-      return result;
+      return wasPropertyBeenSet;
     },
   }) as IObsArray<T>;
 }
