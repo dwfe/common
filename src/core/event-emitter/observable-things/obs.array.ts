@@ -56,8 +56,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
       if (propValue !== undefined) {
         return propValue;
       }
-      propValue = Reflect.get(array, prop, receiver);
-      return typeof propValue === 'function' ? propValue.bind(array) : propValue;
+      return Reflect.get(array, prop, receiver);
     },
 
     /**

@@ -43,7 +43,9 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
         return propValue;
       }
       propValue = Reflect.get(map, prop, receiver);
-      return typeof propValue === 'function' ? propValue.bind(map) : propValue;
+      return typeof propValue === 'function'
+        ? propValue.bind(map) // because the Proxy does not have a [[MapData]] internal slot: https://tc39.es/ecma262/multipage/keyed-collections.html#sec-properties-of-map-instances
+        : propValue;
     },
   }) as IObsMap<K, V>;
 }
