@@ -231,6 +231,12 @@ describe('other', () => {
     expect(String(createObsArray([9, 0, 2, 'hello']))).eq('9,0,2,hello');
   });
 
+  test('Proxy is Array', () => {
+    const proxy = createObsArray();
+    expect(Array.isArray(proxy)).True();
+    Throw(() => (proxy instanceof Proxy), `Function has non-object prototype 'undefined' in instanceof check`);
+  });
+
 });
 
 describe('ObsValueLike', () => {
