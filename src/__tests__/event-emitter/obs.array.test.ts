@@ -205,6 +205,13 @@ describe('handled in Proxy.set', () => {
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'set-length', 3);
     accessByIndex(arr, [undefined, undefined, undefined]);
+
+    result = (arr.length = 0);
+    expect(result).eq(0);
+    expect(arr.length).eq(0);
+    expect(onChange).toBeCalledTimes(3);
+    lastFnResult(onChange, 'set-length', 0);
+    accessByIndex(arr, []);
   });
 
 });

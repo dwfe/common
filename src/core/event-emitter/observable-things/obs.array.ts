@@ -50,26 +50,24 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
         // case 'unshift':
         //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift
       }
-      let propValue = emitter[prop];
-      if (propValue !== undefined) {
-        return propValue;
-      }
-      return Reflect.get(array, prop, receiver);
+      return emitter[prop] === undefined
+        ? Reflect.get(array, prop, receiver)
+        : emitter[prop];
     },
 
     /**
      * Writing the Value to the Property of the Target
      */
     set(array: T[], prop: string | symbol, value, receiver): boolean {
-      const wasPropertyBeenSet = Reflect.set(array, prop, value, receiver);
-      if (wasPropertyBeenSet) {
+      const valueWasSet = Reflect.set(array, prop, value, receiver);
+      if (valueWasSet) {
         if (typeof prop === 'string' && !isNaN(prop as any)) {
           emitChange({type: 'set-by-index', index: +prop, value});
         }
         if (prop === 'length')
           emitChange({type: 'set-length', value});
       }
-      return wasPropertyBeenSet;
+      return valueWasSet;
     },
   }) as IObsArray<T>;
 }
