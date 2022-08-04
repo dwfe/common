@@ -8,13 +8,11 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
     /**
      * Reading the Property value of the Target
      */
-    get(array: T[], prop: string | symbol, receiver) {
+    get(array, prop, receiver) {
       if (typeof prop === 'string' && !isNaN(prop as any)) { // get by index
         return array[prop as any];
       }
       switch (prop) {
-        case 'length':
-          return array.length;
 
         // case 'copyWithin':
         //   https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin
