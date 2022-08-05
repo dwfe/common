@@ -58,7 +58,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
     /**
      * Writing the Value to the Property of the Target
      */
-    set(array: T[], prop: string | symbol, value, receiver): boolean {
+    set(array, prop, value, receiver): boolean {
       const valueWasSet = Reflect.set(array, prop, value, receiver);
       if (valueWasSet) {
         if (typeof prop === 'string' && !isNaN(prop as any)) {
