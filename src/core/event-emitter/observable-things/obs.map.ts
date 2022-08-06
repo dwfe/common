@@ -43,7 +43,7 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
         return emitter[prop];
       }
       const res = (map as any)[prop];  // we're not using the receiver argument at all,
-      return typeof res === 'function' // because the Proxy does not have a [[MapData]] internal slot: https://tc39.es/ecma262/multipage/keyed-collections.html#sec-properties-of-map-instances
+      return typeof res === 'function' // because the Proxy does not have a [[MapData]] trap: https://tc39.es/ecma262/multipage/keyed-collections.html#sec-properties-of-map-instances
         ? res.bind(map)                // instead, the target itself is used as the receiver
         : res;
     },
