@@ -56,5 +56,16 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
       emitChange({type: 'set-prop', prop, value});
       return true;
     },
+
+    /**
+     * Deleting the Property of the Target
+     */
+    deleteProperty(map, prop): boolean {
+      const wasDeleted = Reflect.deleteProperty(map, prop);
+      if (wasDeleted) {
+        emitChange({type: 'delete-prop', prop});
+      }
+      return wasDeleted;
+    }
   }) as IObsMap<K, V>;
 }

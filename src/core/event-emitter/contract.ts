@@ -19,7 +19,7 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
 
 export type ObsMapChangeEventListenerParam<K, V> = {
   key?: K; oldValue?: V; value?: V; prop?: string | symbol;
-  type: 'add' | 'update' | 'delete' | 'clear' | 'set-prop';
+  type: 'add' | 'update' | 'delete' | 'clear' | 'set-prop' | 'delete-prop';
 };
 export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEventListenerParam<K, V>>;
 
@@ -34,7 +34,10 @@ export type ObsArrayChangeEventListenerParam<T> =
   // Proxy.set
   { type: 'set-by-index'; index: number; value: T;} |
   { type: 'set-length'; value: number; } |
-  { type: 'set-prop'; prop: string | symbol; value: any; }
+  { type: 'set-prop'; prop: string | symbol; value: any; } |
+
+  // Proxy.deleteProperty
+  { type: 'delete-prop', prop: string | symbol }
 ;
 
 /*

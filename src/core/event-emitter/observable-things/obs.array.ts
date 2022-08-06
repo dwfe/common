@@ -64,8 +64,8 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
      * Writing the Value to the Property of the Target
      */
     set(array, prop, value, receiver): boolean {
-      const valueWasSet = Reflect.set(array, prop, value, receiver);
-      if (valueWasSet) {
+      const wasSet = Reflect.set(array, prop, value, receiver);
+      if (wasSet) {
         if (typeof prop === 'string' && !isNaN(prop as any))
           emitChange({type: 'set-by-index', index: +prop, value});
         else if (prop === 'length')
@@ -73,7 +73,18 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
         else
           emitChange({type: 'set-prop', prop, value});
       }
-      return valueWasSet;
+      return wasSet;
     },
+
+    /**
+     * Deleting the Property of the Target
+     */
+    deleteProperty(arr, prop): boolean {
+      const wasDeleted = Reflect.deleteProperty(arr, prop);
+      if (wasDeleted) {
+        emitChange({type: 'delete-prop', prop});
+      }
+      return wasDeleted;
+    }
   }) as IObsArray<T>;
 }
