@@ -224,7 +224,7 @@ describe('observable-map. #2', () => {
     }
   });
 
-  test('set-some-prop', () => {
+  test('set-prop', () => {
     const map = createObsMap();
     const onChange = jest.fn();
 
@@ -240,7 +240,7 @@ describe('observable-map. #2', () => {
     expect(map).toHaveProperty('hello', 'world');
 
     const last = onChange.mock.lastCall[0];
-    expect(last.type).eq('set-some-prop');
+    expect(last.type).eq('set-prop');
     expect(last.prop).eq('hello');
     expect(last.value).eq('world');
   });

@@ -71,7 +71,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
         else if (prop === 'length')
           emitChange({type: 'set-length', value});
         else
-          emitChange({type: 'set-some-prop', prop, value});
+          emitChange({type: 'set-prop', prop, value});
       }
       return valueWasSet;
     },

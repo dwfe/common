@@ -53,7 +53,7 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
      */
     set(map, prop, value): boolean {
       (map as any)[prop] = value;
-      emitChange({type: 'set-some-prop', prop, value});
+      emitChange({type: 'set-prop', prop, value});
       return true;
     },
   }) as IObsMap<K, V>;

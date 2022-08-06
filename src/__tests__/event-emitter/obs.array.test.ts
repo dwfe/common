@@ -268,7 +268,7 @@ describe('handled in Proxy.set', () => {
     accessByIndex(arr, []);
   });
 
-  test('set-some-prop', () => {
+  test('set-prop', () => {
     const arr = createObsArray();
     const onChange = jest.fn();
 
@@ -281,7 +281,7 @@ describe('handled in Proxy.set', () => {
     expect(result).eq('world');
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(1);
-    lastFnResult(onChange, 'set-some-prop', 'hello', 'world');
+    lastFnResult(onChange, 'set-prop', 'hello', 'world');
     accessByIndex(arr, []);
   });
 
@@ -416,7 +416,7 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChang
       expect(value).eq(last.value);
       break;
     }
-    case 'set-some-prop': {
+    case 'set-prop': {
       const [prop, value] = rest;
       expect(prop).eq(last.prop);
       expect(value).eq(last.value);
