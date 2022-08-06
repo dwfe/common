@@ -9,9 +9,9 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
      * Reading the Property value of the Target
      */
     get(array, prop, receiver) {
-      if (typeof prop === 'string' && !isNaN(prop as any)) { // get by index
-        return array[prop as any];
-      }
+      // if (typeof prop === 'string' && !isNaN(prop as any)) { // get by index
+      //   return array[prop as any];
+      // }
       switch (prop) {
         case 'copyWithin':
           return (target: number, start: number, end?: number): typeof Proxy => {
