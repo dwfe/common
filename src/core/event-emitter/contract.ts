@@ -39,6 +39,7 @@ export type ObsArrayChangeEventListenerParam<T> =
   { type: 'fill'; value: any; start: number; end?: number; } |
   { type: 'pop'; value: T; }    |
   { type: 'push'; items: T[]; } |
+  { type: 'reverse'; } |
 
   // Proxy.set
   { type: 'set-by-index'; index: number; value: T;} |

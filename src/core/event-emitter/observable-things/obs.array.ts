@@ -39,10 +39,13 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             emitChange({type: 'push', items});
             return newLength;
           };
+        case 'reverse':
+          return (): typeof Proxy => {
+            array.reverse();
+            emitChange({type: 'reverse'});
+            return receiver;
+          };
 
-        // case 'reverse':
-        //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse
-        //
         // case 'shift':
         //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift
         //

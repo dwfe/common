@@ -170,6 +170,28 @@ describe('handled in Proxy.get', () => {
     accessByIndex(arr, [1, 5, 7, 6]);
   });
 
+  test('reverse', () => {
+    function checkReverse(initArr: any[], expectedResult: any[]) {
+      const arr = createObsArray(initArr);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(initArr.length);
+      expect(onChange).toBeCalledTimes(0);
+
+      let result = arr.reverse();
+      expect(result).eq(arr);
+      expect(arr.length).eq(expectedResult.length);
+      expect(onChange).toBeCalledTimes(1);
+      const last = onChange.mock.lastCall[0];
+      expect(last.type).eq('reverse');
+      accessByIndex(arr, expectedResult);
+    }
+
+    checkReverse(['one', 'two', 'three'], ['three', 'two', 'one']);
+    checkReverse([1, 2, 3, 4, 5], [5, 4, 3, 2, 1]);
+  });
+
 });
 
 describe('handled in Proxy.set', () => {
