@@ -17,10 +17,19 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
 //endregion Support
 }
 
-export type ObsMapChangeEventListenerParam<K, V> = {
-  key?: K; oldValue?: V; value?: V; prop?: string | symbol;
-  type: 'add' | 'update' | 'delete' | 'clear' | 'set-prop' | 'delete-prop';
-};
+export type ObsMapChangeEventListenerParam<K, V> =
+  // Proxy.get
+  { type: 'add'; key: K; value: V; } |
+  { type: 'update'; key: K;  oldValue: V; value: V; } |
+  { type: 'delete'; key: K;  value: V; } |
+  { type: 'clear'; } |
+
+  // Proxy.set
+  { type: 'set-prop'; prop: string | symbol; value: any; } |
+
+  // Proxy.deleteProperty
+  { type: 'delete-prop'; prop: string | symbol; }
+;
 export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEventListenerParam<K, V>>;
 
 
@@ -37,7 +46,7 @@ export type ObsArrayChangeEventListenerParam<T> =
   { type: 'set-prop'; prop: string | symbol; value: any; } |
 
   // Proxy.deleteProperty
-  { type: 'delete-prop', prop: string | symbol }
+  { type: 'delete-prop'; prop: string | symbol; }
 ;
 
 /*

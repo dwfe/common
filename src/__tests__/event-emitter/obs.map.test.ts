@@ -7,12 +7,30 @@ const initData = [['hello', 2], ['world', null]] as any;
 const mapEmpty = createObsMap();
 const map2Keys = createObsMap(initData);
 
-export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, key, oldValue, value) {
+export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, ...rest: any[]) {
   const last = fn.mock.lastCall[0];
   expect(type).eq(last.type);
-  expect(key).eq(last.key);
-  expect(oldValue).eq(last.oldValue);
-  expect(value).eq(last.value);
+  switch (type) {
+    case 'add': {
+      const [key, value] = rest;
+      expect(last.key).eq(key);
+      expect(last.value).eq(value);
+      break;
+    }
+    case 'update': {
+      const [key, oldValue, value] = rest;
+      expect(last.key).eq(key);
+      expect(last.oldValue).eq(oldValue);
+      expect(last.value).eq(value);
+      break;
+    }
+    case 'delete': {
+      const [key, value] = rest;
+      expect(last.key).eq(key);
+      expect(last.value).eq(value);
+      break;
+    }
+  }
 }
 
 describe('observable-map. #1', () => {
@@ -153,7 +171,7 @@ describe('observable-map. #2', () => {
     let result = map.set('hello', 'Alex');
     expect(result).eq(map);
     expect(onChange).toBeCalledTimes(1);
-    lastFnResult(onChange, 'add', 'hello', undefined, 'Alex');
+    lastFnResult(onChange, 'add', 'hello', 'Alex');
     expect(map.size).eq(1);
 
     result = map.set('hello', 'Alex');
@@ -171,7 +189,7 @@ describe('observable-map. #2', () => {
     result = map.set('world', true);
     expect(result).eq(map);
     expect(onChange).toBeCalledTimes(4);
-    lastFnResult(onChange, 'add', 'world', undefined, true);
+    lastFnResult(onChange, 'add', 'world', true);
     expect(map.size).eq(2);
   });
 
@@ -224,7 +242,7 @@ describe('observable-map. #2', () => {
     }
   });
 
-  test('set-prop', () => {
+  test('set-prop / delete-prop', () => {
     const map = createObsMap();
     const onChange = jest.fn();
 
@@ -239,11 +257,41 @@ describe('observable-map. #2', () => {
     expect(onChange).toBeCalledTimes(1);
     expect(map).toHaveProperty('hello', 'world');
 
-    const last = onChange.mock.lastCall[0];
+    let last = onChange.mock.lastCall[0];
     expect(last.type).eq('set-prop');
     expect(last.prop).eq('hello');
     expect(last.value).eq('world');
+
+    expect(map).toHaveProperty('hello', 'world');
+    delete map['hello'];
+    expect(map).not.toHaveProperty('hello');
+    last = onChange.mock.lastCall[0];
+    expect(last.type).eq('delete-prop');
+    expect(last.prop).eq('hello');
   });
+
+  // test('defineProperty', () => {
+  //   const map = createObsMap();
+  //   const onChange = jest.fn();
+  //
+  //   map.on('change', onChange);
+  //   expect(map.size).eq(0);
+  //   expect(onChange).toBeCalledTimes(0);
+  //   expect(map).not.toHaveProperty('hello');
+  //
+  //   Object.defineProperty(map, 'hello', {
+  //     value: 123,
+  //   });
+  //
+  //   expect(map.size).eq(0);
+  //   expect(onChange).toBeCalledTimes(1);
+  //   const last = onChange.mock.lastCall[0];
+  //   expect(last.type).eq('define-prop');
+  //   expect(last.prop).eq('hello');
+  //   expect(last.descriptor.value).eq(123);
+  //   expect(map).toHaveProperty('hello', 123);
+  // });
+
 
 });
 

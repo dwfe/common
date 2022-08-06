@@ -14,20 +14,19 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
           return (key: K, value: V): typeof Proxy => {
             const oldValue = map.get(key);
             map.set(key, value);
-            emitChange({
-              key, oldValue, value,
-              type: oldValue === undefined ? 'add' : 'update'
-            });
+            emitChange(oldValue === undefined
+              ? {type: 'add', key, value}
+              : {type: 'update', key, oldValue, value});
             return receiver;
           };
         case 'delete':
           return (key: K): boolean => {
-            const oldValue = map.get(key);
-            if (oldValue === undefined) {
+            const value = map.get(key);
+            if (value === undefined) {
               return false;
             }
             map.delete(key);
-            emitChange({key, oldValue, type: 'delete'});
+            emitChange({type: 'delete', key, value});
             return true;
           };
         case 'clear':
@@ -66,6 +65,17 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
         emitChange({type: 'delete-prop', prop});
       }
       return wasDeleted;
-    }
+    },
+
+    // /**
+    //  * Defining the Property of the Target
+    //  */
+    // defineProperty(arr, prop, descriptor): boolean {
+    //   const wasDefined = Reflect.defineProperty(arr, prop, descriptor);
+    //   if (wasDefined) {
+    //     emitChange({type: 'define-prop', prop, descriptor});
+    //   }
+    //   return wasDefined;
+    // }
   }) as IObsMap<K, V>;
 }

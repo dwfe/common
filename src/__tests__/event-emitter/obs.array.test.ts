@@ -268,7 +268,7 @@ describe('handled in Proxy.set', () => {
     accessByIndex(arr, []);
   });
 
-  test('set-prop', () => {
+  test('set-prop / delete-prop', () => {
     const arr = createObsArray();
     const onChange = jest.fn();
 
@@ -283,9 +283,43 @@ describe('handled in Proxy.set', () => {
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'set-prop', 'hello', 'world');
     accessByIndex(arr, []);
+
+    expect(arr).toHaveProperty('hello');
+    delete arr['hello'];
+    expect(arr).not.toHaveProperty('hello');
+    const last = onChange.mock.lastCall[0];
+    expect(last.type).eq('delete-prop');
+    expect(last.prop).eq('hello');
   });
 
 });
+
+// describe('handled in Proxy.defineProperty', () => {
+//
+//   test('defineProperty', () => {
+//     const arr = createObsArray([1, 2, 3]);
+//     const onChange = jest.fn();
+//
+//     arr.on('change', onChange);
+//     expect(arr.length).eq(3);
+//     expect(onChange).toBeCalledTimes(0);
+//     expect(arr).not.toHaveProperty('hello');
+//
+//     Object.defineProperty(arr, 'hello', {
+//       value: 123,
+//     });
+//
+//     expect(arr.length).eq(3);
+//     expect(onChange).toBeCalledTimes(1);
+//     accessByIndex(arr, [1, 2, 3]);
+//     const last = onChange.mock.lastCall[0];
+//     expect(last.type).eq('define-prop');
+//     expect(last.prop).eq('hello');
+//     expect(last.descriptor.value).eq(123);
+//     expect(arr).toHaveProperty('hello', 123);
+//   });
+//
+// });
 
 describe('other', () => {
 
