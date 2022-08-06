@@ -45,13 +45,21 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             emitChange({type: 'reverse'});
             return receiver;
           };
+        case 'shift':
+          return (): T | undefined => {
+            const value = array.shift();
+            if (value !== undefined) {
+              emitChange({type: 'shift', value})
+            }
+            return value;
+          };
+        case 'sort':
+          return (compareFn?: (a: T, b: T) => number): typeof Proxy => {
+            array.sort(compareFn);
+            emitChange({type: 'sort'});
+            return receiver;
+          };
 
-        // case 'shift':
-        //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift
-        //
-        // case 'sort':
-        //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-        //
         // case 'splice':
         //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
         //

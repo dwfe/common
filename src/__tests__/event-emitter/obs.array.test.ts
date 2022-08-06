@@ -190,6 +190,86 @@ describe('handled in Proxy.get', () => {
 
     checkReverse(['one', 'two', 'three'], ['three', 'two', 'one']);
     checkReverse([1, 2, 3, 4, 5], [5, 4, 3, 2, 1]);
+    checkReverse(['hello', 7, 'привет', null, true], [true, null, 'привет', 7, 'hello']);
+  });
+
+  test('shift', () => {
+    {
+      const arr = createObsArray([]);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(0);
+      expect(onChange).toBeCalledTimes(0);
+
+      let result = arr.shift();
+      expect(result).eq(undefined);
+      expect(arr.length).eq(0);
+      expect(onChange).toBeCalledTimes(0);
+    }
+    {
+      const arr = createObsArray([17, 'hello']);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(2);
+      expect(onChange).toBeCalledTimes(0);
+
+      let result = arr.shift();
+      expect(result).eq(17);
+      expect(arr.length).eq(1);
+      expect(onChange).toBeCalledTimes(1);
+      let last = onChange.mock.lastCall[0];
+      expect(last.type).eq('shift');
+      expect(last.value).eq(17);
+      accessByIndex(arr, ['hello']);
+
+      result = arr.shift();
+      expect(result).eq('hello');
+      expect(arr.length).eq(0);
+      expect(onChange).toBeCalledTimes(2);
+      last = onChange.mock.lastCall[0];
+      expect(last.type).eq('shift');
+      expect(last.value).eq('hello');
+      accessByIndex(arr, []);
+
+      result = arr.shift();
+      expect(result).eq(undefined);
+      expect(arr.length).eq(0);
+      expect(onChange).toBeCalledTimes(2);
+      accessByIndex(arr, []);
+    }
+  });
+
+  test('sort', () => {
+    function checkSort(initArr: any[], expectedResult: any[], compareFn?: (a, b) => number) {
+      const arr = createObsArray(initArr);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(initArr.length);
+      expect(onChange).toBeCalledTimes(0);
+
+      let result = arr.sort(compareFn);
+      expect(result).eq(arr);
+      expect(arr.length).eq(expectedResult.length);
+      expect(onChange).toBeCalledTimes(1);
+      const last = onChange.mock.lastCall[0];
+      expect(last.type).eq('sort');
+      accessByIndex(arr, expectedResult);
+    }
+
+    function compareNumbers(a, b) {
+      return a - b;
+    }
+
+    checkSort(['Blue', 'Humpback', 'Beluga'], ['Beluga', 'Blue', 'Humpback']);
+    checkSort([40, 1, 5, 200], [1, 200, 40, 5]);
+    checkSort([40, 1, 5, 200], [1, 5, 40, 200], compareNumbers);
+    checkSort(['80', '9', '700'], ['700', '80', '9']);
+    checkSort(['80', '9', '700'], ['9', '80', '700'], compareNumbers);
+    checkSort(['80', '9', '700', 40, 1, 5, 200], [1, 200, 40, 5, '700', '80', '9']);
+    checkSort(['80', '9', '700', 40, 1, 5, 200], [1, 5, '9', 40, '80', 200, '700'], compareNumbers);
   });
 
 });

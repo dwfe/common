@@ -36,10 +36,12 @@ export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEvent
 export type ObsArrayChangeEventListenerParam<T> =
   // Proxy.get
   { type: 'copyWithin'; target: number, start: number, end?: number; } |
-  { type: 'fill'; value: any; start: number; end?: number; } |
-  { type: 'pop'; value: T; }    |
-  { type: 'push'; items: T[]; } |
-  { type: 'reverse'; } |
+  { type: 'fill'; value: any; start: number; end?: number; }           |
+  { type: 'pop'; value: T; }                                           |
+  { type: 'push'; items: T[]; }                                        |
+  { type: 'reverse'; }                                                 |
+  { type: 'shift'; value: T; }                                         |
+  { type: 'sort'; }                                                    |
 
   // Proxy.set
   { type: 'set-by-index'; index: number; value: T;} |
