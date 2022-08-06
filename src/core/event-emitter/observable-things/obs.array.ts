@@ -13,13 +13,18 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
         return array[prop as any];
       }
       switch (prop) {
-
-        // case 'copyWithin':
-        //   https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin
-        //
-        // case 'fill':
-        //   https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/fill
-
+        case 'copyWithin':
+          return (target: number, start: number, end?: number): typeof Proxy => {
+            array.copyWithin(target, start, end);
+            emitChange({type: 'copyWithin', target, start, end});
+            return receiver;
+          };
+        case 'fill':
+          return (value: any, start: number, end?: number): typeof Proxy => {
+            array.fill(value, start, end);
+            emitChange({type: 'fill', value, start, end});
+            return receiver;
+          }
         case 'pop':
           return (): T | undefined => {
             const value = array.pop();

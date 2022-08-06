@@ -25,6 +25,60 @@ describe('handled in Proxy.get', () => {
     expect(arr[-0n as any]).eq(7);
     expect(arr[4n as any]).eq(8);
     expect(arr['hello']).eq(undefined);
+    expect(arr[-2]).eq(undefined);
+  });
+
+  test('copyWithin', () => {
+    function checkCopyWithin(initArr: any[], [target, start, end]: any[], expectedResult: any[]) {
+      const arr = createObsArray(initArr);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(initArr.length);
+      expect(onChange).toBeCalledTimes(0);
+
+      let result = arr.copyWithin(target, start, end);
+      expect(result).eq(arr);
+      expect(arr.length).eq(5);
+      expect(onChange).toBeCalledTimes(1);
+      lastFnResult(onChange, 'copyWithin', target, start, end);
+      accessByIndex(arr, expectedResult);
+    }
+
+    checkCopyWithin([1, 2, 3, 4, 5], [0, 3], [4, 5, 3, 4, 5]);
+    checkCopyWithin([1, 2, 3, 4, 5], [0, 3, 4], [4, 2, 3, 4, 5]);
+    checkCopyWithin([1, 2, 3, 4, 5], [0, 3, 6], [4, 5, 3, 4, 5]);
+    checkCopyWithin([1, 2, 3, 4, 5], [0, -2, -1], [4, 2, 3, 4, 5]);
+  });
+
+  test('fill', () => {
+    function checkFill(initArr: any[], [value, start, end]: any[], expectedResult: any[]) {
+      const arr = createObsArray(initArr);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(initArr.length);
+      expect(onChange).toBeCalledTimes(0);
+
+      let result = arr.fill(value, start, end);
+      expect(result).eq(arr);
+      expect(arr.length).eq(3);
+      expect(onChange).toBeCalledTimes(1);
+      lastFnResult(onChange, 'fill', value, start, end);
+      accessByIndex(arr, expectedResult);
+    }
+
+    checkFill([1, 2, 3], [4], [4, 4, 4]);
+    checkFill([1, 2, 3], [4, 1], [1, 4, 4]);
+    checkFill([1, 2, 3], [4, 1, 2], [1, 4, 3]);
+    checkFill([1, 2, 3], [4, 1, 1], [1, 2, 3]);
+    checkFill([1, 2, 3], [4, 3, 3], [1, 2, 3]);
+    checkFill([1, 2, 3], [4, -3, -2], [4, 2, 3]);
+    checkFill([1, 2, 3], [4, NaN, NaN], [1, 2, 3]);
+    checkFill([1, 2, 3], [4, 3, 5], [1, 2, 3]);
+    checkFill(Array(3), [4], [4, 4, 4]);
+    const obj = {};
+    checkFill(Array(3), [obj], [obj, obj, obj]);
   });
 
   test('pop', () => {
@@ -306,6 +360,20 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChang
   const last = fn.mock.lastCall[0];
   expect(type).eq(last.type);
   switch (type) {
+    case 'copyWithin': {
+      const [target, start, end] = rest;
+      expect(target).eq(last.target);
+      expect(start).eq(last.start);
+      expect(end).eq(last.end);
+      break;
+    }
+    case 'fill': {
+      const [value, start, end] = rest;
+      expect(value).eq(last.value);
+      expect(start).eq(last.start);
+      expect(end).eq(last.end);
+      break;
+    }
     case 'pop': {
       const value = rest[0];
       expect(value).eq(last.value);
@@ -321,8 +389,7 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChang
       break;
     }
     case 'set-by-index': {
-      const index = rest[0];
-      const value = rest[1];
+      const [index, value] = rest;
       expect(value).eq(last.value);
       expect(index).eq(last.index);
       break;
