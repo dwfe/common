@@ -224,6 +224,27 @@ describe('observable-map. #2', () => {
     }
   });
 
+  test('set-some-prop', () => {
+    const map = createObsMap();
+    const onChange = jest.fn();
+
+    map.on('change', onChange);
+    expect(map.size).eq(0);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(map).not.toHaveProperty('hello');
+    let result = (map['hello'] = 'world');
+    expect(result).eq('world');
+    expect(map.size).eq(0);
+    expect(onChange).toBeCalledTimes(1);
+    expect(map).toHaveProperty('hello', 'world');
+
+    const last = onChange.mock.lastCall[0];
+    expect(last.type).eq('set-some-prop');
+    expect(last.prop).eq('hello');
+    expect(last.value).eq('world');
+  });
+
 });
 
 describe('observable-map. creating', () => {

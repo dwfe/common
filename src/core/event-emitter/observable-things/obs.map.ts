@@ -47,5 +47,14 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
         ? res.bind(map)                // instead, the target itself is used as the receiver
         : res;
     },
+
+    /**
+     * Writing the Value to the Property of the Target
+     */
+    set(map, prop, value): boolean {
+      (map as any)[prop] = value;
+      emitChange({type: 'set-some-prop', prop, value});
+      return true;
+    },
   }) as IObsMap<K, V>;
 }

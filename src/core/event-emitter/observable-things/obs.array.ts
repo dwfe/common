@@ -66,11 +66,12 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
     set(array, prop, value, receiver): boolean {
       const valueWasSet = Reflect.set(array, prop, value, receiver);
       if (valueWasSet) {
-        if (typeof prop === 'string' && !isNaN(prop as any)) {
+        if (typeof prop === 'string' && !isNaN(prop as any))
           emitChange({type: 'set-by-index', index: +prop, value});
-        }
-        if (prop === 'length')
+        else if (prop === 'length')
           emitChange({type: 'set-length', value});
+        else
+          emitChange({type: 'set-some-prop', prop, value});
       }
       return valueWasSet;
     },

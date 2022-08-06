@@ -18,22 +18,23 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
 }
 
 export type ObsMapChangeEventListenerParam<K, V> = {
-  key?: K, oldValue?: V, value?: V,
-  type: 'add' | 'update' | 'delete' | 'clear'
+  key?: K; oldValue?: V; value?: V; prop?: string | symbol;
+  type: 'add' | 'update' | 'delete' | 'clear' | 'set-some-prop';
 };
 export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEventListenerParam<K, V>>;
 
 
 export type ObsArrayChangeEventListenerParam<T> =
   // Proxy.get
-  { type: 'copyWithin'; target: number, start: number, end?: number } |
-  { type: 'fill'; value: any; start: number; end?: number } |
+  { type: 'copyWithin'; target: number, start: number, end?: number; } |
+  { type: 'fill'; value: any; start: number; end?: number; } |
   { type: 'pop'; value: T; }    |
   { type: 'push'; items: T[]; } |
 
   // Proxy.set
   { type: 'set-by-index'; index: number; value: T;} |
-  { type: 'set-length'; value: number; }
+  { type: 'set-length'; value: number; } |
+  { type: 'set-some-prop'; prop: string | symbol; value: any; }
 ;
 
 /*
