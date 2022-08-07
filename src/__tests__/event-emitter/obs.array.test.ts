@@ -42,7 +42,7 @@ describe('handled in Proxy.get', () => {
       expect(arr.length).eq(5);
       expect(onChange).toBeCalledTimes(1);
       lastFnResult(onChange, 'copyWithin', target, start, end);
-      accessByIndex(arr, expectedResult);
+      checkArray(arr, expectedResult);
     }
 
     checkCopyWithin([1, 2, 3, 4, 5], [0, 3], [4, 5, 3, 4, 5]);
@@ -65,7 +65,7 @@ describe('handled in Proxy.get', () => {
       expect(arr.length).eq(3);
       expect(onChange).toBeCalledTimes(1);
       lastFnResult(onChange, 'fill', value, start, end);
-      accessByIndex(arr, expectedResult);
+      checkArray(arr, expectedResult);
     }
 
     checkFill([1, 2, 3], [4], [4, 4, 4]);
@@ -94,35 +94,35 @@ describe('handled in Proxy.get', () => {
     expect(arr.length).eq(2);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'pop', 4);
-    accessByIndex(arr, [2, 5]);
+    checkArray(arr, [2, 5]);
 
     result = arr.pop();
     expect(result).eq(5);
     expect(arr.length).eq(1);
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'pop', 5);
-    accessByIndex(arr, [2]);
+    checkArray(arr, [2]);
 
     result = arr.pop();
     expect(result).eq(2);
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(3);
     lastFnResult(onChange, 'pop', 2);
-    accessByIndex(arr, []);
+    checkArray(arr, []);
 
     result = arr.pop();
     expect(result).eq(undefined);
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(3);
     lastFnResult(onChange, 'pop', 2);
-    accessByIndex(arr, []);
+    checkArray(arr, []);
 
     result = arr.pop();
     expect(result).eq(undefined);
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(3);
     lastFnResult(onChange, 'pop', 2);
-    accessByIndex(arr, []);
+    checkArray(arr, []);
 
     arr.push(7, 'hello');
     result = arr.pop();
@@ -130,21 +130,21 @@ describe('handled in Proxy.get', () => {
     expect(arr.length).eq(1);
     expect(onChange).toBeCalledTimes(5);
     lastFnResult(onChange, 'pop', 'hello');
-    accessByIndex(arr, [7]);
+    checkArray(arr, [7]);
 
     result = arr.pop();
     expect(result).eq(7);
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(6);
     lastFnResult(onChange, 'pop', 7);
-    accessByIndex(arr, []);
+    checkArray(arr, []);
 
     result = arr.pop();
     expect(result).eq(undefined);
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(6);
     lastFnResult(onChange, 'pop', 7);
-    accessByIndex(arr, []);
+    checkArray(arr, []);
   });
 
   test('push', () => {
@@ -160,14 +160,14 @@ describe('handled in Proxy.get', () => {
     expect(arr.length).eq(1);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'push', [1]);
-    accessByIndex(arr, [1]);
+    checkArray(arr, [1]);
 
     result = arr.push(5, 7, 6);
     expect(result).eq(4);
     expect(arr.length).eq(4);
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'push', [5, 7, 6]);
-    accessByIndex(arr, [1, 5, 7, 6]);
+    checkArray(arr, [1, 5, 7, 6]);
   });
 
   test('reverse', () => {
@@ -185,7 +185,7 @@ describe('handled in Proxy.get', () => {
       expect(onChange).toBeCalledTimes(1);
       const last = onChange.mock.lastCall[0];
       expect(last.type).eq('reverse');
-      accessByIndex(arr, expectedResult);
+      checkArray(arr, expectedResult);
     }
 
     checkReverse(['one', 'two', 'three'], ['three', 'two', 'one']);
@@ -222,7 +222,7 @@ describe('handled in Proxy.get', () => {
       let last = onChange.mock.lastCall[0];
       expect(last.type).eq('shift');
       expect(last.value).eq(17);
-      accessByIndex(arr, ['hello']);
+      checkArray(arr, ['hello']);
 
       result = arr.shift();
       expect(result).eq('hello');
@@ -231,13 +231,13 @@ describe('handled in Proxy.get', () => {
       last = onChange.mock.lastCall[0];
       expect(last.type).eq('shift');
       expect(last.value).eq('hello');
-      accessByIndex(arr, []);
+      checkArray(arr, []);
 
       result = arr.shift();
       expect(result).eq(undefined);
       expect(arr.length).eq(0);
       expect(onChange).toBeCalledTimes(2);
-      accessByIndex(arr, []);
+      checkArray(arr, []);
     }
   });
 
@@ -256,7 +256,7 @@ describe('handled in Proxy.get', () => {
       expect(onChange).toBeCalledTimes(1);
       const last = onChange.mock.lastCall[0];
       expect(last.type).eq('sort');
-      accessByIndex(arr, expectedResult);
+      checkArray(arr, expectedResult);
     }
 
     function compareNumbers(a, b) {
@@ -287,15 +287,15 @@ describe('handled in Proxy.get', () => {
         ? arr.splice(params.start)
         : arr.splice(params.start, params.deleteCount, ...params.items);
 
-      accessByIndex(result, mustBeDeleted);
+      checkArray(result, mustBeDeleted);
       expect(arr.length).eq(expectedResult.length);
       expect(onChange).toBeCalledTimes(1);
       const last = onChange.mock.lastCall[0];
       expect(last.type).eq('splice');
-      accessByIndex(last.deletedItems, mustBeDeleted);
+      checkArray(last.deletedItems, mustBeDeleted);
       expect(last.deleteCount).eq(params.deleteCount);
-      accessByIndex(last.addedItems, params.items);
-      accessByIndex(arr, expectedResult);
+      checkArray(last.addedItems, params.items);
+      checkArray(arr, expectedResult);
     }
 
     checkSplice( // Remove 0 (zero) elements before index 2, and insert "drum"
@@ -373,14 +373,14 @@ describe('handled in Proxy.get', () => {
     expect(arr.length).eq(1);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'unshift', [1]);
-    accessByIndex(arr, [1]);
+    checkArray(arr, [1]);
 
     result = arr.unshift(5, 7, 6);
     expect(result).eq(4);
     expect(arr.length).eq(4);
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'unshift', [5, 7, 6]);
-    accessByIndex(arr, [5, 7, 6, 1]);
+    checkArray(arr, [5, 7, 6, 1]);
   });
 
 });
@@ -403,7 +403,7 @@ describe('handled in Proxy.set', () => {
       expect(arr.length).eq(1);
       expect(onChange).toBeCalledTimes(1);
       lastFnResult(onChange, 'set-by-index', 0, 7);
-      accessByIndex(arr, [7]);
+      checkArray(arr, [7]);
 
       expect(arr[3]).eq(undefined);
       result = (arr[3] = 'hello');
@@ -412,7 +412,7 @@ describe('handled in Proxy.set', () => {
       expect(arr.length).eq(4);
       expect(onChange).toBeCalledTimes(2);
       lastFnResult(onChange, 'set-by-index', 3, 'hello');
-      accessByIndex(arr, [7, undefined, undefined, 'hello']);
+      checkArray(arr, [7, undefined, undefined, 'hello']);
     }
     {
       const arr = createObsArray<any>(['hello', 'world', 2, 17]);
@@ -429,7 +429,7 @@ describe('handled in Proxy.set', () => {
       expect(arr.length).eq(4);
       expect(onChange).toBeCalledTimes(1);
       lastFnResult(onChange, 'set-by-index', 0, 7);
-      accessByIndex(arr, [7, 'world', 2, 17]);
+      checkArray(arr, [7, 'world', 2, 17]);
 
       expect(arr[2]).eq(2);
       result = (arr[2] = 2);
@@ -438,7 +438,7 @@ describe('handled in Proxy.set', () => {
       expect(arr.length).eq(4);
       expect(onChange).toBeCalledTimes(2);
       lastFnResult(onChange, 'set-by-index', 2, 2);
-      accessByIndex(arr, [7, 'world', 2, 17]);
+      checkArray(arr, [7, 'world', 2, 17]);
 
       expect(arr[2]).eq(2);
       result = (arr[2] = true);
@@ -447,7 +447,7 @@ describe('handled in Proxy.set', () => {
       expect(arr.length).eq(4);
       expect(onChange).toBeCalledTimes(3);
       lastFnResult(onChange, 'set-by-index', 2, true);
-      accessByIndex(arr, [7, 'world', true, 17]);
+      checkArray(arr, [7, 'world', true, 17]);
     }
   });
 
@@ -464,21 +464,21 @@ describe('handled in Proxy.set', () => {
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'set-length', 0);
-    accessByIndex(arr, []);
+    checkArray(arr, []);
 
     result = (arr.length = 3);
     expect(result).eq(3);
     expect(arr.length).eq(3);
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'set-length', 3);
-    accessByIndex(arr, [undefined, undefined, undefined]);
+    checkArray(arr, [undefined, undefined, undefined]);
 
     result = (arr.length = 0);
     expect(result).eq(0);
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(3);
     lastFnResult(onChange, 'set-length', 0);
-    accessByIndex(arr, []);
+    checkArray(arr, []);
   });
 
   test('set-prop / delete-prop', () => {
@@ -495,7 +495,7 @@ describe('handled in Proxy.set', () => {
     expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'set-prop', 'hello', 'world');
-    accessByIndex(arr, []);
+    checkArray(arr, []);
 
     expect(arr).toHaveProperty('hello');
     delete arr['hello'];
@@ -524,7 +524,7 @@ describe('handled in Proxy.set', () => {
 //
 //     expect(arr.length).eq(3);
 //     expect(onChange).toBeCalledTimes(1);
-//     accessByIndex(arr, [1, 2, 3]);
+//     checkArray(arr, [1, 2, 3]);
 //     const last = onChange.mock.lastCall[0];
 //     expect(last.type).eq('define-prop');
 //     expect(last.prop).eq('hello');
@@ -636,7 +636,50 @@ describe('methods that do not emit changes', () => {
     expect(onChange).toBeCalledTimes(0);
   });
 
-  test('', () => {
+  test('keys', () => {
+    const arr = createObsArray(['a', , 'c']);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(3);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray([...arr.keys()], [0, 1, 2]);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('values', () => {
+    const arr = createObsArray(['a', 'b', 'c']);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(3);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray([...arr.values()], ['a', 'b', 'c']);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('entries', () => {
+    const arr = createObsArray(['a', 'b', 'c']);
+    const eArr = arr.entries();
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(3);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray(eArr.next().value, [0, 'a']);
+    checkArray(eArr.next().value, [1, 'b']);
+    checkArray(eArr.next().value, [2, 'c']);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+
+  test('at', () => {
     const arr = createObsArray([0, 1, 2, 3, 4]);
     const onChange = jest.fn();
 
@@ -644,22 +687,285 @@ describe('methods that do not emit changes', () => {
     expect(arr.length).eq(5);
     expect(onChange).toBeCalledTimes(0);
 
+    expect(arr.at(-1)).eq(4);
+    expect(arr.at(4)).eq(4);
+    expect(arr.at(-2)).eq(3);
+    expect(arr.at(0)).eq(0);
 
     expect(onChange).toBeCalledTimes(0);
   });
 
-  // test('', () => {
-  //   const arr = createObsArray([0,1,2,3,4]);
-  //   const onChange = jest.fn();
-  //
-  //   arr.on('change', onChange);
-  //   expect(arr.length).eq(5);
-  //   expect(onChange).toBeCalledTimes(0);
-  //
-  //
-  //
-  //   expect(onChange).toBeCalledTimes(0);
-  // });
+  test('concat', () => {
+    {
+      const arr = createObsArray<any>(['a', 'b', 'c']);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(3);
+      expect(onChange).toBeCalledTimes(0);
+
+      checkArray(arr.concat([1, 2, 3]), ['a', 'b', 'c', 1, 2, 3]);
+
+      expect(onChange).toBeCalledTimes(0);
+    }
+    {
+      const arr = createObsArray<any>([1, 2, 3]);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(3);
+      expect(onChange).toBeCalledTimes(0);
+
+      checkArray(arr.concat([4, 5, 6], [7, 8, 9]), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+      expect(onChange).toBeCalledTimes(0);
+    }
+    {
+      const arr = createObsArray<any>(['a', 'b', 'c']);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(3);
+      expect(onChange).toBeCalledTimes(0);
+
+      checkArray(arr.concat(1, [2, 3]), ['a', 'b', 'c', 1, 2, 3]);
+
+      expect(onChange).toBeCalledTimes(0);
+    }
+  });
+
+  test('every', () => {
+    {
+      const arr = createObsArray([12, 5, 8, 130, 44]);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(5);
+      expect(onChange).toBeCalledTimes(0);
+
+      expect(arr.every(elem => elem >= 10)).False();
+
+      expect(onChange).toBeCalledTimes(0);
+    }
+    {
+      const arr = createObsArray([12, 54, 18, 130, 44]);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(5);
+      expect(onChange).toBeCalledTimes(0);
+
+      expect(arr.every(elem => elem >= 10)).True();
+
+      expect(onChange).toBeCalledTimes(0);
+    }
+  });
+
+  test('filter', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray(arr.filter(x => x > 2), [3, 4,]);
+    checkArray(arr.filter(x => x < 0), []);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('find', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(arr.find(x => x > 2)).eq(3);
+    expect(arr.find(x => x > 4)).eq(undefined);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('findIndex', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(arr.findIndex(x => x > 2)).eq(3);
+    expect(arr.findIndex(x => x > 4)).eq(-1);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('flat', () => {
+    const arr = createObsArray([0, 1, 2, [[[3, 4]]]]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(4);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray(arr.flat(3), [0, 1, 2, 3, 4]);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('flatMap', () => {
+    const arr = createObsArray([`it's Sunny in`, '', 'California']);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(3);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray(arr.flatMap((x) => x.split(' ')), [`it's`, 'Sunny', 'in', '', 'California']);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('forEach', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    arr.forEach((value, index) => {
+      expect(arr[index]).eq(value);
+    });
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('includes', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(arr.includes(3)).True();
+    expect(arr.includes(30)).False();
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('indexOf', () => {
+    const arr = createObsArray(['ant', 'bison', 'camel', 'duck', 'bison']);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(arr.indexOf('bison')).eq(1);
+    expect(arr.indexOf('bison', 2)).eq(4);
+    expect(arr.indexOf('giraffe')).eq(-1);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('join', () => {
+    const arr = createObsArray(['Fire', 'Air', 'Water']);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(3);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(arr.join()).eq('Fire,Air,Water');
+    expect(arr.join('')).eq('FireAirWater');
+    expect(arr.join('-')).eq('Fire-Air-Water');
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('lastIndexOf', () => {
+    const arr = createObsArray(['Dodo', 'Tiger', 'Penguin', 'Dodo']);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(4);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(arr.lastIndexOf('Dodo')).eq(3);
+    expect(arr.lastIndexOf('Tiger')).eq(1);
+    expect(arr.lastIndexOf('Dog')).eq(-1);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('map', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray(arr.map(x => x * 2), [0, 2, 4, 6, 8]);
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('reduce', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4, 5]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(6);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray(
+      arr.reduce((acc, next) => {
+        if (next < 2 || next >= 4) {
+          acc.push(next);
+        }
+        return acc;
+      }, [] as any[]),
+      [0, 1, 4, 5]
+    );
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('reduceRight', () => {
+    const arr = createObsArray([[0, 1], [2, 3], [4, 5]]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(3);
+    expect(onChange).toBeCalledTimes(0);
+
+    checkArray(
+      arr.reduceRight((acc, next) => acc.concat(next)),
+      [4, 5, 2, 3, 0, 1]
+    );
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('some', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    expect(arr.some(x => x > 3)).True();
+    expect(arr.some(x => x > 30)).False();
+
+    expect(onChange).toBeCalledTimes(0);
+  });
 
 });
 
@@ -716,7 +1022,7 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChang
   }
 }
 
-function accessByIndex(arr: any[], arrTest: any[]) {
+function checkArray(arr: any[], arrTest: any[]) {
   expect(arr.length).eq(arrTest.length);
   for (let i = 0; i < arr.length; i++) {
     expect(arr[i]).eq(arrTest[i]);
