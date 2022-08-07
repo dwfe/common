@@ -273,20 +273,114 @@ describe('handled in Proxy.get', () => {
   });
 
   test('splice', () => {
-    const arr = createObsArray(initArr);
+    function checkSplice(initArr: any[], expectedResult: any[], params: {
+      start: number; deleteCount?: number; items: any[]
+    }, mustBeDeleted: any[]) {
+      const arr = createObsArray(initArr);
+      const onChange = jest.fn();
+
+      arr.on('change', onChange);
+      expect(arr.length).eq(initArr.length);
+      expect(onChange).toBeCalledTimes(0);
+
+      const result: any[] = params.deleteCount === undefined
+        ? arr.splice(params.start)
+        : arr.splice(params.start, params.deleteCount, ...params.items);
+
+      accessByIndex(result, mustBeDeleted);
+      expect(arr.length).eq(expectedResult.length);
+      expect(onChange).toBeCalledTimes(1);
+      const last = onChange.mock.lastCall[0];
+      expect(last.type).eq('splice');
+      accessByIndex(last.deletedItems, mustBeDeleted);
+      expect(last.deleteCount).eq(params.deleteCount);
+      accessByIndex(last.addedItems, params.items);
+      accessByIndex(arr, expectedResult);
+    }
+
+    checkSplice( // Remove 0 (zero) elements before index 2, and insert "drum"
+      ['angel', 'clown', 'mandarin', 'sturgeon'],
+      ['angel', 'clown', 'drum', 'mandarin', 'sturgeon'],
+      {start: 2, deleteCount: 0, items: ['drum']},
+      []
+    );
+    checkSplice( // Remove 0 (zero) elements before index 2, and insert "drum" and "guitar"
+      ['angel', 'clown', 'mandarin', 'sturgeon'],
+      ['angel', 'clown', 'drum', 'guitar', 'mandarin', 'sturgeon'],
+      {start: 2, deleteCount: 0, items: ['drum', 'guitar']},
+      []
+    );
+    checkSplice( // Remove 1 element at index 3
+      ['angel', 'clown', 'drum', 'mandarin', 'sturgeon'],
+      ['angel', 'clown', 'drum', 'sturgeon'],
+      {start: 3, deleteCount: 1, items: []},
+      ['mandarin']
+    );
+    checkSplice( // Remove 1 element at index 2, and insert "trumpet"
+      ['angel', 'clown', 'drum', 'sturgeon'],
+      ['angel', 'clown', 'trumpet', 'sturgeon'],
+      {start: 2, deleteCount: 1, items: ['trumpet']},
+      ['drum']
+    );
+    checkSplice( // Remove 2 elements from index 0, and insert "parrot", "anemone" and "blue"
+      ['angel', 'clown', 'trumpet', 'sturgeon'],
+      ['parrot', 'anemone', 'blue', 'trumpet', 'sturgeon'],
+      {start: 0, deleteCount: 2, items: ['parrot', 'anemone', 'blue']},
+      ['angel', 'clown']
+    );
+    checkSplice( // Remove 2 elements, starting from index 2
+      ['parrot', 'anemone', 'blue', 'trumpet', 'sturgeon'],
+      ['parrot', 'anemone', 'sturgeon'],
+      {start: 2, deleteCount: 2, items: []},
+      ['blue', 'trumpet']
+    );
+    checkSplice( // Remove 1 element from index -2
+      ['angel', 'clown', 'mandarin', 'sturgeon'],
+      ['angel', 'clown', 'sturgeon'],
+      {start: -2, deleteCount: 1, items: []},
+      ['mandarin']
+    );
+    checkSplice( // Remove all elements, starting from index 2
+      ['angel', 'clown', 'mandarin', 'sturgeon'],
+      ['angel', 'clown'],
+      {start: 2, items: []},
+      ['mandarin', 'sturgeon']
+    );
+    checkSplice( // Clear array
+      [1, 2, 3, 4, 5, 6],
+      [],
+      {start: 0, items: []},
+      [1, 2, 3, 4, 5, 6]
+    );
+    checkSplice( // Remove more than length
+      [1, 2, 3, 4, 5, 6],
+      [1, 2, 3, 'hello'],
+      {start: 3, deleteCount: 5, items: ['hello']},
+      [4, 5, 6]
+    );
+  });
+
+  test('unshift', () => {
+    const arr = createObsArray();
     const onChange = jest.fn();
 
     arr.on('change', onChange);
-    expect(arr.length).eq(initArr.length);
+    expect(arr.length).eq(0);
     expect(onChange).toBeCalledTimes(0);
 
-    let result = arr.sort(compareFn);
-    expect(result).eq(arr);
-    expect(arr.length).eq(expectedResult.length);
+    let result = arr.unshift(1);
+    expect(result).eq(1);
+    expect(arr.length).eq(1);
     expect(onChange).toBeCalledTimes(1);
-    const last = onChange.mock.lastCall[0];
-    expect(last.type).eq('sort');
-    accessByIndex(arr, expectedResult);
+    lastFnResult(onChange, 'unshift', [1]);
+    accessByIndex(arr, [1]);
+
+    result = arr.unshift(5, 7, 6);
+    expect(result).eq(4);
+    expect(arr.length).eq(4);
+    expect(onChange).toBeCalledTimes(2);
+    lastFnResult(onChange, 'unshift', [5, 7, 6]);
+    accessByIndex(arr, [5, 7, 6, 1]);
   });
 
 });
@@ -549,7 +643,8 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChang
       expect(value).eq(last.value);
       break;
     }
-    case 'push': {
+    case 'push':
+    case 'unshift': {
       const items = rest[0] as any[];
       const receivedItems = last.items as any[];
       expect(items.length).eq(receivedItems.length);
@@ -578,7 +673,7 @@ export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChang
   }
 }
 
-function accessByIndex(arr: IObsArray, arrTest: any[]) {
+function accessByIndex(arr: any[], arrTest: any[]) {
   expect(arr.length).eq(arrTest.length);
   for (let i = 0; i < arr.length; i++) {
     expect(arr[i]).eq(arrTest[i]);

@@ -13,21 +13,20 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
       //   return array[prop as any];
       // }
       switch (prop) {
-        case 'copyWithin': {
-          return (target: number, start: number, end?: number): typeof Proxy => {
-            array.copyWithin(target, start, end);
-            emitChange({type: 'copyWithin', target, start, end});
-            return receiver;
+        case 'push':
+          return (...items: T[]): number => {
+            const newLength = array.push(...items);
+            emitChange({type: 'push', items});
+            return newLength;
           };
-        }
-        case 'fill': {
-          return (value: any, start: number, end?: number): typeof Proxy => {
-            array.fill(value, start, end);
-            emitChange({type: 'fill', value, start, end});
-            return receiver;
-          }
-        }
-        case 'pop': {
+        case 'unshift':
+          return (...items: T[]): number => {
+            const newLength = array.unshift(...items);
+            emitChange({type: 'unshift', items});
+            return newLength;
+          };
+
+        case 'pop':
           return (): T | undefined => {
             const value = array.pop();
             if (value !== undefined) {
@@ -35,22 +34,7 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             }
             return value;
           };
-        }
-        case 'push': {
-          return (...items: T[]): number => {
-            const newLength = array.push(...items);
-            emitChange({type: 'push', items});
-            return newLength;
-          };
-        }
-        case 'reverse': {
-          return (): typeof Proxy => {
-            array.reverse();
-            emitChange({type: 'reverse'});
-            return receiver;
-          };
-        }
-        case 'shift': {
+        case 'shift':
           return (): T | undefined => {
             const value = array.shift();
             if (value !== undefined) {
@@ -58,15 +42,8 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             }
             return value;
           };
-        }
-        case 'sort': {
-          return (compareFn?: (a: T, b: T) => number): typeof Proxy => {
-            array.sort(compareFn);
-            emitChange({type: 'sort'});
-            return receiver;
-          };
-        }
-        case 'splice': {
+
+        case 'splice':
           return (start: number, deleteCount?: number, ...items: T[]): T[] => {
             const deletedItems = deleteCount === undefined
               ? array.splice(start)
@@ -74,9 +51,31 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             emitChange({type: 'splice', deletedItems, start, deleteCount, addedItems: items});
             return deletedItems;
           };
-        }
-        // case 'unshift':
-        //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift
+        case 'sort':
+          return (compareFn?: (a: T, b: T) => number): typeof Proxy => {
+            array.sort(compareFn);
+            emitChange({type: 'sort'});
+            return receiver;
+          };
+        case 'reverse':
+          return (): typeof Proxy => {
+            array.reverse();
+            emitChange({type: 'reverse'});
+            return receiver;
+          };
+
+        case 'copyWithin':
+          return (target: number, start: number, end?: number): typeof Proxy => {
+            array.copyWithin(target, start, end);
+            emitChange({type: 'copyWithin', target, start, end});
+            return receiver;
+          };
+        case 'fill':
+          return (value: any, start: number, end?: number): typeof Proxy => {
+            array.fill(value, start, end);
+            emitChange({type: 'fill', value, start, end});
+            return receiver;
+          }
       }
       return emitter[prop] === undefined
         ? Reflect.get(array, prop, receiver)

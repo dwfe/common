@@ -10,11 +10,12 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
   on(id: EventIds, listener: Listener<ListenerData>): void;
   off(id: EventIds, listener: Listener<ListenerData>): void;
   dispose(): void;
-//region Support
+
+  //region Support
   hasListeners: boolean;
   numberOfListeners(id?: any): number;
   numberOfIds: number;
-//endregion Support
+  //endregion Support
 }
 
 export type ObsMapChangeEventListenerParam<K, V> =
@@ -43,6 +44,7 @@ export type ObsArrayChangeEventListenerParam<T> =
   { type: 'shift'; value: T; }                                         |
   { type: 'sort'; }                                                    |
   { type: 'splice'; deletedItems: T[]; start: number; deleteCount?: number; addedItems?: T[]; } |
+  { type: 'unshift'; items: T[]; }                                     |
 
   // Proxy.set
   { type: 'set-by-index'; index: number; value: T;} |
@@ -52,14 +54,4 @@ export type ObsArrayChangeEventListenerParam<T> =
   // Proxy.deleteProperty
   { type: 'delete-prop'; prop: string | symbol; }
 ;
-
-/*
-
-  type:
-    'copyWithin' | 'fill' | 'pop' | 'push' | 'reverse' | 'shift' | 'sort' | 'splice' | 'unshift' | // Proxy.get
-    'set-by-index' | 'clear-by-length-0'                                                           // Proxy.set
-  ;
-
- */
-
 export type IObsArray<T = any> = Array<T> & ObsValueLike<'change', ObsArrayChangeEventListenerParam<T>>;
