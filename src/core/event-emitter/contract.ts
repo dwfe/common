@@ -18,24 +18,9 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
   //endregion Support
 }
 
-export type ObsMapChangeEventListenerParam<K, V> =
-  // Proxy.get
-  { type: 'add'; key: K; value: V; } |
-  { type: 'update'; key: K;  oldValue: V; value: V; } |
-  { type: 'delete'; key: K;  value: V; } |
-  { type: 'clear'; } |
-
-  // Proxy.set
-  { type: 'set-prop'; prop: string | symbol; value: any; } |
-
-  // Proxy.deleteProperty
-  { type: 'delete-prop'; prop: string | symbol; }
-;
-export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEventListenerParam<K, V>>;
-
-
+export type IObsArray<T = any> = Array<T> & ObsValueLike<'change', ObsArrayChangeEventListenerParam<T>>;
 export type ObsArrayChangeEventListenerParam<T> =
-  // Proxy.get
+// Proxy.get
   { type: 'copyWithin'; target: number, start: number, end?: number; } |
   { type: 'fill'; value: any; start: number; end?: number; }           |
   { type: 'pop'; value: T; }                                           |
@@ -47,11 +32,25 @@ export type ObsArrayChangeEventListenerParam<T> =
   { type: 'unshift'; items: T[]; }                                     |
 
   // Proxy.set
-  { type: 'set-by-index'; index: number; value: T;} |
-  { type: 'set-length'; value: number; } |
+  { type: 'set-by-index'; index: number; value: T;}        |
+  { type: 'set-length'; value: number; }                   |
   { type: 'set-prop'; prop: string | symbol; value: any; } |
 
   // Proxy.deleteProperty
   { type: 'delete-prop'; prop: string | symbol; }
 ;
-export type IObsArray<T = any> = Array<T> & ObsValueLike<'change', ObsArrayChangeEventListenerParam<T>>;
+
+export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEventListenerParam<K, V>>;
+export type ObsMapChangeEventListenerParam<K, V> =
+  // Proxy.get
+  { type: 'add'; key: K; value: V; }                  |
+  { type: 'update'; key: K;  oldValue: V; value: V; } |
+  { type: 'delete'; key: K;  value: V; }              |
+  { type: 'clear'; }                                  |
+
+  // Proxy.set
+  { type: 'set-prop'; prop: string | symbol; value: any; } |
+
+  // Proxy.deleteProperty
+  { type: 'delete-prop'; prop: string | symbol; }
+;
