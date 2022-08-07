@@ -13,19 +13,21 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
       //   return array[prop as any];
       // }
       switch (prop) {
-        case 'copyWithin':
+        case 'copyWithin': {
           return (target: number, start: number, end?: number): typeof Proxy => {
             array.copyWithin(target, start, end);
             emitChange({type: 'copyWithin', target, start, end});
             return receiver;
           };
-        case 'fill':
+        }
+        case 'fill': {
           return (value: any, start: number, end?: number): typeof Proxy => {
             array.fill(value, start, end);
             emitChange({type: 'fill', value, start, end});
             return receiver;
           }
-        case 'pop':
+        }
+        case 'pop': {
           return (): T | undefined => {
             const value = array.pop();
             if (value !== undefined) {
@@ -33,19 +35,22 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             }
             return value;
           };
-        case 'push':
+        }
+        case 'push': {
           return (...items: T[]): number => {
             const newLength = array.push(...items);
             emitChange({type: 'push', items});
             return newLength;
           };
-        case 'reverse':
+        }
+        case 'reverse': {
           return (): typeof Proxy => {
             array.reverse();
             emitChange({type: 'reverse'});
             return receiver;
           };
-        case 'shift':
+        }
+        case 'shift': {
           return (): T | undefined => {
             const value = array.shift();
             if (value !== undefined) {
@@ -53,16 +58,23 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             }
             return value;
           };
-        case 'sort':
+        }
+        case 'sort': {
           return (compareFn?: (a: T, b: T) => number): typeof Proxy => {
             array.sort(compareFn);
             emitChange({type: 'sort'});
             return receiver;
           };
-
-        // case 'splice':
-        //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-        //
+        }
+        case 'splice': {
+          return (start: number, deleteCount: number, ...itemsToAdd: T[]) => {
+            const deletedItems = deleteCount === undefined
+              ? array.splice(start)
+              : array.splice(start, deleteCount, ...itemsToAdd);
+            emitChange({type: 'splice', start, deleteCount, deletedItems, itemsToAdd});
+            return deletedItems;
+          };
+        }
         // case 'unshift':
         //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/unshift
       }
