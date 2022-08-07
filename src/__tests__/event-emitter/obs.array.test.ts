@@ -1,5 +1,5 @@
 import {Throw} from '@do-while-for-each/test';
-import {createObsArray, IObsArray, ObsArrayChangeEventListenerParam, ObsValueLike} from '../..';
+import {createObsArray, ObsArrayChangeEventListenerParam, ObsValueLike} from '../..';
 
 describe('handled in Proxy.get', () => {
 
@@ -619,6 +619,49 @@ describe('ObsValueLike', () => {
 
 });
 
+describe('methods that do not emit changes', () => {
+
+  test('iterator, for..of', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+    let count = 0;
+    for (const item of arr) {
+      expect(item).eq(arr[count++]);
+    }
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('', () => {
+    const arr = createObsArray([0, 1, 2, 3, 4]);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(5);
+    expect(onChange).toBeCalledTimes(0);
+
+
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+  // test('', () => {
+  //   const arr = createObsArray([0,1,2,3,4]);
+  //   const onChange = jest.fn();
+  //
+  //   arr.on('change', onChange);
+  //   expect(arr.length).eq(5);
+  //   expect(onChange).toBeCalledTimes(0);
+  //
+  //
+  //
+  //   expect(onChange).toBeCalledTimes(0);
+  // });
+
+});
 
 export function lastFnResult(fn: ReturnType<typeof jest.fn>, type: ObsArrayChangeEventListenerParam<any>['type'], ...rest: any[]) {
   const last = fn.mock.lastCall[0];
