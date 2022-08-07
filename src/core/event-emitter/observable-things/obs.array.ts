@@ -67,11 +67,11 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
           };
         }
         case 'splice': {
-          return (start: number, deleteCount: number, ...itemsToAdd: T[]) => {
+          return (start: number, deleteCount?: number, ...items: T[]): T[] => {
             const deletedItems = deleteCount === undefined
               ? array.splice(start)
-              : array.splice(start, deleteCount, ...itemsToAdd);
-            emitChange({type: 'splice', start, deleteCount, deletedItems, itemsToAdd});
+              : array.splice(start, deleteCount, ...items);
+            emitChange({type: 'splice', deletedItems, start, deleteCount, addedItems: items});
             return deletedItems;
           };
         }

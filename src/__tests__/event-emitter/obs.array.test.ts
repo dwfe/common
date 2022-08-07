@@ -272,6 +272,23 @@ describe('handled in Proxy.get', () => {
     checkSort(['80', '9', '700', 40, 1, 5, 200], [1, 5, '9', 40, '80', 200, '700'], compareNumbers);
   });
 
+  test('splice', () => {
+    const arr = createObsArray(initArr);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(arr.length).eq(initArr.length);
+    expect(onChange).toBeCalledTimes(0);
+
+    let result = arr.sort(compareFn);
+    expect(result).eq(arr);
+    expect(arr.length).eq(expectedResult.length);
+    expect(onChange).toBeCalledTimes(1);
+    const last = onChange.mock.lastCall[0];
+    expect(last.type).eq('sort');
+    accessByIndex(arr, expectedResult);
+  });
+
 });
 
 describe('handled in Proxy.set', () => {

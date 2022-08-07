@@ -42,7 +42,7 @@ export type ObsArrayChangeEventListenerParam<T> =
   { type: 'reverse'; }                                                 |
   { type: 'shift'; value: T; }                                         |
   { type: 'sort'; }                                                    |
-  { type: 'splice'; start: number; deleteCount?: number; deletedItems: T[]; itemsToAdd?: T[]; } |
+  { type: 'splice'; deletedItems: T[]; start: number; deleteCount?: number; addedItems?: T[]; } |
 
   // Proxy.set
   { type: 'set-by-index'; index: number; value: T;} |
