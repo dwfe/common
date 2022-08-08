@@ -77,9 +77,11 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
             return receiver;
           }
       }
-      return emitter[prop] === undefined
-        ? Reflect.get(array, prop, receiver)
-        : emitter[prop];
+      const emitterPropValue = emitter[prop];
+      if (emitterPropValue !== undefined) {
+        return emitterPropValue;
+      }
+      return Reflect.get(array, prop, receiver);
     },
 
     /**

@@ -38,8 +38,9 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
         case 'toString':
           return () => '[object ObsMap]';
       }
-      if (emitter[prop] !== undefined) {
-        return emitter[prop];
+      const emitterPropValue = emitter[prop];
+      if (emitterPropValue !== undefined) {
+        return emitterPropValue;
       }
       const res = (map as any)[prop];  // we're not using the receiver argument at all,
       return typeof res === 'function' // because the Proxy does not have a [[MapData]] trap: https://tc39.es/ecma262/multipage/keyed-collections.html#sec-properties-of-map-instances

@@ -18,9 +18,18 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
   //endregion Support
 }
 
+export type IObsObject = Object & ObsValueLike<'change', ObsObjectChangeEventListenerParam>;
+export type ObsObjectChangeEventListenerParam =
+  // Proxy.set
+  { type: 'set-prop'; prop: string | symbol; value: any; } |
+
+  // Proxy.deleteProperty
+  { type: 'delete-prop'; prop: string | symbol; }
+;
+
 export type IObsArray<T = any> = Array<T> & ObsValueLike<'change', ObsArrayChangeEventListenerParam<T>>;
 export type ObsArrayChangeEventListenerParam<T> =
-// Proxy.get
+  // Proxy.get
   { type: 'copyWithin'; target: number, start: number, end?: number; } |
   { type: 'fill'; value: any; start: number; end?: number; }           |
   { type: 'pop'; value: T; }                                           |
