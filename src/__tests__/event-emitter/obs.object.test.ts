@@ -1,5 +1,5 @@
-import {checkSupport} from './obs.array.test';
 import {createObsObject} from '../..';
+import {checkSupport} from './util';
 
 describe('', () => {
 

@@ -1,5 +1,6 @@
 import {Throw} from '@do-while-for-each/test';
 import {createObsArray, ObsArrayChangeEventListenerParam, ObsValueLike} from '../..';
+import {checkSupport} from './util';
 
 describe('handled in Proxy.get', () => {
 
@@ -1031,11 +1032,3 @@ function checkArray(arr: any[], arrTest: any[]) {
   expect(arr[-1]).eq(undefined);
 }
 
-export function checkSupport(arr: ObsValueLike, numberOfIds: number, hasListeners: boolean, numberOfListeners?: number) {
-  expect(arr.numberOfIds).eq(numberOfIds);
-  expect(arr.hasListeners).eq(hasListeners);
-  if (numberOfListeners === undefined)
-    Throw(() => arr.numberOfListeners(), `Cannot read properties of undefined (reading 'size')`);
-  else
-    expect(arr.numberOfListeners()).eq(numberOfListeners);
-}
