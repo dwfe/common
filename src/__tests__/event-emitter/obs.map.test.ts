@@ -3,35 +3,8 @@ import {checkSupport} from './obs.array.test';
 import {createObsMap} from '../..';
 
 const initData = [['hello', 2], ['world', null]] as any;
-
 const mapEmpty = createObsMap();
 const map2Keys = createObsMap(initData);
-
-export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, ...rest: any[]) {
-  const last = fn.mock.lastCall[0];
-  expect(type).eq(last.type);
-  switch (type) {
-    case 'add': {
-      const [key, value] = rest;
-      expect(last.key).eq(key);
-      expect(last.value).eq(value);
-      break;
-    }
-    case 'update': {
-      const [key, oldValue, value] = rest;
-      expect(last.key).eq(key);
-      expect(last.oldValue).eq(oldValue);
-      expect(last.value).eq(value);
-      break;
-    }
-    case 'delete': {
-      const [key, value] = rest;
-      expect(last.key).eq(key);
-      expect(last.value).eq(value);
-      break;
-    }
-  }
-}
 
 describe('observable-map. #1', () => {
 
@@ -322,3 +295,30 @@ describe('observable-map. creating', () => {
   });
 
 });
+
+
+export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, ...rest: any[]) {
+  const last = fn.mock.lastCall[0];
+  expect(type).eq(last.type);
+  switch (type) {
+    case 'add': {
+      const [key, value] = rest;
+      expect(last.key).eq(key);
+      expect(last.value).eq(value);
+      break;
+    }
+    case 'update': {
+      const [key, oldValue, value] = rest;
+      expect(last.key).eq(key);
+      expect(last.oldValue).eq(oldValue);
+      expect(last.value).eq(value);
+      break;
+    }
+    case 'delete': {
+      const [key, value] = rest;
+      expect(last.key).eq(key);
+      expect(last.value).eq(value);
+      break;
+    }
+  }
+}

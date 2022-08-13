@@ -18,6 +18,10 @@ export interface ObsValueLike<EventIds = any, ListenerData = any> {
   //endregion Support
 }
 
+
+/**
+ * Observable Object
+ */
 export type IObsObject = Object & ObsValueLike<'change', ObsObjectChangeEventListenerParam>;
 export type ObsObjectChangeEventListenerParam =
   // Proxy.set
@@ -27,6 +31,10 @@ export type ObsObjectChangeEventListenerParam =
   { type: 'delete-prop'; prop: string | symbol; }
 ;
 
+
+/**
+ * Observable Array
+ */
 export type IObsArray<T = any> = Array<T> & ObsValueLike<'change', ObsArrayChangeEventListenerParam<T>>;
 export type ObsArrayChangeEventListenerParam<T> =
   // Proxy.get
@@ -49,6 +57,10 @@ export type ObsArrayChangeEventListenerParam<T> =
   { type: 'delete-prop'; prop: string | symbol; }
 ;
 
+
+/**
+ * Observable Map
+ */
 export type IObsMap<K, V> = Map<K, V> & ObsValueLike<'change', ObsMapChangeEventListenerParam<K, V>>;
 export type ObsMapChangeEventListenerParam<K, V> =
   // Proxy.get
