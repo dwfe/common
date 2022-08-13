@@ -530,68 +530,6 @@ describe('other', () => {
 
 });
 
-describe('ObsValueLike', () => {
-
-  test('canBeObservable', () => {
-    expect(createObsArray()).toHaveProperty('canBeObservable', true);
-    expect(createObsArray([1, 2, 3])).toHaveProperty('canBeObservable', true);
-  });
-
-  test('on/off "change"', () => {
-    const arr = createObsArray([1, 2, 3]);
-    const onChange1 = jest.fn();
-    const onChange2 = jest.fn();
-    checkSupport(arr, 0, false);
-
-    arr.on('change', onChange1);
-    checkSupport(arr, 1, true, 1);
-
-    arr.on('change', onChange1);
-    checkSupport(arr, 1, true, 1);
-
-    arr.off('change', onChange1);
-    checkSupport(arr, 0, false);
-
-    arr.on('change', onChange2);
-    checkSupport(arr, 1, true, 1);
-
-    arr.on('change', onChange1);
-    checkSupport(arr, 1, true, 2);
-
-    arr.off('change', onChange1);
-    checkSupport(arr, 1, true, 1);
-
-    arr.off('change', onChange2);
-    checkSupport(arr, 0, false);
-
-    expect(onChange1).toBeCalledTimes(0);
-    expect(onChange2).toBeCalledTimes(0);
-  });
-
-  test('dispose', () => {
-    const arr = createObsArray([]);
-    const onChange1 = jest.fn();
-    const onChange2 = jest.fn();
-    checkSupport(arr, 0, false);
-
-    arr.on('change', onChange2);
-    checkSupport(arr, 1, true, 1);
-
-    arr.dispose();
-    checkSupport(arr, 0, false);
-
-    arr.on('change', onChange1);
-    checkSupport(arr, 1, true, 1);
-
-    arr.on('change', onChange2);
-    checkSupport(arr, 1, true, 2);
-
-    arr.dispose();
-    checkSupport(arr, 0, false);
-  });
-
-});
-
 describe('methods that do not emit changes', () => {
 
   test('iterator, for..of', () => {
@@ -938,6 +876,68 @@ describe('methods that do not emit changes', () => {
     expect(arr.some(x => x > 30)).False();
 
     expect(onChange).toBeCalledTimes(0);
+  });
+
+});
+
+describe('ObsValueLike', () => {
+
+  test('canBeObservable', () => {
+    expect(createObsArray()).toHaveProperty('canBeObservable', true);
+    expect(createObsArray([1, 2, 3])).toHaveProperty('canBeObservable', true);
+  });
+
+  test('on/off "change"', () => {
+    const arr = createObsArray([1, 2, 3]);
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
+    checkSupport(arr, 0, false);
+
+    arr.on('change', onChange1);
+    checkSupport(arr, 1, true, 1);
+
+    arr.on('change', onChange1);
+    checkSupport(arr, 1, true, 1);
+
+    arr.off('change', onChange1);
+    checkSupport(arr, 0, false);
+
+    arr.on('change', onChange2);
+    checkSupport(arr, 1, true, 1);
+
+    arr.on('change', onChange1);
+    checkSupport(arr, 1, true, 2);
+
+    arr.off('change', onChange1);
+    checkSupport(arr, 1, true, 1);
+
+    arr.off('change', onChange2);
+    checkSupport(arr, 0, false);
+
+    expect(onChange1).toBeCalledTimes(0);
+    expect(onChange2).toBeCalledTimes(0);
+  });
+
+  test('dispose', () => {
+    const arr = createObsArray([]);
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
+    checkSupport(arr, 0, false);
+
+    arr.on('change', onChange2);
+    checkSupport(arr, 1, true, 1);
+
+    arr.dispose();
+    checkSupport(arr, 0, false);
+
+    arr.on('change', onChange1);
+    checkSupport(arr, 1, true, 1);
+
+    arr.on('change', onChange2);
+    checkSupport(arr, 1, true, 2);
+
+    arr.dispose();
+    checkSupport(arr, 0, false);
   });
 
 });

@@ -16,5 +16,6 @@ export {nextTick} from './core/next-tick';
 export {EventEmitter, Listener} from './core/event-emitter';
 export {IObsArray, createObsArray, ObsArrayChangeEventListenerParam} from './core/event-emitter';
 export {IObsMap, createObsMap, ObsMapChangeEventListenerParam} from './core/event-emitter';
+export {IObsObject, createObsObject, ObsObjectChangeEventListenerParam} from './core/event-emitter';
 export {ObsValueLike} from './core/event-emitter';
 export {rAFQueueLast} from './core/raf-queue-last';
