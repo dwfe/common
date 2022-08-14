@@ -1,8 +1,8 @@
 import {IObsArray, ObsArrayChangeEventListenerParam} from '../contract';
-import {getProxyChangeEmitterHandlers} from './proxy.change-emitter';
+import {getProxyChangeEmitter} from './proxy.change-emitter';
 
 export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
-  const {emitChange, emitter} = getProxyChangeEmitterHandlers<ObsArrayChangeEventListenerParam<T>>();
+  const {emitChange, emitter} = getProxyChangeEmitter<ObsArrayChangeEventListenerParam<T>>();
   return new Proxy<T[]>([...init], {
 
     /**

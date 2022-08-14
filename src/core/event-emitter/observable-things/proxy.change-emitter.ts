@@ -1,7 +1,7 @@
 import {Listener, ObsValueLike} from '../contract';
 import {EventEmitter} from '../event-emitter';
 
-export function getProxyChangeEmitterHandlers<ListenerParam = any>() {
+export function getProxyChangeEmitter<ListenerParam = any>() {
   const eventEmitter = new EventEmitter<{ change: any }>();
   const emitter = Object.create(null) as ObsValueLike<any, ListenerParam>;
 
