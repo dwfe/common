@@ -386,7 +386,7 @@ describe('handled in Proxy.get', () => {
 
 });
 
-describe('handled in Proxy.set', () => {
+describe('handled in Proxy.set / .deleteProperty', () => {
 
   test('set-by-index', () => {
     {
@@ -501,6 +501,7 @@ describe('handled in Proxy.set', () => {
     expect(arr).toHaveProperty('hello');
     delete arr['hello'];
     expect(arr).not.toHaveProperty('hello');
+    expect(onChange).toBeCalledTimes(2);
     const last = onChange.mock.lastCall[0];
     expect(last.type).eq('delete-prop');
     expect(last.prop).eq('hello');
