@@ -3,12 +3,16 @@ import {getProxyChangeEmitterHandlers} from './proxy.change-emitter';
 
 export function createObsObject<T = any>(init: T = {} as T): IObsObject & T {
   const {emitChange, emitter} = getProxyChangeEmitterHandlers<ObsObjectChangeEventListenerParam>();
-  return new Proxy<any>(init, {
+  return new Proxy<any>({...init}, {
 
     /**
      * Reading the Property value of the Target
      */
     get(obj, prop, receiver) {
+      switch (prop) {
+        case 'toString':
+          return () => '[object ObsObject]';
+      }
       const emitterPropValue = emitter[prop];
       if (emitterPropValue !== undefined) {
         return emitterPropValue;

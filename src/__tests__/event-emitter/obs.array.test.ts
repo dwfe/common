@@ -511,6 +511,20 @@ describe('handled in Proxy.set / .deleteProperty', () => {
 
 describe('other', () => {
 
+  test('clone', () => {
+    const source: any[] = [1, 2];
+    const arr = createObsArray(source);
+    const onChange = jest.fn();
+
+    arr.on('change', onChange);
+    expect(onChange).toBeCalledTimes(0);
+
+    source.push(1233);
+    checkArray(source, [1, 2, 1233]);
+    checkArray(arr, [1, 2]);
+    expect(onChange).toBeCalledTimes(0);
+  });
+
   test('length', () => {
     expect(createObsArray().length).eq(0);
     expect(createObsArray([]).length).eq(0);

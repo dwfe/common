@@ -8,7 +8,7 @@ const map2Keys = createObsMap(initData);
 
 describe('observable-map. #1', () => {
 
-  test('toStringTag', () => {
+  test('toString', () => {
     expect(mapEmpty.toString()).eq('[object ObsMap]');
     expect(map2Keys.toString()).eq('[object ObsMap]');
   });
@@ -296,6 +296,29 @@ describe('observable-map. creating', () => {
 
 });
 
+describe('some other', () => {
+
+  test('clone', () => {
+    const source = new Map<string, any>([['hello', 123], ['world', 'ds']]);
+    const map = createObsMap(source);
+    const onChange = jest.fn();
+
+    map.on('change', onChange);
+    expect(onChange).toBeCalledTimes(0);
+    expect(source.size).eq(2);
+    expect(source.get('hello')).eq(123);
+    expect(map.size).eq(2);
+    expect(map.get('hello')).eq(123);
+
+    source.delete('hello');
+    expect(source.size).eq(1);
+    expect(source.get('hello')).eq(undefined);
+    expect(map.size).eq(2);
+    expect(map.get('hello')).eq(123);
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+});
 
 export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, ...rest: any[]) {
   const last = fn.mock.lastCall[0];

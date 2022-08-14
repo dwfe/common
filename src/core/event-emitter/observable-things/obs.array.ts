@@ -3,7 +3,7 @@ import {getProxyChangeEmitterHandlers} from './proxy.change-emitter';
 
 export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
   const {emitChange, emitter} = getProxyChangeEmitterHandlers<ObsArrayChangeEventListenerParam<T>>();
-  return new Proxy<T[]>(init, {
+  return new Proxy<T[]>([...init], {
 
     /**
      * Reading the Property value of the Target

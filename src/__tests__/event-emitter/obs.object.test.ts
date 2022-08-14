@@ -80,6 +80,53 @@ describe('handled in Proxy.set / .deleteProperty', () => {
 
 });
 
+describe('utils methods check', () => {
+
+  test('toString', () => {
+    expect(createObsObject().toString()).eq('[object ObsObject]');
+    expect(createObsObject({hello: 123}).toString()).eq('[object ObsObject]');
+  });
+
+  test('Object.keys', () => {
+    expect(Object.keys(createObsObject()).length).eq(0);
+    expect(Object.keys(createObsObject({hello: 123})).length).eq(1);
+  });
+
+  test('Object.entries', () => {
+    let count = 0;
+    const source = {hello: 123, world: 'ds'};
+    for (const [key, value] of Object.entries(createObsObject(source))) {
+      expect(source[key]).eq(value);
+      count++;
+    }
+    expect(count).eq(2);
+  });
+
+  test('in', () => {
+
+  });
+
+});
+
+describe('some other', () => {
+
+  test('clone', () => {
+    const source: any = {hello: 123, world: 'ds'};
+    const obj = createObsObject(source);
+    const onChange = jest.fn();
+
+    obj.on('change', onChange);
+    expect(onChange).toBeCalledTimes(0);
+    checkObject(obj, source);
+
+    delete source.hello;
+    expect(source).not.toHaveProperty('hello', 123);
+    expect(obj).toHaveProperty('hello', 123);
+    expect(onChange).toBeCalledTimes(0);
+  });
+
+});
+
 describe('ObsValueLike', () => {
 
   test('canBeObservable', () => {
