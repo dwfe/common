@@ -935,7 +935,7 @@ describe('ObsValueLike', () => {
   });
 
   test('dispose', () => {
-    const arr = createObsArray([]);
+    const arr = createObsArray();
     const onChange1 = jest.fn();
     const onChange2 = jest.fn();
     checkSupport(arr, 0, false);

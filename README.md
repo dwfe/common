@@ -9,8 +9,10 @@
 
 observable things:
 
+- `createObsObject() => IObsObject & T`
 - `createObsArray() => IObsArray`
 - `createObsMap() => IObsMap`
+- `createObsSet() => IObsSet`
 
 ## math
 

@@ -75,3 +75,22 @@ export type ObsMapChangeEventListenerParam<K, V> =
   // Proxy.deleteProperty
   { type: 'delete-prop'; prop: string | symbol; }
 ;
+
+
+
+/**
+ * Observable Set
+ */
+export type IObsSet<T> = Set<T> & ObsValueLike<'change', ObsSetChangeEventListenerParam<T>>;
+export type ObsSetChangeEventListenerParam<T> =
+  // Proxy.get
+  { type: 'add'; value: T; }                               |
+  { type: 'delete'; value: T; }                            |
+  { type: 'clear'; }                                       |
+
+  // Proxy.set
+  { type: 'set-prop'; prop: string | symbol; value: any; } |
+
+  // Proxy.deleteProperty
+  { type: 'delete-prop'; prop: string | symbol; }
+;

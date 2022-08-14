@@ -6,132 +6,7 @@ const initData = [['hello', 2], ['world', null]] as any;
 const mapEmpty = createObsMap();
 const map2Keys = createObsMap(initData);
 
-describe('observable-map. #1', () => {
-
-  test('toString', () => {
-    expect(mapEmpty.toString()).eq('[object ObsMap]');
-    expect(map2Keys.toString()).eq('[object ObsMap]');
-  });
-
-  test('size', () => {
-    expect(mapEmpty.size).eq(0);
-    expect(map2Keys.size).eq(2);
-  });
-
-  test('has', () => {
-    expect(map2Keys.has('ok')).False();
-    expect(map2Keys.has('world')).True();
-    expect(map2Keys.has({})).False();
-  });
-
-  test('get', () => {
-    expect(mapEmpty.get('hello')).eq(undefined);
-    expect(map2Keys.get('hello')).eq(2);
-    expect(map2Keys.get('kl')).eq(undefined);
-  });
-
-  test('keys', () => {
-    expect(Array.from(mapEmpty.keys()).length).eq(0);
-    const arr = Array.from(map2Keys.keys());
-    expect(arr.length).eq(2);
-    expect(arr[0]).eq('hello');
-    expect(arr[1]).eq('world');
-  });
-
-  test('values', () => {
-    expect(Array.from(mapEmpty.values()).length).eq(0);
-    const arr = Array.from(map2Keys.values());
-    expect(arr.length).eq(2);
-    expect(arr[0]).eq(2);
-    expect(arr[1]).eq(null);
-  });
-
-  test('entries', () => {
-    expect(Array.from(mapEmpty.entries()).length).eq(0);
-    const arr = Array.from(map2Keys.entries());
-    expect(arr.length).eq(2);
-    expect(arr[0][0]).eq('hello');
-    expect(arr[0][1]).eq(2);
-    expect(arr[1][0]).eq('world');
-    expect(arr[1][1]).eq(null);
-  });
-
-  test('forEach', () => {
-    mapEmpty.forEach(() => {
-      throw new Error('empty map forEach');
-    });
-    map2Keys.forEach((value, key) => {
-      expect(map2Keys.get(key)).eq(value)
-    });
-  });
-
-  test('iterator', () => {
-    for (const [key, value] of mapEmpty) {
-      throw new Error('empty map iterator');
-    }
-    for (const [key, value] of map2Keys) {
-      expect(map2Keys.get(key)).eq(value);
-    }
-  });
-
-  test('on/off "change"', () => {
-    const map = createObsMap();
-    const onChange1 = jest.fn();
-    const onChange2 = jest.fn();
-    checkSupport(map, 0, false);
-
-    map.on('change', onChange1);
-    checkSupport(map, 1, true, 1);
-
-    map.on('change', onChange1);
-    checkSupport(map, 1, true, 1);
-
-    map.off('change', onChange1);
-    checkSupport(map, 0, false);
-
-    map.on('change', onChange2);
-    checkSupport(map, 1, true, 1);
-
-    map.on('change', onChange1);
-    checkSupport(map, 1, true, 2);
-
-    map.off('change', onChange1);
-    checkSupport(map, 1, true, 1);
-
-    map.off('change', onChange2);
-    checkSupport(map, 0, false);
-  });
-
-  test('dispose', () => {
-    const map = createObsMap();
-    const onChange1 = jest.fn();
-    const onChange2 = jest.fn();
-    checkSupport(map, 0, false);
-
-    map.on('change', onChange2);
-    checkSupport(map, 1, true, 1);
-
-    map.dispose();
-    checkSupport(map, 0, false);
-
-    map.on('change', onChange1);
-    checkSupport(map, 1, true, 1);
-
-    map.on('change', onChange2);
-    checkSupport(map, 1, true, 2);
-
-    map.dispose();
-    checkSupport(map, 0, false);
-  });
-
-});
-
-describe('observable-map. #2', () => {
-
-  test('canBeObservable', () => {
-    expect(createObsMap()).toHaveProperty('canBeObservable', true);
-    expect(map2Keys).toHaveProperty('canBeObservable', true);
-  });
+describe('methods that emit changes', () => {
 
   test('set', () => {
     const map = createObsMap();
@@ -243,32 +118,79 @@ describe('observable-map. #2', () => {
     expect(last.prop).eq('hello');
   });
 
-  // test('defineProperty', () => {
-  //   const map = createObsMap();
-  //   const onChange = jest.fn();
-  //
-  //   map.on('change', onChange);
-  //   expect(map.size).eq(0);
-  //   expect(onChange).toBeCalledTimes(0);
-  //   expect(map).not.toHaveProperty('hello');
-  //
-  //   Object.defineProperty(map, 'hello', {
-  //     value: 123,
-  //   });
-  //
-  //   expect(map.size).eq(0);
-  //   expect(onChange).toBeCalledTimes(1);
-  //   const last = onChange.mock.lastCall[0];
-  //   expect(last.type).eq('define-prop');
-  //   expect(last.prop).eq('hello');
-  //   expect(last.descriptor.value).eq(123);
-  //   expect(map).toHaveProperty('hello', 123);
-  // });
+});
 
+describe('methods that do not emit changes', () => {
+
+  test('toString', () => {
+    expect(mapEmpty.toString()).eq('[object ObsMap]');
+    expect(map2Keys.toString()).eq('[object ObsMap]');
+  });
+
+  test('size', () => {
+    expect(mapEmpty.size).eq(0);
+    expect(map2Keys.size).eq(2);
+  });
+
+  test('has', () => {
+    expect(map2Keys.has('ok')).False();
+    expect(map2Keys.has('world')).True();
+    expect(map2Keys.has({})).False();
+  });
+
+  test('get', () => {
+    expect(mapEmpty.get('hello')).eq(undefined);
+    expect(map2Keys.get('hello')).eq(2);
+    expect(map2Keys.get('kl')).eq(undefined);
+  });
+
+  test('keys', () => {
+    expect(Array.from(mapEmpty.keys()).length).eq(0);
+    const arr = Array.from(map2Keys.keys());
+    expect(arr.length).eq(2);
+    expect(arr[0]).eq('hello');
+    expect(arr[1]).eq('world');
+  });
+
+  test('values', () => {
+    expect(Array.from(mapEmpty.values()).length).eq(0);
+    const arr = Array.from(map2Keys.values());
+    expect(arr.length).eq(2);
+    expect(arr[0]).eq(2);
+    expect(arr[1]).eq(null);
+  });
+
+  test('entries', () => {
+    expect(Array.from(mapEmpty.entries()).length).eq(0);
+    const arr = Array.from(map2Keys.entries());
+    expect(arr.length).eq(2);
+    expect(arr[0][0]).eq('hello');
+    expect(arr[0][1]).eq(2);
+    expect(arr[1][0]).eq('world');
+    expect(arr[1][1]).eq(null);
+  });
+
+  test('forEach', () => {
+    mapEmpty.forEach(() => {
+      throw new Error('empty map forEach');
+    });
+    map2Keys.forEach((value, key) => {
+      expect(map2Keys.get(key)).eq(value)
+    });
+  });
+
+  test('iterator', () => {
+    for (const [key, value] of mapEmpty) {
+      throw new Error('empty map iterator');
+    }
+    for (const [key, value] of map2Keys) {
+      expect(map2Keys.get(key)).eq(value);
+    }
+  });
 
 });
 
-describe('observable-map. creating', () => {
+describe('creating', () => {
 
   test('no arguments', () => {
     const map = createObsMap();
@@ -294,11 +216,7 @@ describe('observable-map. creating', () => {
     expect(map.get(true)).eq(false);
   });
 
-});
-
-describe('some other', () => {
-
-  test('clone', () => {
+  test('clone Map', () => {
     const source = new Map<string, any>([['hello', 123], ['world', 'ds']]);
     const map = createObsMap(source);
     const onChange = jest.fn();
@@ -316,6 +234,72 @@ describe('some other', () => {
     expect(map.size).eq(2);
     expect(map.get('hello')).eq(123);
     expect(onChange).toBeCalledTimes(0);
+  });
+
+  test('clone Array', () => {
+
+  });
+
+});
+
+describe('ObsValueLike', () => {
+
+  test('canBeObservable', () => {
+    expect(createObsMap(mapEmpty)).toHaveProperty('canBeObservable', true);
+    expect(createObsMap(map2Keys)).toHaveProperty('canBeObservable', true);
+  });
+
+  test('on/off "change"', () => {
+    const set = createObsMap(map2Keys);
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
+    checkSupport(set, 0, false);
+
+    set.on('change', onChange1);
+    checkSupport(set, 1, true, 1);
+
+    set.on('change', onChange1);
+    checkSupport(set, 1, true, 1);
+
+    set.off('change', onChange1);
+    checkSupport(set, 0, false);
+
+    set.on('change', onChange2);
+    checkSupport(set, 1, true, 1);
+
+    set.on('change', onChange1);
+    checkSupport(set, 1, true, 2);
+
+    set.off('change', onChange1);
+    checkSupport(set, 1, true, 1);
+
+    set.off('change', onChange2);
+    checkSupport(set, 0, false);
+
+    expect(onChange1).toBeCalledTimes(0);
+    expect(onChange2).toBeCalledTimes(0);
+  });
+
+  test('dispose', () => {
+    const set = createObsMap(map2Keys);
+    const onChange1 = jest.fn();
+    const onChange2 = jest.fn();
+    checkSupport(set, 0, false);
+
+    set.on('change', onChange2);
+    checkSupport(set, 1, true, 1);
+
+    set.dispose();
+    checkSupport(set, 0, false);
+
+    set.on('change', onChange1);
+    checkSupport(set, 1, true, 1);
+
+    set.on('change', onChange2);
+    checkSupport(set, 1, true, 2);
+
+    set.dispose();
+    checkSupport(set, 0, false);
   });
 
 });

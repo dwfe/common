@@ -12,3 +12,6 @@ export {IObsMap, ObsMapChangeEventListenerParam} from './contract';
 export {createObsObject} from './observable-things/obs.object';
 export {IObsObject, ObsObjectChangeEventListenerParam} from './contract';
 
+export {createObsSet} from './observable-things/obs.set';
+export {IObsSet, ObsSetChangeEventListenerParam} from './contract';
+
