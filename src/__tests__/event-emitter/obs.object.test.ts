@@ -103,7 +103,24 @@ describe('other methods check', () => {
   });
 
   test('in', () => {
-
+    {
+      const obj = createObsObject();
+      let count = 0;
+      for (const key in obj) {
+        count++;
+      }
+      expect(count).eq(0);
+    }
+    {
+      const source = {hello: 123, world: 'ds'};
+      const obj = createObsObject(source);
+      let count = 0;
+      for (const key in obj) {
+        expect(source[key]).eq(obj[key]);
+        count++;
+      }
+      expect(count).eq(2);
+    }
   });
 
 });
