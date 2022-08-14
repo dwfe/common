@@ -68,15 +68,5 @@ export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, 
       return wasDeleted;
     },
 
-    // /**
-    //  * Defining the Property of the Target
-    //  */
-    // defineProperty(arr, prop, descriptor): boolean {
-    //   const wasDefined = Reflect.defineProperty(arr, prop, descriptor);
-    //   if (wasDefined) {
-    //     emitChange({type: 'define-prop', prop, descriptor});
-    //   }
-    //   return wasDefined;
-    // }
   }) as IObsMap<K, V>;
 }

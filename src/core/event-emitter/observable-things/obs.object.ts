@@ -38,5 +38,15 @@ export function createObsObject<T = any>(init: T = {} as T): IObsObject & T {
       return wasDeleted;
     },
 
+    // /**
+    //  * Defining the Property of the Target
+    //  */
+    // defineProperty(obj, prop, descriptor): boolean {
+    //   const wasDefined = Reflect.defineProperty(obj, prop, descriptor);
+    //   if (wasDefined) {
+    //     emitChange({type: 'define-prop', prop, descriptor});
+    //   }
+    //   return wasDefined;
+    // }
   }) as IObsObject & T;
 }

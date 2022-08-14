@@ -111,15 +111,5 @@ export function createObsArray<T = any>(init: T[] = []): IObsArray<T> {
       return wasDeleted;
     },
 
-    // /**
-    //  * Defining the Property of the Target
-    //  */
-    // defineProperty(arr, prop, descriptor): boolean {
-    //   const wasDefined = Reflect.defineProperty(arr, prop, descriptor);
-    //   if (wasDefined) {
-    //     emitChange({type: 'define-prop', prop, descriptor});
-    //   }
-    //   return wasDefined;
-    // }
   }) as IObsArray<T>;
 }
