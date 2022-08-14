@@ -2,7 +2,7 @@ import {IObsMap, ObsMapChangeEventListenerParam} from '../contract';
 import {getProxyChangeEmitter} from './proxy.change-emitter';
 
 export function createObsMap<K, V>(init: [K, V][] | Map<K, V> = []): IObsMap<K, V> {
-  const {emitChange, emitter} = getProxyChangeEmitter<ObsMapChangeEventListenerParam<K, V>>();
+  const {emitter, emitChange} = getProxyChangeEmitter<ObsMapChangeEventListenerParam<K, V>>();
   return new Proxy<Map<K, V>>(new Map(init), {
 
     /**
