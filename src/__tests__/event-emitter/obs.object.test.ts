@@ -80,7 +80,7 @@ describe('handled in Proxy.set / .deleteProperty', () => {
 
 });
 
-describe('utils methods check', () => {
+describe('other methods check', () => {
 
   test('toString', () => {
     expect(createObsObject().toString()).eq('[object ObsObject]');
