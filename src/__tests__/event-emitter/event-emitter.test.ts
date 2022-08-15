@@ -1,5 +1,5 @@
 import {noop, noop2, Throw} from '@do-while-for-each/test';
-import {createObsArray, EventEmitter} from '../..';
+import {EventEmitter} from '../..';
 
 describe(`event-emitter`, () => {
 

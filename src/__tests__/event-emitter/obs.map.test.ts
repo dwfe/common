@@ -1,4 +1,3 @@
-import '@do-while-for-each/test';
 import {checkSupport} from './util';
 import {createObsMap} from '../..';
 

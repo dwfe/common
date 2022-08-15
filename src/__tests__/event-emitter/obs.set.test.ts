@@ -140,23 +140,64 @@ describe('methods that do not emit changes', () => {
   });
 
   test('keys', () => {
-
+    expect(Array.from(createObsSet().keys()).length).eq(0);
+    const arr = Array.from(createObsSet([1, 2, 3]).keys());
+    expect(arr.length).eq(3);
+    expect(arr[0]).eq(1);
+    expect(arr[1]).eq(2);
+    expect(arr[2]).eq(3);
   });
 
   test('values', () => {
-
+    expect(Array.from(createObsSet().values()).length).eq(0);
+    const arr = Array.from(createObsSet([1, 2, 3]).values());
+    expect(arr.length).eq(3);
+    expect(arr[0]).eq(1);
+    expect(arr[1]).eq(2);
+    expect(arr[2]).eq(3);
   });
 
   test('entries', () => {
-
+    expect(Array.from(createObsSet().entries()).length).eq(0);
+    const arr = Array.from(createObsSet([1, 2, 3]).entries());
+    expect(arr.length).eq(3);
+    expect(arr[0][0]).eq(1);
+    expect(arr[0][1]).eq(1);
+    expect(arr[1][0]).eq(2);
+    expect(arr[1][1]).eq(2);
+    expect(arr[2][0]).eq(3);
+    expect(arr[2][1]).eq(3);
   });
 
   test('forEach', () => {
-
+    createObsSet().forEach(() => {
+      throw new Error('empty set forEach');
+    });
+    const arr: any[] = [];
+    createObsSet([1, 2, 3]).forEach((value, value2) => {
+      arr.push([value, value2]);
+    });
+    expect(arr.length).eq(3);
+    expect(arr[0][0]).eq(1);
+    expect(arr[0][1]).eq(1);
+    expect(arr[1][0]).eq(2);
+    expect(arr[1][1]).eq(2);
+    expect(arr[2][0]).eq(3);
+    expect(arr[2][1]).eq(3);
   });
 
   test('iterator', () => {
-
+    for (const value of createObsSet()) {
+      throw new Error('empty map iterator');
+    }
+    const arr: any[] = [];
+    for (const value of createObsSet([1, 2, 3])) {
+      arr.push(value);
+    }
+    expect(arr.length).eq(3);
+    expect(arr[0]).eq(1);
+    expect(arr[1]).eq(2);
+    expect(arr[2]).eq(3);
   });
 
 });
@@ -169,19 +210,35 @@ describe('creating', () => {
   });
 
   test('T[]', () => {
-
+    const set = createObsSet([1, 2, 3]);
+    expect(set.size).eq(3);
   });
 
   test('Set<T>', () => {
-
-  });
-
-  test('clone Set', () => {
-
+    const set = createObsSet(new Set([1, 'hello']));
+    expect(set.size).eq(2);
   });
 
   test('clone Array', () => {
+    const source = [1, 'hello'];
+    const set = createObsSet(source);
+    expect(set.size).eq(2);
+    expect(source.length).eq(2);
 
+    source.length = 0;
+    expect(set.size).eq(2);
+    expect(source.length).eq(0);
+  });
+
+  test('clone Set', () => {
+    const source = new Set([1, 'hello']);
+    const set = createObsSet(source);
+    expect(set.size).eq(2);
+    expect(source.size).eq(2);
+
+    source.clear();
+    expect(set.size).eq(2);
+    expect(source.size).eq(0);
   });
 
 });
