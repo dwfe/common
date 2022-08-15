@@ -13,10 +13,12 @@ export function createObsMap<K, V>(init: Map<K, V> | [K, V][] | null = null): IO
         case 'set':
           return (key: K, value: V): typeof Proxy => {
             const oldValue = map.get(key);
-            map.set(key, value);
-            emitChange(oldValue === undefined
-              ? {type: 'add', key, value}
-              : {type: 'update', key, oldValue, value});
+            if (!Object.is(oldValue, value)) {
+              map.set(key, value);
+              emitChange(oldValue === undefined
+                ? {type: 'add', key, value}
+                : {type: 'update', key, oldValue, value});
+            }
             return receiver;
           };
         case 'delete':

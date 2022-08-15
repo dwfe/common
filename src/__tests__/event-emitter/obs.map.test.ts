@@ -24,19 +24,18 @@ describe('methods that emit changes', () => {
 
     result = map.set('hello', 'Alex');
     expect(result).eq(map);
-    expect(onChange).toBeCalledTimes(2);
-    lastFnResult(onChange, 'update', 'hello', 'Alex', 'Alex');
+    expect(onChange).toBeCalledTimes(1);
     expect(map.size).eq(1);
 
     result = map.set('hello', 17);
     expect(result).eq(map);
-    expect(onChange).toBeCalledTimes(3);
+    expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'update', 'hello', 'Alex', 17);
     expect(map.size).eq(1);
 
     result = map.set('world', true);
     expect(result).eq(map);
-    expect(onChange).toBeCalledTimes(4);
+    expect(onChange).toBeCalledTimes(3);
     lastFnResult(onChange, 'add', 'world', true);
     expect(map.size).eq(2);
   });
@@ -304,7 +303,7 @@ describe('ObsValueLike', () => {
 
 });
 
-export function lastFnResult(fn: ReturnType<typeof jest.fn>, type, ...rest: any[]) {
+function lastFnResult(fn: ReturnType<typeof jest.fn>, type, ...rest: any[]) {
   const last = fn.mock.lastCall[0];
   expect(type).eq(last.type);
   switch (type) {
