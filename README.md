@@ -60,9 +60,11 @@ observable things:
 
 ## other
 
-`cloneSimple`
+`cloneSimple`  
 `guid`  
 `millisecToMinWithSec`, `strMillisecToMinWithSec`  
 `nextTick`  
+`noop`, `noop2`, `noop3`, `noop4`, `noop5`, `noop6`, `noop7`  
 `EventEmitter`, `Listener`  
-`rAFQueueLast`
+`rAFQueueLast`  
+`debounce`, `throttle`  
