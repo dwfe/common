@@ -248,31 +248,31 @@ describe('ObsValueLike', () => {
   });
 
   test('on/off "change"', () => {
-    const set = createObsMap(map2Keys);
+    const map = createObsMap(map2Keys);
     const onChange1 = jest.fn();
     const onChange2 = jest.fn();
-    checkSupport(set, 0, false);
+    checkSupport(map, 0, false);
 
-    set.on('change', onChange1);
-    checkSupport(set, 1, true, 1);
+    map.on('change', onChange1);
+    checkSupport(map, 1, true, 1);
 
-    set.on('change', onChange1);
-    checkSupport(set, 1, true, 1);
+    map.on('change', onChange1);
+    checkSupport(map, 1, true, 1);
 
-    set.off('change', onChange1);
-    checkSupport(set, 0, false);
+    map.off('change', onChange1);
+    checkSupport(map, 0, false);
 
-    set.on('change', onChange2);
-    checkSupport(set, 1, true, 1);
+    map.on('change', onChange2);
+    checkSupport(map, 1, true, 1);
 
-    set.on('change', onChange1);
-    checkSupport(set, 1, true, 2);
+    map.on('change', onChange1);
+    checkSupport(map, 1, true, 2);
 
-    set.off('change', onChange1);
-    checkSupport(set, 1, true, 1);
+    map.off('change', onChange1);
+    checkSupport(map, 1, true, 1);
 
-    set.off('change', onChange2);
-    checkSupport(set, 0, false);
+    map.off('change', onChange2);
+    checkSupport(map, 0, false);
 
     expect(onChange1).toBeCalledTimes(0);
     expect(onChange2).toBeCalledTimes(0);
