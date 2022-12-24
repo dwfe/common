@@ -279,25 +279,25 @@ describe('ObsValueLike', () => {
   });
 
   test('dispose', () => {
-    const set = createObsMap(map2Keys);
+    const map = createObsMap(map2Keys);
     const onChange1 = jest.fn();
     const onChange2 = jest.fn();
-    checkSupport(set, 0, false);
+    checkSupport(map, 0, false);
 
-    set.on('change', onChange2);
-    checkSupport(set, 1, true, 1);
+    map.on('change', onChange2);
+    checkSupport(map, 1, true, 1);
 
-    set.dispose();
-    checkSupport(set, 0, false);
+    map.dispose();
+    checkSupport(map, 0, false);
 
-    set.on('change', onChange1);
-    checkSupport(set, 1, true, 1);
+    map.on('change', onChange1);
+    checkSupport(map, 1, true, 1);
 
-    set.on('change', onChange2);
-    checkSupport(set, 1, true, 2);
+    map.on('change', onChange2);
+    checkSupport(map, 1, true, 2);
 
-    set.dispose();
-    checkSupport(set, 0, false);
+    map.dispose();
+    checkSupport(map, 0, false);
   });
 
 });
