@@ -1,4 +1,4 @@
-import {ObsValueLike, Listener} from './contract';
+import {Listener, ObsValueLike} from './contract';
 
 export class EventEmitter<TEvents extends { [id: string]: any; }> implements ObsValueLike {
 
@@ -19,6 +19,10 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> implements Obs
     return this.addEventListener(id, listener);
   }
 
+  onChange(listener: Listener<TEvents['change']>): () => void {
+    return this.addEventListener('change', listener);
+  }
+
   addEventListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): () => void {
     let listeners = this.map.get(id);
     if (!listeners) {
@@ -35,6 +39,10 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> implements Obs
 
   off<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
     this.removeEventListener(id, listener);
+  }
+
+  offChange(listener: Listener<TEvents['change']>): void {
+    this.removeEventListener('change', listener);
   }
 
   removeEventListener<TId extends keyof TEvents>(id: TId, listener: Listener<TEvents[TId]>): void {
@@ -80,6 +88,10 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> implements Obs
     return this.map.has(id);
   }
 
+  idsList(): Array<keyof TEvents> {
+    return [...this.map.keys()];
+  }
+
   get hasListeners(): boolean {
     return this.map.size > 0;
   }
@@ -87,6 +99,13 @@ export class EventEmitter<TEvents extends { [id: string]: any; }> implements Obs
   numberOfListeners<TId extends keyof TEvents>(id: TId): number {
     const listeners = this.map.get(id)!;
     return listeners.size;
+  }
+
+  numberOfAllListeners() {
+    let count = 0;
+    for (const id of this.idsList())
+      count += this.numberOfListeners(id);
+    return count;
   }
 
   get numberOfIds(): number {

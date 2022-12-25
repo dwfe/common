@@ -7,8 +7,13 @@ export type Listener<TData = any> = (data: TData) => void;
  */
 export interface ObsValueLike<EventIds = any, ListenerData = any> {
   canBeObservable: boolean;
+
   on(id: EventIds, listener: Listener<ListenerData>): void;
   off(id: EventIds, listener: Listener<ListenerData>): void;
+
+  onChange(listener: Listener<ListenerData>): void;
+  offChange(listener: Listener<ListenerData>): void;
+
   dispose(): void;
 
   //region Support
