@@ -1,7 +1,9 @@
 ## async
 
 `delayAsync`  
-`timeout`
+`timeout`  
+`debounce`  
+`throttle`  
 
 ## event-emitter
 
@@ -65,6 +67,6 @@ observable things:
 `millisecToMinWithSec`, `strMillisecToMinWithSec`  
 `nextTick`  
 `noop`, `noop2`, `noop3`, `noop4`, `noop5`, `noop6`, `noop7`  
-`EventEmitter`, `Listener`  
 `rAFQueueLast`  
-`debounce`, `throttle`  
+`getExecFunctionName`  
+  
