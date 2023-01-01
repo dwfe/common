@@ -20,9 +20,8 @@ observable things:
 
 ## object
 
-`IPropType`  
 `getPropDescriptor`  
-`recognizePropType`
+`recognizePropType`, `IPropType`
 
 ## type
 
