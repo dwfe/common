@@ -1,3 +1,4 @@
+export {assert} from './assert'
 export {cloneSimple} from './clone-simple'
 export {getExecFunctionName} from './getExecFunctionName'
 export {guid} from './guid'

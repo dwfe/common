@@ -36,6 +36,7 @@ observable things:
 
 ## ungrouped
 
+`assert`  
 `cloneSimple`  
 `getExecFunctionName`  
 `guid`  
