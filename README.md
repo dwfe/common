@@ -4,6 +4,8 @@
 `timeout`  
 `debounce`  
 `throttle`  
+`nextTick`  
+`rAFQueueLast`
 
 ## event-emitter
 
@@ -16,28 +18,30 @@ observable things:
 - `createObsMap() => IObsMap`
 - `createObsSet() => IObsSet`
 
-## math
-
-`divideWithoutRemainder`
-
 ## object
 
-`PropType`  
+`IPropType`  
 `getPropDescriptor`  
 `recognizePropType`
 
 ## type
 
-`isEqual`  
-`isJustObject`  
-`isNotJustObject`  
-`isPrimitive`  
-`isPrimitiveTypeWrapper`  
-`isNotPrimitive`
+`isEqual`, `IEqualityCheckOpt`  
+`isJustObject`, `isNotJustObject`  
+`isPrimitive`, `isNotPrimitive`  
+`isPrimitiveTypeWrapper`
 
 `isFunction`  
 `isNumber`, `isNumberStrict`  
 `isString`
+
+## ungrouped
+
+`cloneSimple`  
+`getExecFunctionName`  
+`guid`  
+`millisecToMinWithSec`, `strMillisecToMinWithSec`  
+`noop`, `noop2`, `noop3`, `noop4`, `noop5`, `noop6`, `noop7`
 
 ## url
 
@@ -55,18 +59,7 @@ observable things:
 
 ## contracts
 
-`Type`  
+`IClassConstructor`  
 `IStoppable`  
-`TRunMode`  
-`TAnyObject`
-
-## other
-
-`cloneSimple`  
-`guid`  
-`millisecToMinWithSec`, `strMillisecToMinWithSec`  
-`nextTick`  
-`noop`, `noop2`, `noop3`, `noop4`, `noop5`, `noop6`, `noop7`  
-`rAFQueueLast`  
-`getExecFunctionName`  
-  
+`IRunMode`  
+`IAnyObject`

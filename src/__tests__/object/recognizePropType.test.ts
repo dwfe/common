@@ -1,5 +1,5 @@
 import '@do-while-for-each/test';
-import {getPropDescriptor, PropType, recognizePropType} from '../..';
+import {getPropDescriptor, IPropType, recognizePropType} from '../..';
 
 class A {
   constructor(private name: string) {
@@ -96,6 +96,6 @@ describe('recognizePropType, instance', () => {
 
 });
 
-function getPropType(obj: any, prop: any): PropType {
+function getPropType(obj: any, prop: any): IPropType {
   return recognizePropType(getPropDescriptor(obj, prop));
 }

@@ -1,6 +1,6 @@
-import {PropType} from './contract';
+import {IPropType} from './contract';
 
-export function recognizePropType(descriptor: PropertyDescriptor): PropType {
+export function recognizePropType(descriptor: PropertyDescriptor): IPropType {
   if (typeof descriptor.value === 'function') {
     return 'method';
   } else if (descriptor.get && descriptor.set) {

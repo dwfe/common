@@ -1,5 +1,5 @@
 import '@do-while-for-each/test';
-import {ObsValueLike} from '../../core/event-emitter';
+import {ObsValueLike} from '../../event-emitter';
 
 export function checkSupport(arr: ObsValueLike, numberOfIds: number, hasListeners: boolean, numberOfListeners?: number) {
   expect(arr.numberOfIds).eq(numberOfIds);

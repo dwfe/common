@@ -1,4 +1,4 @@
-export type PropType =
+export type IPropType =
   'method' |
   'value' |
   'getter' |
