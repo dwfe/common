@@ -1,9 +1,9 @@
-export {isEqual} from './is-equal';
+export {isEqual} from './isEqual';
 export {IEqualityCheckOpt} from './contract';
-export {isJustObject, isNotJustObject} from './is-just-object';
-export {isPrimitive, isNotPrimitive} from './is-primitive';
-export {isPrimitiveTypeWrapper} from './is-primitive-type-wrapper';
+export {isJustObject, isNotJustObject} from './isJustObject';
+export {isPrimitive, isNotPrimitive} from './isPrimitive';
+export {isPrimitiveTypeWrapper} from './isPrimitiveTypeWrapper';
 
-export {isFunction} from './util/is-function';
-export {isNumber, isNumberStrict} from './util/is-number';
-export {isString} from './util/is-string';
+export {isFunction} from './util/isFunction';
+export {isNumber, isNumberStrict} from './util/isNumber';
+export {isString} from './util/isString';

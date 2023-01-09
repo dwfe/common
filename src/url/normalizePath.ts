@@ -1,6 +1,6 @@
-import {normalizePathname} from './normalize-pathname'
-import {normalizeSearch} from './normalize-search'
-import {normalizeHash} from './normalize-hash'
+import {normalizePathname} from './normalizePathname'
+import {normalizeSearch} from './normalizeSearch'
+import {normalizeHash} from './normalizeHash'
 import {IPath} from './contract'
 
 export const normalizePath = (path: IPath): Required<IPath> => (

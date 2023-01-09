@@ -1,5 +1,5 @@
-import {normalizePathname} from './normalize-pathname';
-import {hasProtocol} from './has-protocol';
+import {normalizePathname} from './normalizePathname';
+import {hasProtocol} from './hasProtocol';
 
 export const complementPath = (path: string, origin?: string): string => {
   if (!origin || hasProtocol(path))

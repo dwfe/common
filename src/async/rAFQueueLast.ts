@@ -21,6 +21,6 @@ export function rAFQueueLast<T = any>(obj: IExpectedObj<T>): T | undefined {
   }
 }
 
-interface IExpectedObj<T> {
+export interface IExpectedObj<T> {
   rAFQueue: T[];
 }

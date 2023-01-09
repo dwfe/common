@@ -1,6 +1,6 @@
 export {assert} from './assert'
-export {cloneSimple} from './clone-simple'
+export {cloneSimple} from './cloneSimple'
 export {getExecFunctionName} from './getExecFunctionName'
 export {guid} from './guid'
-export {millisecToMinWithSec, strMillisecToMinWithSec} from './millisec-to-min-with-sec'
+export {millisecToMinWithSec, strMillisecToMinWithSec} from './millisecToMinWithSec'
 export {noop, noop2, noop3, noop4, noop5, noop6, noop7} from './noop'
