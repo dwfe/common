@@ -14,6 +14,7 @@ build
 
 # misc
 .idea
+.vscode
 
 tmp
 npm-debug.log*
