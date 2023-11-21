@@ -6,6 +6,18 @@ export interface IStoppable {
   stop(): void;
 }
 
+export interface IDisposable {
+  dispose(): void;
+}
+
 export type IRunMode = 'development' | 'test' | 'production';
 
-export type IAnyObject = { [key: string]: any };
+export type IAnyObject<TValue = any> = { [key: string]: TValue };
+
+
+export type ISuccess = true;
+export type IFailure = false | undefined;
+export type IResult = ISuccess | IFailure;
+
+export const SUCCESS: ISuccess = true;
+export const FAILURE: IFailure = false;

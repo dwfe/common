@@ -1,5 +1,6 @@
 export {complementPath} from './complementPath';
 export {IPath, IPathnameParams} from './contract';
+export {getURL} from './getURL';
 export {hasProtocol} from './hasProtocol';
 export {isPathEqual} from './isPathEqual';
 export {normalizePath} from './normalizePath';

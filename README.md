@@ -7,6 +7,12 @@
 `nextTick`  
 `rAFQueueLast`
 
+## converter
+
+`strToBase64`  
+`base64ToStr`
+`B64`: `fromUrl`, `decodeUnicode`, `encodeUnicode`
+
 ## event-emitter
 
 `EventEmitter`, `Listener`
@@ -31,7 +37,7 @@ observable things:
 `isPrimitiveTypeWrapper`
 
 `isFunction`  
-`isNumber`, `isNumberStrict`  
+`isSomethingANumber`  
 `isString`
 
 ## ungrouped
@@ -41,13 +47,14 @@ observable things:
 `getExecFunctionName`  
 `guid`  
 `millisecToMinWithSec`, `strMillisecToMinWithSec`  
-`noop`, `noop2`, `noop3`, `noop4`, `noop5`, `noop6`, `noop7`
+`noop`, `noop2`, `noop3`, `noop4`, `noop5`, `noop6`, `noop7`  
+`randomIntFromRange`, `randomIntFromRangeExclude`
 
 ## url
 
 `complementPath`  
-`IPath`  
-`IPathnameParams`  
+`IPath`, `IPathnameParams`  
+`getURL`  
 `hasProtocol`  
 `isPathEqual`  
 `normalizePath`  
@@ -61,5 +68,7 @@ observable things:
 
 `IClassConstructor`  
 `IStoppable`  
+`IDisposable`  
 `IRunMode`  
-`IAnyObject`
+`IAnyObject`  
+`ISuccess`, `IFailure`, `IResult`, `SUCCESS`, `FAILURE`

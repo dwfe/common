@@ -12,7 +12,7 @@ describe('handled in Proxy.set / .deleteProperty', () => {
     checkObject(obj, {});
 
     expect(obj).not.toHaveProperty('hello');
-    let result = (obj.hello = 123);
+    let result: any = (obj.hello = 123);
     expect(result).eq(123);
     expect(onChange).toBeCalledTimes(1);
     lastFnResult(onChange, 'set-prop', 'hello', 123);
@@ -24,6 +24,31 @@ describe('handled in Proxy.set / .deleteProperty', () => {
     expect(onChange).toBeCalledTimes(2);
     lastFnResult(onChange, 'delete-prop', 'hello');
     checkObject(obj, {});
+
+    result = (obj.hello = 123);
+    expect(result).eq(123);
+    expect(onChange).toBeCalledTimes(3);
+    lastFnResult(onChange, 'set-prop', 'hello', 123);
+    checkObject(obj, {hello: 123});
+
+    result = (obj.hello = 123); // задаю тот же самый примитив
+    expect(result).eq(123);
+    expect(onChange).toBeCalledTimes(3);
+    lastFnResult(onChange, 'set-prop', 'hello', 123);
+    checkObject(obj, {hello: 123});
+
+    const checkObj = {};
+    result = (obj.hello = checkObj);
+    expect(result).eq(checkObj);
+    expect(onChange).toBeCalledTimes(4);
+    lastFnResult(onChange, 'set-prop', 'hello', checkObj);
+    checkObject(obj, {hello: checkObj});
+
+    result = (obj.hello = checkObj); // задаю тот же самый объект
+    expect(result).eq(checkObj);
+    expect(onChange).toBeCalledTimes(4);
+    lastFnResult(onChange, 'set-prop', 'hello', checkObj);
+    checkObject(obj, {hello: checkObj});
   });
 
   test('some', () => {

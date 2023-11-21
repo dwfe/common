@@ -5,5 +5,5 @@ export {isPrimitive, isNotPrimitive} from './isPrimitive';
 export {isPrimitiveTypeWrapper} from './isPrimitiveTypeWrapper';
 
 export {isFunction} from './util/isFunction';
-export {isNumber, isNumberStrict} from './util/isNumber';
+export {isSomethingANumber} from './util/isSomethingANumber';
 export {isString} from './util/isString';

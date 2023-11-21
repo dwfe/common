@@ -23,7 +23,11 @@ export function createObsObject<T = any>(init: T = {} as T): IObsObject & T {
     /**
      * Writing the Value to the Property of the Target
      */
-    set(obj, prop, value, receiver): boolean {
+    set(obj, prop, value, receiver) {
+      const currentValue = Reflect.get(obj, prop, receiver);
+      if (Object.is(currentValue, value)) {
+        return currentValue;
+      }
       const wasSet = Reflect.set(obj, prop, value, receiver);
       if (wasSet) {
         emitChange({type: 'set-prop', prop, value});
