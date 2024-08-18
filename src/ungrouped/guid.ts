@@ -1,3 +1,5 @@
+import {hexChars} from '../constant';
+
 /**
  * Случайная строка из 32 символов из диапазона [0-9] и [a-f], разделенных четырмя символами '-':
  *    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
@@ -6,14 +8,13 @@
  * Для точной реализации наверное лучше использовать пакет: https://github.com/uuidjs/uuid
  * А есть еще и ulid: https://github.com/ulid/javascript
  */
-const chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
-
 export function guid(): string {
   let result = '';
+  const {length} = hexChars;
   for (let i = 0; i < 36; i++) {
     result += (i === 8 || i === 13 || i === 18 || i === 23)
       ? '-'
-      : chars[Math.floor(Math.random() * chars.length)];
+      : hexChars[Math.floor(Math.random() * length)];
   }
   return result;
 }

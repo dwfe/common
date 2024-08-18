@@ -1,6 +1,7 @@
 export {isEqual} from './isEqual';
 export {IEqualityCheckOpt} from './contract';
 export {isJustObject, isNotJustObject} from './isJustObject';
+export {isNullish} from './isNullish';
 export {isPrimitive, isNotPrimitive} from './isPrimitive';
 export {isPrimitiveTypeWrapper} from './isPrimitiveTypeWrapper';
 
