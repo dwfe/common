@@ -6,5 +6,7 @@ export {isPrimitive, isNotPrimitive} from './isPrimitive';
 export {isPrimitiveTypeWrapper} from './isPrimitiveTypeWrapper';
 
 export {isFunction} from './util/isFunction';
+export {isPositiveNumber} from './util/isPositiveNumber';
 export {isSomethingANumber} from './util/isSomethingANumber';
 export {isString} from './util/isString';
+export {cast} from './cast'

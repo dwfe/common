@@ -1,5 +1,5 @@
 import '@do-while-for-each/test'
-import {capitalize} from '../../ungrouped';
+import {capitalize} from '../../ungrouped/capitalize';
 
 const immutableString = '0123456789%!?,.:; @#№()[]{}<>-=+*/\\"\'`_~&|^'
 const alphabetLowerCase = 'abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя'

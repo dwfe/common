@@ -1,4 +1,4 @@
-import {IRgba} from './hex-to-rgb';
+import {IRgba} from './contract';
 
 /**
  * Яркость.
@@ -13,10 +13,10 @@ import {IRgba} from './hex-to-rgb';
  *       getBrightness(bgColorRGB) > 100 ? 'black' : 'white'
  *       если яркость ФОНА ближе к белому, тогда цвет ТЕКСТА сделать черным и наоборот.
  */
-export function getBrightness({red, green, blue}: IRgba): number {
+export function getBrightness({r, g, b}: IRgba): number {
   return Math.round((
-    red * 299 +
-    green * 587 +
-    blue * 114
+    r * 299 +
+    g * 587 +
+    b * 114
   ) / 1000);
 }

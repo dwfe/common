@@ -10,3 +10,4 @@ export {normalizeHash} from './normalizeHash';
 export {pathStrFromUrlStr} from './pathStrFromUrlStr';
 export {pathToString} from './pathToString';
 export {normalizePathUniversal} from './normalizePathUniversal'
+export {trimSlashes} from './trimSlashes'

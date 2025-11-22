@@ -44,3 +44,27 @@ export type IResult = ISuccess | IFailure;
 
 export const SUCCESS: ISuccess = true;
 export const FAILURE: IFailure = false;
+
+/**
+ * Не пустой массив Т
+ */
+export type INonEmptyArray<T = any> = [T, ...T[]]
+
+/**
+ * Вспомогательный тип для массива фиксированной длины
+ */
+type IFixedArrayHandleType<TItem extends any, TLength extends number, TArray extends Array<TItem>> = TArray['length'] extends TLength ? TArray : IFixedArrayHandleType<TItem, TLength, [TItem, ...TArray]>
+
+/**
+ * Массив фиксированной длины
+ *
+ * @param TLength длина массива - строго число
+ * @param TItem массив этих типов
+ */
+export type IFixedLengthArray<TLength extends number, TItem extends any = any> =
+// в качестве TLength передан number
+  number extends TLength ? never :
+    // в качестве TLength передано число
+    TLength extends number ? IFixedArrayHandleType<TItem, TLength, [TItem]> :
+      // в качестве TLength передано не число
+      never

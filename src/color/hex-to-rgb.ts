@@ -1,3 +1,5 @@
+import {IRgba} from './contract';
+
 const hexCharacters = 'a-f\\d';
 const match3or4Hex = `#?[${hexCharacters}]{3}[${hexCharacters}]?`;
 const match6or8Hex = `#?[${hexCharacters}]{6}([${hexCharacters}]{2})?`;
@@ -30,21 +32,14 @@ export function hexToRgb(hex: string, options: IOptions = {}): IRgba | undefined
   }
 
   const number = Number.parseInt(hex, 16);
-  const red = number >> 16;
-  const green = (number >> 8) & 255;
-  const blue = number & 255;
-  const alpha = typeof options.alpha === 'number' ? options.alpha : alphaFromHex;
+  const r = number >> 16;
+  const g = (number >> 8) & 255;
+  const b = number & 255;
+  const a = typeof options.alpha === 'number' ? options.alpha : alphaFromHex;
 
-  return {red, green, blue, alpha};
+  return {r, g, b, a};
 }
 
 interface IOptions {
   alpha?: number;
-}
-
-export interface IRgba {
-  red: number;
-  green: number;
-  blue: number;
-  alpha: number;
 }
